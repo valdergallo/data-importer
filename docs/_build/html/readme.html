@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Django Data Importer &mdash; Django Data Importer 1.0.1rc documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Django Data Importer 1.0.1rc documentation" href="index.html" />
+    <link rel="next" title="base" href="base.html" />
+    <link rel="prev" title="Welcome to Django Data Importer’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="base.html" title="base"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Django Data Importer’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Django Data Importer 1.0.1rc documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="django-data-importer">
+<h1>Django Data Importer<a class="headerlink" href="#django-data-importer" title="Permalink to this headline">¶</a></h1>
+<p><strong>Django Data Importer</strong> is a tool which allow you to transform easily a CSV file into a python object or a django model instance.
+It is based on the django-style declarative model.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Use either <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>easy_install django-data-importer</pre>
+</div>
+<p>or <tt class="docutils literal"><span class="pre">pip</span></tt>:</p>
+<div class="highlight-python"><pre>pip install django-data-importer</pre>
+</div>
+</div>
+<div class="section" id="basic-example">
+<h2>Basic example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h2>
+<p>Consider the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">data_importer.base</span> <span class="kn">import</span> <span class="n">BaseImporter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyCSVImporterModel</span><span class="p">(</span><span class="n">BaseImporter</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;length&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">delimiter</span> <span class="o">=</span> <span class="s">&quot;;&quot;</span>
+</pre></div>
+</div>
+<p>You declare a <tt class="docutils literal"><span class="pre">MyCSVImporterModel</span></tt> which will match to a CSV file like this:</p>
+<blockquote>
+<div>Anthony;27;1.75</div></blockquote>
+<p>To import the file or any iterable object, just do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_csv_list</span> <span class="o">=</span> <span class="n">MyCSVImporterModel</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s">&quot;my_csv_file_name.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="p">,</span> <span class="n">first_line</span> <span class="o">=</span> <span class="n">my_csv_list</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span>
+<span class="go">27</span>
+</pre></div>
+</div>
+<p>Without an explicit declaration, data and columns are matched in the same
+order:</p>
+<div class="highlight-python"><pre>Anthony --&gt; Column 0 --&gt; Field 0 --&gt; name
+27      --&gt; Column 1 --&gt; Field 1 --&gt; age
+1.75    --&gt; Column 2 --&gt; Field 2 --&gt; length</pre>
+</div>
+</div>
+<div class="section" id="django-model">
+<h2>Django Model<a class="headerlink" href="#django-model" title="Permalink to this headline">¶</a></h2>
+<p>If you now want to interact with a django model, you just have to add a <strong>Meta.model</strong> option to the class meta.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">age</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">length</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">data_importer.base</span> <span class="kn">import</span> <span class="n">BaseImporter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">data_importer.model</span> <span class="kn">import</span> <span class="n">MyModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyCSVImporterModel</span><span class="p">(</span><span class="n">BaseImporter</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">delimiter</span> <span class="o">=</span> <span class="s">&quot;;&quot;</span>
+<span class="gp">... </span>        <span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span>
+</pre></div>
+</div>
+<p>That will automatically match to the following django model.</p>
+<p><em>The django model should be imported in the model</em></p>
+</div>
+<div class="section" id="meta-options">
+<h2>Meta options<a class="headerlink" href="#meta-options" title="Permalink to this headline">¶</a></h2>
+<p><cite>delimiter</cite></p>
+<blockquote>
+<div>define the delimiter of the csv file.
+If you do not set one, the sniffer will try yo find one itself.</div></blockquote>
+<p><cite>ignore_first_line</cite></p>
+<blockquote>
+<div>Skip the first line if True.</div></blockquote>
+<p><cite>model</cite></p>
+<blockquote>
+<div>If defined, the importer will create an instance of this model.</div></blockquote>
+<p><cite>raise_errors</cite></p>
+<blockquote>
+<div>If set to True, an error in a imported line will stop the loading.</div></blockquote>
+<p><cite>exclude</cite></p>
+<blockquote>
+<div>Exclude fields from list fields to import</div></blockquote>
+<p><cite>transaction</cite></p>
+<blockquote>
+<div>Use transaction to save objects</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Django Data Importer</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#basic-example">Basic example</a></li>
+<li><a class="reference internal" href="#django-model">Django Model</a></li>
+<li><a class="reference internal" href="#meta-options">Meta options</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Django Data Importer&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="base.html"
+                        title="next chapter">base</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/readme.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="base.html" title="base"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Django Data Importer’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Django Data Importer 1.0.1rc documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Valder Gallo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

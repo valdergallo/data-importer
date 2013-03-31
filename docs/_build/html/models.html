@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>models &mdash; Django Data Importer 1.0.1rc documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Django Data Importer 1.0.1rc documentation" href="index.html" />
+    <link rel="prev" title="forms" href="forms.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="forms.html" title="forms"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Django Data Importer 1.0.1rc documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="models">
+<h1>models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-data_importer.models"></span><dl class="class">
+<dt id="data_importer.models.FileHistory">
+<em class="property">class </em><tt class="descclassname">data_importer.models.</tt><tt class="descname">FileHistory</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/data_importer/models.html#FileHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.models.FileHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>FileHistory(id, created_at, updated_at, active, content)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>AutoField</em>) &#8211; Id</li>
+<li><strong>created_at</strong> (<em>DateTimeField</em>) &#8211; Created at</li>
+<li><strong>updated_at</strong> (<em>DateTimeField</em>) &#8211; Updated at</li>
+<li><strong>active</strong> (<em>BooleanField</em>) &#8211; Active</li>
+<li><strong>content</strong> (<em>FileField</em>) &#8211; Content</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="exception">
+<dt id="data_importer.models.FileHistory.DoesNotExist">
+<em class="property">exception </em><tt class="descname">DoesNotExist</tt><a class="headerlink" href="#data_importer.models.FileHistory.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="data_importer.models.FileHistory.MultipleObjectsReturned">
+<em class="property">exception </em><tt class="descclassname">FileHistory.</tt><tt class="descname">MultipleObjectsReturned</tt><a class="headerlink" href="#data_importer.models.FileHistory.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="data_importer.models.FileHistory.get_next_by_created_at">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">get_next_by_created_at</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#data_importer.models.FileHistory.get_next_by_created_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="data_importer.models.FileHistory.get_next_by_updated_at">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">get_next_by_updated_at</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#data_importer.models.FileHistory.get_next_by_updated_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="data_importer.models.FileHistory.get_previous_by_created_at">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">get_previous_by_created_at</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#data_importer.models.FileHistory.get_previous_by_created_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="data_importer.models.FileHistory.get_previous_by_updated_at">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">get_previous_by_updated_at</tt><big>(</big><em>*moreargs</em>, <em>**morekwargs</em><big>)</big><a class="headerlink" href="#data_importer.models.FileHistory.get_previous_by_updated_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="data_importer.models.FileHistory.objects">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">objects</tt><em class="property"> = &lt;django.db.models.manager.Manager object at 0x10c3b24d0&gt;</em><a class="headerlink" href="#data_importer.models.FileHistory.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="data_importer.models.FileHistory.send_file">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">send_file</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/data_importer/models.html#FileHistory.send_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.models.FileHistory.send_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a file through Django without loading the whole file into
+memory at once. The FileWrapper will turn the file object into an
+iterator for chunks of 8KB.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_importer.models.FileHistory.send_zipfile">
+<tt class="descclassname">FileHistory.</tt><tt class="descname">send_zipfile</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/data_importer/models.html#FileHistory.send_zipfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.models.FileHistory.send_zipfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a ZIP file on disk and transmit it in chunks of 8KB,
+without loading the whole file into memory. A similar approach can
+be used for large dynamic PDF files.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="forms.html"
+                        title="previous chapter">forms</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/models.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="forms.html" title="forms"
+             >previous</a> |</li>
+        <li><a href="index.html">Django Data Importer 1.0.1rc documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Valder Gallo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
