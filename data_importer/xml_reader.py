@@ -1,29 +1,20 @@
 #/usr/bin/python
 # encoding: utf-8
 from data_importer.base import BaseImporter
-
-sxml="""
-<encspot>
-  <file>
-   <Name>some filename.mp3</Name>
-   <Encoder>Gogo (after 3.0)</Encoder>
-   <Bitrate>131</Bitrate>
-  </file>
-  <file>
-   <Name>another filename.mp3</Name>
-   <Encoder>iTunes</Encoder>
-   <Bitrate>128</Bitrate>
-  </file>
-</encspot>
-"""
+import xml.etree.cElementTree as et
 
 
 class XMLImporter(BaseImporter):
-    root = 'file'
-    fields = [
-        'name', 'encoder', 'bitrate'
-    ]
+    root = 'root'
+    fields = []
+
+    def xml_to_dict(self):
+        tree = et.fromstring(self.source)
+        elements = tree.findall(self.root)
+        for el in elements:
+            items = el.getchildren()
+            content = [i.text for i in items]
+            yield content
 
     def set_reader(self):
-        tree = et.fromstring(self.source)
-        self._reader =
+        self._reader = self.xml_to_dict()

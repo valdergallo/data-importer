@@ -56,6 +56,11 @@ class BaseImporter(object):
             self.source = source
             self.set_reader()
 
+    class Meta:
+        """
+        Importer configurations
+        """
+
     @property
     def source(self):
         """
@@ -76,8 +81,6 @@ class BaseImporter(object):
             self._source = open(source.file.name, 'rb')
         elif hasattr(source, 'name'):
             self._source = open(source.name, 'rb')
-        elif isinstance(source, basestring):
-            self._source = open(source, 'rb')
         else:
             self._source = source
             # raise ValueError('Invalid Source')
