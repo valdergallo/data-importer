@@ -6,7 +6,6 @@ import xml.etree.cElementTree as et
 
 class XMLImporter(BaseImporter):
     root = 'root'
-    fields = []
 
     def xml_to_dict(self):
         tree = et.fromstring(self.source)

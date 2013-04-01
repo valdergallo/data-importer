@@ -103,9 +103,7 @@ class BaseImporter(object):
         will use model fields to populate content without id
         """
         if self.Meta.model and not hasattr(self, 'fields'):
-            all_models_fields = self.Meta.model._meta.get_all_field_names()
-            if 'id' in all_models_fields:
-                all_models_fields.remove('id')
+            all_models_fields = [i.name for i in self.Meta.model._meta.fields if i.name != 'id']
             self.fields = all_models_fields
         if self.Meta.exclude and not self._excluded:
             self._excluded = True
