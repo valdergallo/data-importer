@@ -60,63 +60,69 @@
 <em class="property">class </em><tt class="descclassname">data_importer.base.</tt><tt class="descname">BaseImporter</tt><big>(</big><em>source=None</em><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base Importer method to create simples importes CSV files.</p>
 <p>set_reader: can be override to create new importers files</p>
+<dl class="class">
+<dt id="data_importer.base.BaseImporter.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="headerlink" href="#data_importer.base.BaseImporter.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Importer configurations</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.cache">
-<tt class="descname">cache</tt><big>(</big><em>value</em>, <em>obj=None</em><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.cache" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">cache</tt><big>(</big><em>value</em>, <em>obj=None</em><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>TODO: not implemented</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.clean">
-<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.clean" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Custom clean method</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="data_importer.base.BaseImporter.cleaned_data">
-<tt class="descname">cleaned_data</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.cleaned_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.cleaned_data" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">cleaned_data</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.cleaned_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.cleaned_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return tupla with data cleaned</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="data_importer.base.BaseImporter.errors">
-<tt class="descname">errors</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.errors" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">errors</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show errors catch by <a href="#id1"><span class="problematic" id="id2">clean_</span></a> methods</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.is_valid">
-<tt class="descname">is_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.is_valid" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">is_valid</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.is_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear content and return False if not have errors</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="data_importer.base.BaseImporter.meta">
-<tt class="descname">meta</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.meta" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">meta</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.meta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is same to use .Meta</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.post_clean">
-<tt class="descname">post_clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.post_clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.post_clean" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">post_clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.post_clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.post_clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Excuted after all clean method</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.pre_clean">
-<tt class="descname">pre_clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.pre_clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.pre_clean" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">pre_clean</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.pre_clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.pre_clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executed before all clean methods
 Important: pre_clean dont have cleaned_data content</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.save">
-<tt class="descname">save</tt><big>(</big><em>instance=None</em><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">save</tt><big>(</big><em>instance=None</em><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.save" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.set_reader">
-<tt class="descname">set_reader</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.set_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.set_reader" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">set_reader</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.set_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.set_reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method responsable to convert file content into a list with same values that
 have fields</p>
 <blockquote>
@@ -130,13 +136,13 @@ have fields</p>
 
 <dl class="attribute">
 <dt id="data_importer.base.BaseImporter.source">
-<tt class="descname">source</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.source" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">source</tt><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return source opened</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="data_importer.base.BaseImporter.start_fields">
-<tt class="descname">start_fields</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.start_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.start_fields" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">BaseImporter.</tt><tt class="descname">start_fields</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/data_importer/base.html#BaseImporter.start_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#data_importer.base.BaseImporter.start_fields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initial function to find fields or headers values.
 This values will be used on process to <a href="#id3"><span class="problematic" id="id4">clean_</span></a> and save method</p>
 <p>If this method not have fields and have Meta.model this method

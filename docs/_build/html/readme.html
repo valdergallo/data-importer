@@ -118,6 +118,43 @@ order:</p>
 <p>That will automatically match to the following django model.</p>
 <p><em>The django model should be imported in the model</em></p>
 </div>
+<div class="section" id="django-xml">
+<h2>Django XML<a class="headerlink" href="#django-xml" title="Permalink to this headline">¶</a></h2>
+<p>If you now want to interact with a django model, you just have to add a <strong>Meta.model</strong> option to the class meta.</p>
+<p>XML file example:</p>
+<div class="highlight-guess"><div class="highlight"><pre><span class="nt">&lt;encspot&gt;</span>
+  <span class="nt">&lt;file&gt;</span>
+   <span class="nt">&lt;Name&gt;</span>Rocky Balboa<span class="nt">&lt;/Name&gt;</span>
+   <span class="nt">&lt;Age&gt;</span>40<span class="nt">&lt;/Age&gt;</span>
+   <span class="nt">&lt;Height&gt;</span>1.77<span class="nt">&lt;/Height&gt;</span>
+  <span class="nt">&lt;/file&gt;</span>
+  <span class="nt">&lt;file&gt;</span>
+   <span class="nt">&lt;Name&gt;</span>Chuck Norris<span class="nt">&lt;/Name&gt;</span>
+   <span class="nt">&lt;Age&gt;</span>73<span class="nt">&lt;/Age&gt;</span>
+   <span class="nt">&lt;Height&gt;</span>1.78<span class="nt">&lt;/Height&gt;</span>
+  <span class="nt">&lt;/file&gt;</span>
+<span class="nt">&lt;/encspot&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">age</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">height</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">data_importer</span> <span class="kn">import</span> <span class="n">XMLImporter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">data_importer.model</span> <span class="kn">import</span> <span class="n">MyModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyCSVImporterModel</span><span class="p">(</span><span class="n">XMLImporter</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">root</span> <span class="o">=</span> <span class="s">&#39;file&#39;</span>
+<span class="gp">... </span>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">delimiter</span> <span class="o">=</span> <span class="s">&quot;;&quot;</span>
+<span class="gp">... </span>        <span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span>
+</pre></div>
+</div>
+<p>That will automatically match to the following django model.</p>
+<p><em>The django model should be imported in the model</em></p>
+</div>
 <div class="section" id="meta-options">
 <h2>Meta options<a class="headerlink" href="#meta-options" title="Permalink to this headline">¶</a></h2>
 <p><cite>delimiter</cite></p>
@@ -139,6 +176,14 @@ If you do not set one, the sniffer will try yo find one itself.</div></blockquot
 <p><cite>transaction</cite></p>
 <blockquote>
 <div>Use transaction to save objects</div></blockquote>
+<div class="section" id="todo">
+<h3>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fix:</strong> xls_parser</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 </div>
 
@@ -154,7 +199,11 @@ If you do not set one, the sniffer will try yo find one itself.</div></blockquot
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#basic-example">Basic example</a></li>
 <li><a class="reference internal" href="#django-model">Django Model</a></li>
-<li><a class="reference internal" href="#meta-options">Meta options</a></li>
+<li><a class="reference internal" href="#django-xml">Django XML</a></li>
+<li><a class="reference internal" href="#meta-options">Meta options</a><ul>
+<li><a class="reference internal" href="#todo">TODO</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -76,7 +76,10 @@ Django XML
 
 If you now want to interact with a django model, you just have to add a **Meta.model** option to the class meta.
 
-.. code-block::
+XML file example:
+
+.. code-block:: guess
+
     <encspot>
       <file>
        <Name>Rocky Balboa</Name>
