@@ -71,6 +71,45 @@ That will automatically match to the following django model.
 
 *The django model should be imported in the model*
 
+Django XML
+------------
+
+If you now want to interact with a django model, you just have to add a **Meta.model** option to the class meta.
+
+.. code-block::
+    <encspot>
+      <file>
+       <Name>Rocky Balboa</Name>
+       <Age>40</Age>
+       <Height>1.77</Height>
+      </file>
+      <file>
+       <Name>Chuck Norris</Name>
+       <Age>73</Age>
+       <Height>1.78</Height>
+      </file>
+    </encspot>
+
+>>> from django.db import models
+>>> class MyModel(models.Model):
+...     name = models.CharField(max_length=150)
+...     age = models.CharField(max_length=150)
+...     height = models.CharField(max_length=150)
+
+>>> from data_importer import XMLImporter
+>>> from data_importer.model import MyModel
+>>> class MyCSVImporterModel(XMLImporter):
+...     root = 'file'
+...     class Meta:
+...         delimiter = ";"
+...         model = MyModel
+
+That will automatically match to the following django model.
+
+*The django model should be imported in the model*
+
+
+
 Meta options
 ------------
 
@@ -99,4 +138,9 @@ Meta options
 `transaction`
 
     Use transaction to save objects
+
+TODO
+____
+
+   * **fix:** xls_parser
 
