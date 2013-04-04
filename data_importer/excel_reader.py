@@ -80,10 +80,6 @@ class XLSXReader(XLSReader):
         return item.internal_value # return string
 
     def get_items(self):
-        start_line = 0
-        if self.Meta.ignore_first_line:
-            start_line = 1
-
         for line, row in enumerate(self.worksheet.iter_rows()):
             if self.Meta.ignore_first_line and line == 0:
                 pass
