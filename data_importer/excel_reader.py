@@ -2,6 +2,7 @@
 import datetime
 import xlrd
 import openpyxl
+from openpyxl import load_workbook
 from base import BaseImporter
 
 #from xlrd/biffh.py
@@ -18,37 +19,24 @@ from base import BaseImporter
 
 class XLSReader(BaseImporter):
 
-    def __init__(self,f,**kwargs):
-        self._sheet_name = kwargs.pop('sheet', None)
-        self._on_demand = kwargs.pop('on_demand', True)
-        super(XLSReader, self).__init__(f)
-
-    def set_reader(self):
-        self._workbook = xlrd.open_workbook(self._source.name, on_demand=self._on_demand)
-        if self._sheet_name:
-            self._reader = self._workbook.sheet_by_name(self._sheet_name)
+    def set_reader(self, on_demand=True):
+        self.workbook = xlrd.open_workbook(self.source, on_demand=on_demand)
+        if self.Meta.sheet_name:
+            self.worksheet = self.workbook.sheet_by_name(self.Meta.sheet_name)
         else:
-            self._reader = self._workbook.sheet_by_index(0)
+            self.worksheet = self.workbook.sheet_by_index(0)
 
-        self.nrows = self._reader.nrows
-        self.ncols = self._reader.ncols
+        self._reader = self.get_items()
 
-    @property
-    def headers(self):
-        if not self._headers:
-            self._headers = map(self.normalize_string, [self._reader.cell(0, c).value for c in range(self.ncols)])
-        return self._headers
-
-    def get_value(self, item, **kwargs):
+    def convert_value(self, item):
         """
         Handle different value types for XLS. Item is a cell object.
         """
-
         # Thx to Augusto C Men to point fast solution for XLS/XLSX dates
-        if item.ctype == XL_CELL_DATE:
-            return datetime.datetime(*xlrd.xldate_as_tuple(item.value, self._workbook.datemode))
+        if item.ctype == 3: #XL_CELL_DATE:
+            return datetime.datetime(*xlrd.xldate_as_tuple(item.value, self.workbook.datemode))
 
-        if item.ctype == XL_CELL_NUMBER:
+        if item.ctype == 2: #XL_CELL_NUMBER:
             if item.value % 1 == 0:  # integers
                 return int(item.value)
             else:
@@ -57,43 +45,50 @@ class XLSReader(BaseImporter):
         return item.value
 
     def get_items(self):
-        for r in range(1, self.nrows):
-            values = [self.get_value(self._reader.cell(r, c)) for c in range(self.ncols)]
+        start_line = 0
+        if self.Meta.ignore_first_line:
+            start_line = 1
+
+        for i in range(start_line, self.worksheet.nrows):
+            values = [self.convert_value(cell) for cell in self.worksheet.rows[i]]
             if not any(values):
                 continue  # empty lines are ignored
-            yield self.get_item(values)
+            yield values
 
 
 class XLSXReader(XLSReader):
 
-    def set_reader(self):
-        self._workbook = openpyxl.reader.excel.load_workbook(self._source)
-        if self._sheet_name:
-            self._reader = self._workbook.worksheets[self._workbook.get_sheet_names().index(self._sheet_name)]
+    def set_reader(self, use_iterators=True):
+        self.workbook = load_workbook(self.source, use_iterators=use_iterators)
+        if self.Meta.sheet_name:
+            self.worksheet = self.workbook.get_sheet_by_name(self.Meta.sheet_name)
         else:
-            self._reader = self._workbook.worksheets[0]
+            self.worksheet = self.workbook.worksheets[0]
 
-    @property
-    def headers(self):
-        if not self._headers:
-            self._headers = map(self.normalize_string, [c.value for c in self._reader.rows[0]])
-        return self._headers
+        self._reader = self.get_items()
 
-    def get_value(self, item, **kwargs):
+    def get_value(self, item):
         """
         Handle different value types for XLSX. Item is a cell object.
         """
-        # Thx to Augusto C Men to point fast solution for XLS/XLSX dates
-        if item.is_date() and isinstance(item, (int, float)):
-            return datetime.date(1899, 12, 30) + datetime.timedelta(days=item)
-        if item.value is None:
-            if item.data_type == item.TYPE_STRING:
-                return ''
-        return item.value
+        if item.is_date:
+            return item.internal_value # return datetime
+
+        if item.internal_value % 1 == 0:  # return integers
+            return int(item.internal_value)
+
+        return item.internal_value # return string
 
     def get_items(self):
-        for row in self._reader.rows[1:]:
-            values = [self.get_value(c) for c in list(row)]
-            if not any(values):
-                continue  # empty lines are ignored
-            yield self.get_item(values)
+        start_line = 0
+        if self.Meta.ignore_first_line:
+            start_line = 1
+
+        for line, row in enumerate(self.worksheet.iter_rows()):
+            if self.Meta.ignore_first_line and line == 0:
+                pass
+            else:
+                values = [self.get_value(cell) for cell in row]
+                if not any(values):
+                    continue  # empty lines are ignored
+                yield self.get_item(values)
