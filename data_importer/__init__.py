@@ -1,3 +1,4 @@
-from base import BaseImporter
-from xml_reader import XMLImporter
-from excel_reader import XLSXReader, XLSReader
+from readers.base import BaseImporter
+from readers.xml import XMLImporter
+from readers.xlsx import XLSXReader
+from readers.xls import XLSReader
