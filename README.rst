@@ -145,5 +145,4 @@ Meta options
 TODO
 ____
 
-   * **fix:** xls_parser
 
