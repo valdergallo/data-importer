@@ -24,6 +24,18 @@ class TestBaseImportMeta(TestCase):
     def test_meta_values(self):
         self.assertEqual(self.importer.Meta.get('exclude'), ['test2_field', 'test3_field'])
 
+    def test_private_values(self):
+        self.assertEquals(self.importer.__dict__, {'_excluded': True})
+
+        self.assertFalse(BaseImporter._error)
+        self.assertFalse(BaseImporter._cache)
+        self.assertFalse(BaseImporter._cleaned_data)
+        self.assertFalse(BaseImporter._fields)
+        self.assertFalse(BaseImporter._reader)
+        self.assertFalse(BaseImporter._excluded)
+        self.assertFalse(BaseImporter._readed)
+
+
     def test_meta_class_values(self):
         self.assertEqual(self.importer.Meta.exclude, ['test2_field', 'test3_field'])
 
@@ -32,6 +44,41 @@ class TestBaseImportMeta(TestCase):
 
     def test_fields(self):
         self.assertEquals(list(self.importer.fields), ['test_field', ])
+
+
+class TestImporters(TestCase):
+    def test_xls_importers(self):
+        import data_importer
+        self.assertTrue(data_importer.XLSImporter)
+
+    def test_xlsx_importers(self):
+        import data_importer
+        self.assertTrue(data_importer.XLSXImporter)
+
+    def test_base_importers(self):
+        import data_importer
+        self.assertTrue(data_importer.BaseImporter)
+
+    def test_base_importers(self):
+        import data_importer
+        self.assertTrue(data_importer.XMLImporter)
+
+
+class TestClassObjToLazyDict(TestCase):
+
+    def setUp(self):
+        from data_importer.importers.base import objclass2dict
+
+        class MyTestClass:
+            test_field = 'test'
+
+        self.testclass = objclass2dict(MyTestClass)
+
+    def test_get_object(self):
+        self.assertTrue(self.testclass.test_field)
+
+    def test_get_false_without_raises(self):
+        self.assertFalse(self.testclass.not_raise_error)
 
 
 class TestReadContent(TestCase):
@@ -59,10 +106,20 @@ class TestReadContent(TestCase):
     def test_read_content(self):
         self.assertTrue(self.importer.is_valid(), self.importer.errors)
 
+    def test_meta_lower(self):
+        self.assertEqual(self.importer.meta.delimiter, ',')
+
+    def test_is_valid(self):
+        self.assertTrue(self.importer.is_valid())
+
     def test_read_content_first_line(self):
         self.assertEquals(self.importer.cleaned_data[0],
                           (0, {'test2_field': 'header2', 'test_field': 'HEADER1'}),
                           self.importer.cleaned_data[0])
+
+    def test_errors(self):
+        self.assertFalse(self.importer.errors)
+        self.assertFalse(self.importer._error)
 
     def test_read_content_skip_first_line(self):
         class TestMeta(BaseImporter):
