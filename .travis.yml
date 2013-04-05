@@ -1,0 +1,18 @@
+language: python
+
+python:
+  - 2.6
+  - 2.7
+
+before_install:
+  - sudo apt-get install -y libxml2-dev libxslt-dev
+
+script: python manage.py test --settings=importer.settings--verbosity=2
+
+env:
+  - DJANGO=1.4
+  - DJANGO=1.4.5
+  - DJANGO=1.5.1
+
+install:
+  - pip install -q Django==$DJANGO -r deploy/requirements-dev.txt
