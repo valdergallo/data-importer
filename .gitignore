@@ -2,3 +2,5 @@
 *.zip
 *.pyo
 .DS_Store
+.coverage
+cover/*

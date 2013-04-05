@@ -244,6 +244,7 @@ class BaseImporter(object):
                     transaction.rollback()
         else:
             for row, data in self.cleaned_data:
-                print data
                 record = instance(**data)
                 record.save()
+
+        return True

@@ -86,3 +86,6 @@ class TestModelXLSImporter(TestCase):
         for row, data in self.importer.cleaned_data:
             instace = Invoice(**data)
             self.assertTrue(instace.save())
+
+    def test_save_importer(self):
+        self.assertTrue(self.importer.save())
