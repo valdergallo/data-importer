@@ -1,7 +1,7 @@
-#/usr/bin/python
+#!/usr/bin/python
 # encoding: utf-8
 from django.test import TestCase
-from ..base import BaseImporter
+from .. import BaseImporter
 from cStringIO import StringIO
 from django.db import models
 

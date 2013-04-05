@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 from .base import BaseImporter
-import xml.etree.cElementTree as et
-
+import xml.etree.ElementTree as et
 
 class XMLImporter(BaseImporter):
     root = 'root'
@@ -10,8 +9,8 @@ class XMLImporter(BaseImporter):
     def xml_to_dict(self):
         tree = et.fromstring(self.source)
         elements = tree.findall(self.root)
-        for el in elements:
-            items = el.getchildren()
+        for elem in elements:
+            items = list(elem)
             content = [i.text for i in items]
             yield content
 

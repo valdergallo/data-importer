@@ -1,8 +1,8 @@
-#/usr/bin/python
+#!/usr/bin/python
 # encoding: utf-8
 from django.test import TestCase
 from django.db import models
-from ..xml_reader import XMLImporter
+from .. import XMLImporter
 
 
 class Musics(models.Model):

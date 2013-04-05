@@ -16,7 +16,7 @@ from .base import BaseImporter
 ) = range(7)
 
 
-class XLSReader(BaseImporter):
+class XLSImporter(BaseImporter):
 
     def set_reader(self, on_demand=True):
         self.workbook = xlrd.open_workbook(self.source, on_demand=on_demand)

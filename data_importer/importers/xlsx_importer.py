@@ -18,7 +18,7 @@ from .base import BaseImporter
 
 
 
-class XLSXReader(XLSReader):
+class XLSXImporter(BaseImporter):
 
     def set_reader(self, use_iterators=True):
         self.workbook = load_workbook(self.source, use_iterators=use_iterators)

@@ -1,7 +1,7 @@
-#/usr/bin/python
+#!/usr/bin/python
 # encoding: utf-8
 from django.test import TestCase
-from ..base import BaseImporter
+from .. import BaseImporter
 from cStringIO import StringIO
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
