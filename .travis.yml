@@ -15,4 +15,4 @@ env:
   - DJANGO=1.5.1
 
 install:
-  - pip install -q Django==$DJANGO -r deploy/requirements-dev.txt
+  - pip install -q Django==$DJANGO -r requirements-dev.txt
