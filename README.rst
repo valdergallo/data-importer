@@ -1,7 +1,8 @@
 Django Data Importer
 ====================
 
-{<img src="https://travis-ci.org/valdergallo/django-data-importer.png?branch=master" alt="Build Status" />}[https://travis-ci.org/valdergallo/django-data-importer]
+.. image:: https://travis-ci.org/valdergallo/django-data-importer.png?branch=master
+    :target: https://travis-ci.org/valdergallo/django-data-importer
 
 **Django Data Importer** is a tool which allow you to transform easily a CSV file into a python object or a django model instance.
 It is based on the django-style declarative model.
