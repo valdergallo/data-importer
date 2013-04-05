@@ -10,6 +10,9 @@ class Musics(models.Model):
     encoder = models.CharField(max_length=100)
     bitrate = models.CharField(max_length=100)
 
+    def save(self, *args, **kwargs):
+        return self.full_clean() == None
+
 
 sxml="""
 <encspot>
@@ -90,7 +93,7 @@ class TestXMLModelImporter(TestCase):
     def test_values_is_valid(self):
         self.assertTrue(self.importer.is_valid())
 
-    # def test_save_data(self):
-    #     for row, data in self.importer.cleaned_data:
-    #         instace = Musics(**data)
-    #         self.assertTrue(instace.save())
+    def test_save_data(self):
+        for row, data in self.importer.cleaned_data:
+            instace = Musics(**data)
+            self.assertTrue(instace.save())

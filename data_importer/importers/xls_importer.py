@@ -44,12 +44,8 @@ class XLSImporter(BaseImporter):
         return item.value
 
     def get_items(self):
-        start_line = 0
-        if self.Meta.ignore_first_line:
-            start_line = 1
-
-        for i in range(start_line, self.worksheet.nrows):
-            values = [self.convert_value(cell) for cell in self.worksheet.rows[i]]
+        for i in range(0, self.worksheet.nrows):
+            values = [self.convert_value(cell) for cell in self.worksheet.row(i)]
             if not any(values):
                 continue  # empty lines are ignored
             yield values

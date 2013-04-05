@@ -11,6 +11,9 @@ class Person(models.Model):
     last_name = models.CharField(max_length=255)
     age = models.CharField(max_length=10)
 
+    def save(self, *args, **kwargs):
+        return self.full_clean() == None
+
 
 person_content = StringIO("first_name,last_name,age\ntest_first_name_1,test_last_name_1,age1\ntest_first_name_2,test_last_name_2,age2\ntest_first_name_3,test_last_name_3,age3")
 

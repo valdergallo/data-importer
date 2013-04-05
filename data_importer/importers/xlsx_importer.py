@@ -29,7 +29,7 @@ class XLSXImporter(BaseImporter):
 
         self._reader = self.get_items()
 
-    def get_value(self, item):
+    def convert_value(self, item):
         """
         Handle different value types for XLSX. Item is a cell object.
         """
@@ -43,10 +43,7 @@ class XLSXImporter(BaseImporter):
 
     def get_items(self):
         for line, row in enumerate(self.worksheet.iter_rows()):
-            if self.Meta.ignore_first_line and line == 0:
-                pass
-            else:
-                values = [self.get_value(cell) for cell in row]
-                if not any(values):
-                    continue  # empty lines are ignored
-                yield self.get_item(values)
+            values = [self.get_value(cell) for cell in row]
+            if not any(values):
+                continue  # empty lines are ignored
+            yield self.convert_value(values)
