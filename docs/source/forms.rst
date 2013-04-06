@@ -1,7 +1,8 @@
 Data Importer Forms
 ===================
 
-**FileUploadForm**
+FileUploadForm
+--------------
     Is one simple django.ModelForm with content to upload content
 
     **field content:** FileField

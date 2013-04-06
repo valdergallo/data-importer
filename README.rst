@@ -74,6 +74,28 @@ That will automatically match to the following django model.
 
 *The django model should be imported in the model*
 
+.. py:class:: Meta
+
+    **delimiter**
+        define the delimiter of the csv file.
+        If you do not set one, the sniffer will try yo find one itself.
+
+    **ignore_first_line**
+        Skip the first line if True.
+
+    **model**
+        If defined, the importer will create an instance of this model.
+
+    **raise_errors**
+        If set to True, an error in a imported line will stop the loading.
+
+    **exclude**
+        Exclude fields from list fields to import
+
+    **transaction** `(beta) not tested`
+        Use transaction to save objects
+
+
 Django XML
 ------------
 
@@ -116,36 +138,85 @@ That will automatically match to the following django model.
 
 
 
-Meta options
-------------
+.. py:class:: Meta
 
-`delimiter`
+    **delimiter**
+        define the delimiter of the csv file.
+        If you do not set one, the sniffer will try yo find one itself.
 
-    define the delimiter of the csv file.
-    If you do not set one, the sniffer will try yo find one itself.
+    **ignore_first_line**
+        Skip the first line if True.
 
-`ignore_first_line`
+    **model**
+        If defined, the importer will create an instance of this model.
 
-    Skip the first line if True.
+    **raise_errors**
+        If set to True, an error in a imported line will stop the loading.
 
-`model`
+    **exclude**
+        Exclude fields from list fields to import
 
-    If defined, the importer will create an instance of this model.
-
-`raise_errors`
-
-    If set to True, an error in a imported line will stop the loading.
-
-`exclude`
-
-    Exclude fields from list fields to import
+    **transaction** `(beta) not tested`
+        Use transaction to save objects
 
 
-`transaction`
+Django XLS/XLSX
+----------------
 
-    Use transaction to save objects
+My XLS/XLSX file can be imported too
+
++---------+---------+---------+---------+
+| Header1 | Header2 | Header3 | Header4 |
++=========+=========+=========+=========+
+| Teste 1 | Teste 2 | Teste 3 | Teste 4 |
++---------+---------+---------+---------+
+| Teste 1 | Teste 2 | Teste 3 | Teste 4 |
++---------+---------+---------+---------+
+
+
+This is my model
+
+>>> from django.db import models
+>>> class MyModel(models.Model):
+...     header1 = models.CharField(max_length=150)
+...     header2 = models.CharField(max_length=150)
+...     header3 = models.CharField(max_length=150)
+...     header4 = models.CharField(max_length=150)
+
+This is my class
+
+>>> from data_importer import XLSImporter
+>>> from data_importer.model import MyModel
+>>> class MyXLSImporterModel(XLSImporter):
+...     class Meta:
+...         model = MyModel
+
+If you are using XLSX you will need use XLSXImporter to made same importer
+
+>>> from data_importer import XLSXImporter
+>>> from data_importer.model import MyModel
+>>> class MyXLSXImporterModel(XLSXImporter):
+...     class Meta:
+...         model = MyModel
+
+.. py:class:: Meta
+
+    **ignore_first_line**
+        Skip the first line if True.
+
+    **model**
+        If defined, the importer will create an instance of this model.
+
+    **raise_errors**
+        If set to True, an error in a imported line will stop the loading.
+
+    **exclude**
+        Exclude fields from list fields to import
+
+    **transaction** `(beta) not tested`
+        Use transaction to save objects
 
 TODO
 ____
-
+    ** MORE DOCS **
 
