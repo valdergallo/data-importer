@@ -1,5 +1,5 @@
-models
-======
+Data Importer Models
+====================
 
 .. automodule:: data_importer.models
     :members:

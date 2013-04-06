@@ -4,10 +4,11 @@ import inspect
 from django.utils.html import strip_tags
 from django.utils.encoding import force_unicode
 
+# sys.path.insert(0, '/Users/valdergallo/www/data-importer-pack//lib/python2.7/site-packages/')
+# sys.path.insert(0, '/Users/valdergallo/www/data-importer-pack/importer/data_importer/')
+# sys.path.insert(0, '/Users/valdergallo/www/data-importer-pack/importer/')
 
-sys.path.insert(0, '/Users/valdergallo/www/data-importer-pack//lib/python2.7/site-packages/')
-sys.path.insert(0, '/Users/valdergallo/www/data-importer-pack/importer/data_importer/')
-sys.path.insert(0, '/Users/valdergallo/www/data-importer-pack/importer/')
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../../'))
 
 print '='*80
 print sys.path
