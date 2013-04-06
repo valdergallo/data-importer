@@ -5,15 +5,15 @@ import xlrd
 from .base import BaseImporter
 
 #from xlrd/biffh.py
-(
-    XL_CELL_EMPTY,
-    XL_CELL_TEXT,
-    XL_CELL_NUMBER,
-    XL_CELL_DATE,
-    XL_CELL_BOOLEAN,
-    XL_CELL_ERROR,
-    XL_CELL_BLANK,  # for use in debugging, gathering stats, etc
-) = range(7)
+# (
+#     XL_CELL_EMPTY,
+#     XL_CELL_TEXT,
+#     XL_CELL_NUMBER,
+#     XL_CELL_DATE,
+#     XL_CELL_BOOLEAN,
+#     XL_CELL_ERROR,
+#     XL_CELL_BLANK,  # for use in debugging, gathering stats, etc
+# ) = range(7)
 
 
 class XLSImporter(BaseImporter):

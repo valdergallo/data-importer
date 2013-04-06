@@ -5,18 +5,6 @@ import openpyxl
 from openpyxl import load_workbook
 from .base import BaseImporter
 
-#from xlrd/biffh.py
-(
-    XL_CELL_EMPTY,
-    XL_CELL_TEXT,
-    XL_CELL_NUMBER,
-    XL_CELL_DATE,
-    XL_CELL_BOOLEAN,
-    XL_CELL_ERROR,
-    XL_CELL_BLANK,  # for use in debugging, gathering stats, etc
-) = range(7)
-
-
 
 class XLSXImporter(BaseImporter):
 
@@ -36,14 +24,15 @@ class XLSXImporter(BaseImporter):
         if item.is_date:
             return item.internal_value # return datetime
 
-        if item.internal_value % 1 == 0:  # return integers
-            return int(item.internal_value)
+        if type(item.internal_value) == float:
+            if item.internal_value % 1 == 0:  # return integers
+                return int(item.internal_value)
 
         return item.internal_value # return string
 
     def get_items(self):
         for line, row in enumerate(self.worksheet.iter_rows()):
-            values = [self.get_value(cell) for cell in row]
+            values = [self.convert_value(cell) for cell in row]
             if not any(values):
                 continue  # empty lines are ignored
-            yield self.convert_value(values)
+            yield values
