@@ -25,15 +25,15 @@ class TestBaseImportMeta(TestCase):
         self.assertEqual(self.importer.Meta.get('exclude'), ['test2_field', 'test3_field'])
 
     def test_private_values(self):
-        self.assertEquals(self.importer.__dict__, {'_excluded': True})
+        base = BaseImporter()
 
-        self.assertFalse(BaseImporter._error)
-        self.assertFalse(BaseImporter._cache)
-        self.assertFalse(BaseImporter._cleaned_data)
-        self.assertFalse(BaseImporter._fields)
-        self.assertFalse(BaseImporter._reader)
-        self.assertFalse(BaseImporter._excluded)
-        self.assertFalse(BaseImporter._readed)
+        self.assertFalse(base._error)
+        self.assertFalse(base._cache)
+        self.assertFalse(base._cleaned_data)
+        self.assertFalse(base._fields)
+        self.assertFalse(base._reader)
+        self.assertFalse(base._excluded)
+        self.assertFalse(base._readed)
 
 
     def test_meta_class_values(self):
@@ -120,6 +120,18 @@ class TestReadContent(TestCase):
     def test_start_fields(self):
         self.importer.start_fields()
         self.assertEquals(self.importer.fields, ['test_field', 'test2_field'])
+
+    def test_raise_error_on_clean(self):
+        class TestMetaClean(BaseImporter):
+            fields = ['test',]
+
+            def clean_test(self, value):
+                value.coisa = 1
+
+        importer_error = TestMetaClean(source=['test1',])
+
+        self.assertFalse(importer_error.is_valid())
+        self.assertEqual(importer_error.errors, [(0, 'AttributeError', u"'str' object has no attribute 'coisa'")])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(BaseImporter):

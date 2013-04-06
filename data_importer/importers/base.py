@@ -34,13 +34,8 @@ class BaseImporter(object):
 
     set_reader: can be override to create new importers files
     """
-    _error = []
     _cache = ()
-    _cleaned_data = ()
     _fields = []
-    _reader = None
-    _excluded = False
-    _readed = False
 
     def __new__(cls, **kargs):
         """
@@ -51,6 +46,12 @@ class BaseImporter(object):
         return super(BaseImporter, cls).__new__(cls)
 
     def __init__(self, source=None):
+        self._error = []
+        self._cleaned_data = ()
+        self._reader = None
+        self._excluded = False
+        self._readed = False
+
         self.start_fields()
         if source:
             self.source = source
@@ -79,8 +80,6 @@ class BaseImporter(object):
             self._source = source
         elif hasattr(source, 'file'):
             self._source = open(source.file.name, 'rb')
-        elif hasattr(source, 'name'):
-            self._source = open(source.name, 'rb')
         else:
             self._source = source
             # raise ValueError('Invalid Source')
@@ -92,7 +91,6 @@ class BaseImporter(object):
         """
         if hasattr(self, 'Meta'):
             return self.Meta
-        return {}
 
     def start_fields(self):
         """
@@ -152,7 +150,7 @@ class BaseImporter(object):
                     try:
                         values[k] = clean_function(v)
                     except Exception, e:
-                        self._error.append((row, repr(e)))
+                        self._error.append((row, type(e).__name__, unicode(e)))
 
         return (row, values)
 

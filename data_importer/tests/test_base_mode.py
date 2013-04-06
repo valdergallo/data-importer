@@ -4,6 +4,8 @@ from django.test import TestCase
 from .. import BaseImporter
 from cStringIO import StringIO
 from django.db import models
+import os
+from django.core.files  import File as DjangoFile
 
 
 class Person(models.Model):
@@ -40,7 +42,32 @@ class TestBaseWithModel(TestCase):
             'last_name': 'test_last_name_1', 'age': 'age1'}
         self.assertEquals(self.importer.cleaned_data[0], (0, content))
 
+    def test_source_importer_file(self):
+        base = BaseImporter(source=open('test.txt', 'w'))
+        self.assertEqual(type(base._source), file, type(base._source))
+
+    def test_source_importer_list(self):
+        base = BaseImporter(source=['test1', 'test2'])
+        self.assertEqual(type(base._source), list, type(base._source))
+
+    def test_source_importer_django_file(self):
+        class Person(models.Model):
+            filefield = models.FileField(upload_to='test')
+
+        person = Person()
+        person.filefield = DjangoFile(open('test.txt', 'w'))
+
+        base = BaseImporter(source=person.filefield)
+        self.assertEqual(type(base._source), file, type(base._source))
+
     def test_save_data_content(self):
         for row, data in self.importer.cleaned_data:
             instace = Person(**data)
             self.assertTrue(instace.save())
+
+    def tearDown(self):
+        try:
+            os.remove('test.txt')
+        except:
+            pass
+
