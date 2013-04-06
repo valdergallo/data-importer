@@ -118,7 +118,7 @@ class BaseImporter(object):
 
     def is_valid(self):
         """
-        Clear content and return False if not have errors
+        Clear content and return False if have errors
         """
         if not self.cleaned_data:
             self.cleaned_data
