@@ -5,10 +5,11 @@ FileUploadForm
 --------------
     Is one simple django.ModelForm with content to upload content
 
-    +--------------------+--------------------+------------------+
-    |:param: content     |   FileField        | File uploaded    |
-    +--------------------+--------------------+------------------+
+    :Parameters:
+        * content (`FileField`)  File uploaded
 
 
 .. automodule:: data_importer.forms
     :members:
+    :undoc-members:
+    :inherited-members:
