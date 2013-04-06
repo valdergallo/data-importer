@@ -57,10 +57,6 @@ class TestImporters(TestCase):
 
     def test_base_importers(self):
         import data_importer
-        self.assertTrue(data_importer.BaseImporter)
-
-    def test_base_importers(self):
-        import data_importer
         self.assertTrue(data_importer.XMLImporter)
 
 
@@ -120,6 +116,10 @@ class TestReadContent(TestCase):
     def test_errors(self):
         self.assertFalse(self.importer.errors)
         self.assertFalse(self.importer._error)
+
+    def test_start_fields(self):
+        self.importer.start_fields()
+        self.assertEquals(self.importer.fields, ['test_field', 'test2_field'])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(BaseImporter):
