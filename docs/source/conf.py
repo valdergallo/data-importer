@@ -30,7 +30,6 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    # 'sphinxtogithub',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -40,6 +39,7 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 
 # Github configuration
+# 'sphinxtogithub',
 sphinx_to_github = True
 sphinx_to_github_verbose = True
 
