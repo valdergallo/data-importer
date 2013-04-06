@@ -13,11 +13,17 @@ It is based on the django-style declarative model.
 Documentation and usage
 -----------------------
 
+Read docs online in Read the Docs:
+
+https://django-data-importer.readthedocs.org/
+
+
 You can generate everything at the above site in your local folder by::
 
     $ cd doc
     $ make html
     $ open _build/html/index.html # Or your preferred web browser
+
 
 
 Installation
