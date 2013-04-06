@@ -31,7 +31,8 @@ extensions = [
     'sphinx.ext.pngmath',
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinxtogithub',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -39,6 +40,10 @@ templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
+
+# Github configuration
+sphinx_to_github = True
+sphinx_to_github_verbose = True
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
