@@ -10,6 +10,15 @@ It is based on the django-style declarative model.
 .. toctree::
    :maxdepth: 2
 
+Documentation and usage
+-----------------------
+
+You can generate everything at the above site in your local folder by::
+
+    $ cd doc
+    $ make html
+    $ open _build/html/index.html # Or your preferred web browser
+
 
 Installation
 ------------
