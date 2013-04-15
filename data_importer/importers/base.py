@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # encoding: utf-8
 import csv
+import chardet
+import os
 from django.db import transaction
-
+from django.utils.encoding import force_unicode
 
 def objclass2dict(objclass):
     """
@@ -69,6 +71,29 @@ class BaseImporter(object):
         """
         return self._source
 
+    @staticmethod
+    def to_unicode(bytestr):
+        """
+        Receive string bytestr and try to return a utf-8 string.
+        """
+        if not isinstance(bytestr, str) and not isinstance(bytestr, unicode):
+            return bytestr
+
+        try:
+            detected = chardet.detect(bytestr)
+        except:
+            detected = {'encoding': 'cp1252'}
+
+        try:
+            decoded = bytestr.decode(detected.get('encoding')).encode('utf-8')
+        except UnicodeEncodeError:
+            # decoded = force_unicode(bytestr, detected.get('encoding'))
+            decoded = force_unicode(bytestr, 'utf8')
+        # except UnicodeDecodeError:
+        #     decoded = force_unicode(bytestr, 'utf8')
+
+        return force_unicode(decoded)
+
     @source.setter
     def source(self, source):
         """
@@ -76,6 +101,8 @@ class BaseImporter(object):
         """
         if isinstance(source, file):
             self._source = source
+        elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
+            self._source = open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file'):
@@ -140,10 +167,12 @@ class BaseImporter(object):
         """
         Read clean_ functions from importer and return tupla with row number, field and value
         """
-        values = dict(zip(self.fields, values))
+        values_encoded = [self.to_unicode(i) for i in values]
+        values = dict(zip(self.fields, values_encoded))
         for k, v in values.items():
             if hasattr(self, 'clean_%s' % k):
                 clean_function = getattr(self, 'clean_%s' % k)
+
                 if self.Meta.raise_errors:
                     values[k] = clean_function(v)
                 else:

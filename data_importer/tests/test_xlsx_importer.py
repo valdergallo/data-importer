@@ -83,3 +83,63 @@ class TestModelXLSImporter(TestCase):
 
     def test_save_importer(self):
         self.assertTrue(self.importer.save())
+
+
+class Mercado(models.Model):
+    item = models.CharField(max_length=50)
+    qtde = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        return self.full_clean() == None
+
+
+class TestPTBRXLSImporter(TestCase):
+
+    def setUp(self):
+        class TestMeta(XLSXImporter):
+            class Meta:
+                ignore_first_line = True
+                model = Mercado
+
+        self.xls_file = os.path.join(LOCAL_DIR, 'data/ptbr_test.xlsx')
+        self.importer = TestMeta(source=self.xls_file)
+
+    def test_values_is_valid(self):
+        self.assertTrue(self.importer.is_valid())
+
+    def test_count_rows(self):
+        self.assertEqual(len(self.importer.cleaned_data), 4)
+
+    def test_cleaned_data_content(self):
+        content = {
+            'item': u'Caça',
+            'qtde': 1,
+            }
+
+        self.assertEquals(self.importer.cleaned_data[0], (0, content),
+                          self.importer.cleaned_data)
+
+        content = {
+            'item': u'Amanhã',
+            'qtde': 2,
+            }
+
+        self.assertEquals(self.importer.cleaned_data[1], (1, content),
+                          self.importer.cleaned_data)
+
+        content = {
+            'item': u'Qüanto',
+            'qtde': 3,
+            }
+
+        self.assertEquals(self.importer.cleaned_data[2], (2, content),
+                          self.importer.cleaned_data)
+
+        content = {
+            'item': u'Será',
+            'qtde': 4,
+            }
+
+        self.assertEquals(self.importer.cleaned_data[3], (3, content),
+                          self.importer.cleaned_data)
+

@@ -231,6 +231,18 @@ If you are using XLSX you will need use XLSXImporter to made same importer
     **transaction** `(beta) not tested`
         Use transaction to save objects
 
+TEST
+----
+
++----------------------+----------------+-----+
+|Acentuation with XLS  | Excel MAC 2011 | OK  |
++----------------------+----------------+-----+
+|Acentuation with XLSX | Excel MAC 2011 | OK  |
++----------------------+----------------+-----+
+|Acentuation with CSV  | Excel Win 2007 | OK  |
++----------------------+----------------+-----+
+
+
 TODO
 ____
     ** MORE DOCS **

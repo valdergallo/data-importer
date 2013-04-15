@@ -131,7 +131,7 @@ class TestReadContent(TestCase):
         importer_error = TestMetaClean(source=['test1',])
 
         self.assertFalse(importer_error.is_valid())
-        self.assertEqual(importer_error.errors, [(0, 'AttributeError', u"'str' object has no attribute 'coisa'")])
+        self.assertEqual(importer_error.errors, [(0, 'AttributeError', u"'unicode' object has no attribute 'coisa'")])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(BaseImporter):
