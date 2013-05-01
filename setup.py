@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 from setuptools import setup
 
 install_requires = [
@@ -8,17 +9,22 @@ install_requires = [
     'chardet==2.1.1',
 ]
 
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 setup(name='django-data-importer',
       url='https://github.com/valdergallo/django-data-importer',
       author="valdergallo",
       author_email='valdergallo@gmail.com',
       keywords='Data Importer XLS XLSX CSV XML',
-      description='Simple library to easy importer data to django',
-      license='MIT',
+      description='Simple library to easy importer data with Django',
+      license='BSD',
+      long_description=read('README.rst'),
       classifiers=[
           'Framework :: Django',
           'Operating System :: OS Independent',
-          'Topic :: Software Development'
+          'Topic :: Utilities'
+          "License :: OSI Approved :: BSD License",
       ],
       version='1.0.0',
       install_requires=install_requires,
