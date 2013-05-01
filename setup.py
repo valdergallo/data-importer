@@ -12,7 +12,7 @@ install_requires = [
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-setup(name='django-data-importer',
+setup(name='data-importer',
       url='https://github.com/valdergallo/django-data-importer',
       author="valdergallo",
       author_email='valdergallo@gmail.com',
@@ -24,7 +24,6 @@ setup(name='django-data-importer',
           'Framework :: Django',
           'Operating System :: OS Independent',
           'Topic :: Utilities'
-          "License :: OSI Approved :: BSD License",
       ],
       version='1.0.0',
       install_requires=install_requires,

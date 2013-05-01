@@ -31,11 +31,11 @@ Installation
 
 Use either ``easy_install``::
 
-    easy_install django-data-importer
+    easy_install data-importer
 
 or ``pip``::
 
-    pip install django-data-importer
+    pip install data-importer
 
 
 Basic example
