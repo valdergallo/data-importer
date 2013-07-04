@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import os
 
 try:
     from celery.task import task
 except ImportError:
     from celery.decorators import task
+
+from django.core.cache import cache
+from data_importer import BaseImporter, XMLImporter, XLSImporter, XLSXImporter
+
+LOCK_EXPIRE = settings.LOCK_EXPIRE
+acquire_lock = lambda lock_id: cache.add(lock_id, "true", LOCK_EXPIRE)
+release_lock = lambda lock_id: cache.delete(lock_id)
 
 
 class DataImpoterTask(Task):
@@ -16,29 +24,35 @@ class DataImpoterTask(Task):
     queue = settings.DATA_IMPORTER_QUEUE
     time_limit = 60 * 15
 
-    def run(self, flowbot=FlowBot.get_instance(), **kwargs):
+    def get_mimetype(self, file_history_instance=None):
+        filename, extension = os.path.splitext(file_history_instance.filename)
+        return extension
+
+    def parse_xml(self, file_history_instance):
+        XMLImporter(file_history_instance)
+
+    def parse_csv(self, file_history_instance):
+        BaseImporter(file_history_instance)
+
+    def parse_xls(self, file_history_instance):
+        XLSImporter(file_history_instance)
+
+    def parse_xlsx(self, file_history_instance):
+        XLSXImporter(file_history_instance)
+
+    def get_parser(self, mimetype):
+        self.__dict__.get('parse_', mimetype)
+
+    def run(self, instance, **kwargs):
         logger = self.get_logger(**kwargs)
         lock_id = "%s-lock" % (self.name)
         errors = []
 
         if acquire_lock(lock_id):
-            jobs_queryset = Job.objects.filter(state='not sent', transaction__cancelled=False).order_by('id')
-            for job in jobs_queryset:
-                try:
-                    job.add_to_flowbot(flowbot=flowbot)
-                except FlowBotConnectionError:
-                    pass  # we want to ignore connection errors
-                except (Exception, FlowBotError) as e:
-                    errors.append(unicode(e))
-
-                if errors:
-                    logger.error(unicode(errors))
-
-            count_jobs = jobs_queryset.count()
+            mime_type = self.get_mimetype(instance)
+            self.get_parser(mime_type)
             release_lock(lock_id)
             logger.info("TASK FINISH: %s %s" % (lock_id, datetime.now()))
-            return count_jobs
-
         else:
-            logger.info('TASK LOCKED ADDPENDINGJOB- %s' % (datetime.now()))
+            logger.info('TASK LOCKED: %s' % (datetime.now()))
             return 0

@@ -13,7 +13,7 @@ except ImportError:
 class FileUploadForm(forms.ModelForm):
     class Meta:
         model = FileHistory
-        fields = ('content',)
+        fields = ('filename',)
 
     def _post_clean(self):
         super(FileUploadForm, self)._post_clean()
@@ -22,3 +22,4 @@ class FileUploadForm(forms.ModelForm):
         elif HAS_CELERY and self.install.is_task:
             # TODO: check File
             # Execute data importer as task
+            pass

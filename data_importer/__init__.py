@@ -5,7 +5,7 @@
     Django Data Importer
 """
 
-__version__ = '1.0.0b'
+__version__ = '1.0.1'
 __author__ = 'Valder Gallo <valdergallo@gmail.com>'
 
 
