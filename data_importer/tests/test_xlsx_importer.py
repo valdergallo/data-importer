@@ -1,5 +1,6 @@
-#!/usr/bin/python
-# encoding: utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.test import TestCase
 from .. import XLSXImporter
 import os

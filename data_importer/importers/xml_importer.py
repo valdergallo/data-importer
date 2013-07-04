@@ -1,5 +1,6 @@
-#!/usr/bin/python
-# encoding: utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from .base import BaseImporter
 import xml.etree.ElementTree as et
 
