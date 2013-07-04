@@ -11,17 +11,19 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
+
 CELERY_STATUS = ((1, 'Impoted'),
                  (2, 'Waiting'),
                  (3, 'Cancelled'),
                  (-1, 'Error'),
                  )
 
+
 class FileHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
-    content = models.FileField(upload_to="upload_history/%Y/%m/%d/")
+    filename = models.FileField(upload_to="upload_history/%Y/%m/%d/")
     owner = models.ForeignKey(User, null=True)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
@@ -32,7 +34,7 @@ class FileHistory(models.Model):
         memory at once. The FileWrapper will turn the file object into an
         iterator for chunks of 8KB.
         """
-        filename = self.content
+        filename = self.filename
         wrapper = FileWrapper(file(filename))
         response = HttpResponse(wrapper, content_type='text/plain')
         response['Content-Length'] = os.path.getsize(filename)
@@ -47,12 +49,12 @@ class FileHistory(models.Model):
         temp = tempfile.TemporaryFile()
         archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
         for index in range(10):
-            filename = self.content
+            filename = self.filename
             archive.write(filename, 'file%d.txt' % index)
         archive.close()
         wrapper = FileWrapper(temp)
         response = HttpResponse(wrapper, content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=%s.zip' % self.content.basename
+        response['Content-Disposition'] = 'attachment; filename=%s.zip' % self.filename.basename
         response['Content-Length'] = temp.tell()
         temp.seek(0)
         return response
