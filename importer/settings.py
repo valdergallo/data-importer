@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Django settings for importer project.
 
 DEBUG = True
@@ -126,6 +128,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+
+    #extra
+    'south',
 
     #customer
     'data_importer',
