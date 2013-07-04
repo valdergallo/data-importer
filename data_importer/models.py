@@ -58,3 +58,12 @@ class FileHistory(models.Model):
         response['Content-Length'] = temp.tell()
         temp.seek(0)
         return response
+
+
+class FileHistoryLog(models.Model):
+    filehistory = models.ForeignKey(FileHistory)
+    created_at = models.DateTimeField(auto_now_add=True)
+    log = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.log
