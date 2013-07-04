@@ -7,6 +7,10 @@ import tempfile
 import zipfile
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.conf import settings
+
+DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
 
 
 class FileHistory(models.Model):
@@ -14,6 +18,8 @@ class FileHistory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
     content = models.FileField(upload_to="upload_history/%Y/%m/%d/")
+    owner = models.ForeignKey(User, null=True)
+    is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
 
     def send_file(self, request):
         """
