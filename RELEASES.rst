@@ -1,5 +1,3 @@
-
-
 **Version:** 1.0.1
 - Add owner on FileUploaderHistory
 
