@@ -165,6 +165,24 @@ LOGGING = {
     }
 }
 
+if 'test' in sys.argv:
+    # REMOVE DEFAULT APPS FROM INSTALLED_APPS
+    INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'data_importer',
+    )
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'TEST_DATABASE_NAME': ":memory:"
+        },
+    }
+
+    # print 'INSTALLED_APPS ', INSTALLED_APPS
+    print 'TEST DB %s' % DATABASES['default']['NAME']
 
 # Local settings
 try:
