@@ -5,7 +5,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-import os
+import os, sys
 BASEDIR = os.path.realpath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
 ADMINS = (
@@ -168,6 +168,8 @@ LOGGING = {
 if 'test' in sys.argv:
     # REMOVE DEFAULT APPS FROM INSTALLED_APPS
     INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
         'data_importer',
         'django_coverage',
         'django_nose',
@@ -180,9 +182,6 @@ if 'test' in sys.argv:
             'TEST_DATABASE_NAME': ":memory:"
         },
     }
-
-    # print 'INSTALLED_APPS ', INSTALLED_APPS
-    print 'TEST DB %s' % DATABASES['default']['NAME']
 
 # Local settings
 try:

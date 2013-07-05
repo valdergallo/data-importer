@@ -11,11 +11,13 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
+
 CELERY_STATUS = ((1, 'Impoted'),
                  (2, 'Waiting'),
                  (3, 'Cancelled'),
                  (-1, 'Error'),
                  )
+
 
 class FileHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

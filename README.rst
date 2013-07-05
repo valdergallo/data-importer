@@ -143,7 +143,6 @@ XML file example:
 >>> class MyCSVImporterModel(XMLImporter):
 ...     root = 'file'
 ...     class Meta:
-...         delimiter = ";"
 ...         model = MyModel
 
 That will automatically match to the following django model.
@@ -153,13 +152,6 @@ That will automatically match to the following django model.
 
 
 .. py:class:: Meta
-
-    **delimiter**
-        define the delimiter of the csv file.
-        If you do not set one, the sniffer will try yo find one itself.
-
-    **ignore_first_line**
-        Skip the first line if True.
 
     **model**
         If defined, the importer will create an instance of this model.
