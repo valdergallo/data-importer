@@ -168,9 +168,9 @@ LOGGING = {
 if 'test' in sys.argv:
     # REMOVE DEFAULT APPS FROM INSTALLED_APPS
     INSTALLED_APPS = (
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
         'data_importer',
+        'django_coverage',
+        'django_nose',
     )
 
     DATABASES = {
