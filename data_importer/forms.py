@@ -22,3 +22,4 @@ class FileUploadForm(forms.ModelForm):
         elif HAS_CELERY and self.install.is_task:
             # TODO: check File
             # Execute data importer as task
+            pass
