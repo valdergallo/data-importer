@@ -183,6 +183,22 @@ if 'test' in sys.argv:
         },
     }
 
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+    # Tell nose to measure coverage on the 'foo' and 'bar' apps
+    NOSE_ARGS = [
+        # '--with-coverage',
+        '--cover-html',
+        '--cover-package=data_importer',
+        '--cover-tests',
+        '--cover-erase',
+        ]
+
+    # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    # EMAIL_FILE_PATH = '/tmp/invest-messages'  # change this to a proper location
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
 # Local settings
 try:
     execfile('importer/settings_local.py')
