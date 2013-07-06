@@ -6,7 +6,6 @@ install_requires = [
     'django>=1.2',
     'openpyxl==1.6.1',
     'xlrd==0.9.0',
-    'chardet==2.1.1',
 ]
 
 setup(name='data-importer',

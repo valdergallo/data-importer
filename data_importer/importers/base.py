@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import csv
-import chardet
 import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
