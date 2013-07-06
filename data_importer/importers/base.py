@@ -7,6 +7,14 @@ import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
 
+from django.conf import settings as django_settings
+from data_importer import settings as data_importer_settings
+
+DATA_IMPORTER_EXCEL_DECODER = hasattr(django_settings, 'DATA_IMPORTER_EXCEL_DECODER') and django_settings.DATA_IMPORTER_EXCEL_DECODER or data_importer_settings.DATA_IMPORTER_EXCEL_DECODER
+
+DATA_IMPORTER_DECODER = hasattr(django_settings, 'DATA_IMPORTER_DECODER') and django_settings.DATA_IMPORTER_DECODER or data_importer_settings.DATA_IMPORTER_DECODER
+
+
 def objclass2dict(objclass):
     """
     Meta is a objclass on python 2.7 and no have __dict__ attribute.
@@ -81,19 +89,15 @@ class BaseImporter(object):
             return bytestr
 
         try:
-            detected = chardet.detect(bytestr)
-        except:
-            detected = {'encoding': 'cp1252'}
-
-        try:
-            decoded = bytestr.decode(detected.get('encoding')).encode('utf-8')
+            decoded = bytestr.decode(DATA_IMPORTER_EXCEL_DECODER)  # default by excel csv
         except UnicodeEncodeError:
-            # decoded = force_unicode(bytestr, detected.get('encoding'))
-            decoded = force_unicode(bytestr, 'utf8')
-        # except UnicodeDecodeError:
-        #     decoded = force_unicode(bytestr, 'utf8')
+            try:
+                decoded = force_unicode(bytestr, DATA_IMPORTER_DECODER)
+            except UnicodeEncodeError:
+                detected = chardet.detect(bytestr)
+                decoded = force_unicode(bytestr, detected.encoding)
 
-        return force_unicode(decoded)
+        return decoded
 
     @source.setter
     def source(self, source):

@@ -10,6 +10,7 @@ from django.core.files  import File as DjangoFile
 
 LOCAL_DIR = os.path.dirname(__file__)
 
+
 class Person(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -109,14 +110,13 @@ class TestPTBRCSVImporter(TestCase):
         self.assertEquals(self.importer.cleaned_data[0], (0, content),
                           self.importer.cleaned_data[0])
 
-        # FIXME: bug with ã
-        # content = {
-        #     'item': u'Amanhã',
-        #     'qtde': u'2',
-        #     }
+        content = {
+            'item': u'Amanhã',
+            'qtde': u'2',
+            }
 
-        # self.assertEquals(self.importer.cleaned_data[1], (1, content),
-        #                   self.importer.cleaned_data)
+        self.assertEquals(self.importer.cleaned_data[1], (1, content),
+                          self.importer.cleaned_data)
 
         content = {
             'item': u'Qüanto',
@@ -133,4 +133,3 @@ class TestPTBRCSVImporter(TestCase):
 
         self.assertEquals(self.importer.cleaned_data[3], (3, content),
                           self.importer.cleaned_data)
-
