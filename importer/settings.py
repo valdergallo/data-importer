@@ -5,7 +5,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-import os
+import os, sys
 BASEDIR = os.path.realpath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
 ADMINS = (
@@ -83,8 +83,8 @@ STATICFILES_DIRS = (
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'django.contrib.staticfiles.finders.FileSystemFinder',
+    # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -125,7 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
 
@@ -137,23 +137,22 @@ INSTALLED_APPS = (
     'importer'
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+
+def skip_unreadable_post():
+    return True
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
+        'special': {
+            '()': skip_unreadable_post,
         }
     },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
+            'filters': ['special'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
@@ -165,6 +164,41 @@ LOGGING = {
         },
     }
 }
+
+if 'test' in sys.argv:
+    # REMOVE DEFAULT APPS FROM INSTALLED_APPS
+    sys.argv += ("-v2",)
+
+    INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'data_importer',
+        'django_coverage',
+        'django_nose',
+    )
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        },
+    }
+
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+    # Tell nose to measure coverage on the 'foo' and 'bar' apps
+    NOSE_ARGS = [
+        # '--with-coverage',
+        '--cover-html',
+        '--cover-package=data_importer',
+        '--cover-tests',
+        '--cover-erase',
+        ]
+
+    # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    # EMAIL_FILE_PATH = '/tmp/invest-messages'  # change this to a proper location
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Local settings
 try:
