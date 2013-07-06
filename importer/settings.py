@@ -167,6 +167,8 @@ LOGGING = {
 
 if 'test' in sys.argv:
     # REMOVE DEFAULT APPS FROM INSTALLED_APPS
+    sys.argv += ("-v2",)
+
     INSTALLED_APPS = (
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -179,7 +181,6 @@ if 'test' in sys.argv:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': ':memory:',
-            'TEST_DATABASE_NAME': ":memory:"
         },
     }
 
