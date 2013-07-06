@@ -1,5 +1,4 @@
 Django>=1.4.0
 openpyxl==1.6.1
 xlrd==0.9.0
-chardet==2.1.1
 South==0.8.1

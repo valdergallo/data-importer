@@ -37,6 +37,18 @@ or ``pip``::
     pip install data-importer
 
 
+Settings
+--------
+
+Customize data_importer decoders
+
+**DATA_IMPORTER_EXCEL_DECODER**
+Default value is cp1252
+
+**DATA_IMPORTER_DECODER**
+Default value is UTF-8
+
+
 Basic example
 -------------
 

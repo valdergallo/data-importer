@@ -91,11 +91,7 @@ class BaseImporter(object):
         try:
             decoded = bytestr.decode(DATA_IMPORTER_EXCEL_DECODER)  # default by excel csv
         except UnicodeEncodeError:
-            try:
-                decoded = force_unicode(bytestr, DATA_IMPORTER_DECODER)
-            except UnicodeEncodeError:
-                detected = chardet.detect(bytestr)
-                decoded = force_unicode(bytestr, detected.encoding)
+            decoded = force_unicode(bytestr, DATA_IMPORTER_DECODER)
 
         return decoded
 
