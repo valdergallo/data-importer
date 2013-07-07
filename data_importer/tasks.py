@@ -12,6 +12,8 @@ from django.core.cache import cache
 from data_importer import BaseImporter, XMLImporter, XLSImporter, XLSXImporter
 from django.conf import settings
 from data_importer import settings as data_importer_settings
+from django.core.mail import EmailMessage
+from django.utils.safestring import mark_safe
 
 LOCK_EXPIRE = hasattr(settings, 'DATA_IMPORTER_TASK_LOCK_EXPIRE') and settings.DATA_IMPORTER_TASK_LOCK_EXPIRE or data_importer_settings.DATA_IMPORTER_TASK_LOCK_EXPIRE
 
@@ -29,6 +31,7 @@ class DataImpoterTask(Task):
     queue = DATA_IMPORTER_QUEUE
     time_limit = 60 * 15
     mimetype = None
+    parse = None
 
     def get_mimetype(self, file_history_instance=None):
         filename, extension = os.path.splitext(file_history_instance.filename)
@@ -36,16 +39,16 @@ class DataImpoterTask(Task):
         return self.mimetype
 
     def parse_xml(self, file_history_instance):
-        XMLImporter(file_history_instance)
+        self.parse = XMLImporter(file_history_instance)
 
     def parse_csv(self, file_history_instance):
-        BaseImporter(file_history_instance)
+        self.parse = BaseImporter(file_history_instance)
 
     def parse_xls(self, file_history_instance):
-        XLSImporter(file_history_instance)
+        self.parse = XLSImporter(file_history_instance)
 
     def parse_xlsx(self, file_history_instance):
-        XLSXImporter(file_history_instance)
+        self.parse = XLSXImporter(file_history_instance)
 
     def get_parser(self):
         function_name = 'parse_%s' % self.mimetype
@@ -54,12 +57,19 @@ class DataImpoterTask(Task):
     def run(self, instance, **kwargs):
         logger = self.get_logger(**kwargs)
         lock_id = "%s-lock" % (self.name)
-        errors = []
 
         if acquire_lock(lock_id):
             mime_type = self.get_mimetype(instance)
             parse_instance = self.get_parser(mime_type)
             parse_instance(instance)
+
+            if instance.owner and instance.owner.email:
+                email = EmailMessage(subject='[Data Importer] %s was processed' % (os.path.basename(instance.filename.name),),
+                     body=mark_safe(self.parse.errors),
+                     to=[instance.owner.email],
+                     headers={'Content-Type': 'text/plain'})
+            email.send()
+
             release_lock(lock_id)
             logger.info("TASK FINISH: %s %s" % (lock_id, datetime.now()))
         else:
