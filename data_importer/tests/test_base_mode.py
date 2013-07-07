@@ -4,20 +4,11 @@
 from django.test import TestCase
 from .. import BaseImporter
 from cStringIO import StringIO
-from django.db import models
 import os
-from django.core.files  import File as DjangoFile
+from django.core.files import File as DjangoFile
+from ..models_test import Person, Mercado, PersonFile
 
 LOCAL_DIR = os.path.dirname(__file__)
-
-
-class Person(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    age = models.CharField(max_length=10)
-
-    def save(self, *args, **kwargs):
-        return self.full_clean() == None
 
 
 person_content = """first_name,last_name,age\ntest_first_name_1,test_last_name_1,age1\ntest_first_name_2,test_last_name_2,age2\ntest_first_name_3,test_last_name_3,age3"""
@@ -54,10 +45,7 @@ class TestBaseWithModel(TestCase):
         self.assertEqual(type(base._source), list, type(base._source))
 
     def test_source_importer_django_file(self):
-        class Person(models.Model):
-            filefield = models.FileField(upload_to='test')
-
-        person = Person()
+        person = PersonFile()
         person.filefield = DjangoFile(open('test.txt', 'w'))
 
         base = BaseImporter(source=person.filefield)
@@ -73,14 +61,6 @@ class TestBaseWithModel(TestCase):
             os.remove('test.txt')
         except:
             pass
-
-
-class Mercado(models.Model):
-    item = models.CharField(max_length=50)
-    qtde = models.IntegerField(default=0)
-
-    def save(self, *args, **kwargs):
-        return self.full_clean() == None
 
 
 class TestPTBRCSVImporter(TestCase):
