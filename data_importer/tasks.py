@@ -58,7 +58,8 @@ class DataImpoterTask(Task):
 
         if acquire_lock(lock_id):
             mime_type = self.get_mimetype(instance)
-            self.get_parser(mime_type)
+            parse_instance = self.get_parser(mime_type)
+            parse_instance(instance)
             release_lock(lock_id)
             logger.info("TASK FINISH: %s %s" % (lock_id, datetime.now()))
         else:
