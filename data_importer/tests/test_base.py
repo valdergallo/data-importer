@@ -3,6 +3,7 @@
 
 from django.test import TestCase
 from .. import BaseImporter
+from ..importers.base import objclass2dict
 from cStringIO import StringIO
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
@@ -17,6 +18,7 @@ class TestBaseImportMeta(TestCase):
                 'test2_field',
                 'test3_field',
             ]
+
             class Meta:
                 exclude = ['test2_field', 'test3_field']
 
@@ -36,7 +38,6 @@ class TestBaseImportMeta(TestCase):
         self.assertFalse(base._excluded)
         self.assertFalse(base._readed)
 
-
     def test_meta_class_values(self):
         self.assertEqual(self.importer.Meta.exclude, ['test2_field', 'test3_field'])
 
@@ -45,6 +46,15 @@ class TestBaseImportMeta(TestCase):
 
     def test_fields(self):
         self.assertEquals(list(self.importer.fields), ['test_field', ])
+
+    def test_objclass2dict(self):
+        class Meta:
+            test_1 = 1
+            test_2 = 2
+            test_3 = 3
+
+        return_dict = objclass2dict(Meta)
+        self.assertEquals(return_dict, {'test_1': 1, 'test_2': 2, 'test_3': 3})
 
 
 class TestImporters(TestCase):
