@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Django settings for importer project.
+# Django settings for example project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -17,7 +17,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(BASEDIR, 'db', 'importer.sqlite'),  # Or path to database file if using sqlite3.
+        'NAME': os.path.join(BASEDIR, 'db', 'example.sqlite'),  # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -108,10 +108,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'importer.urls'
+ROOT_URLCONF = 'example.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'importer.wsgi.application'
+WSGI_APPLICATION = 'example.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -134,7 +134,7 @@ INSTALLED_APPS = (
 
     #customer
     'data_importer',
-    'importer'
+    'example'
 )
 
 
@@ -190,7 +190,7 @@ if 'test' in sys.argv:
     NOSE_ARGS = [
         # '--with-coverage',
         '--cover-html',
-        '--cover-package=data_importer',
+        '--cover-package=data_example',
         '--cover-tests',
         '--cover-erase',
         ]
@@ -202,6 +202,6 @@ if 'test' in sys.argv:
 
 # Local settings
 try:
-    execfile('importer/settings_local.py')
+    execfile('example/settings_local.py')
 except IOError:
     pass
