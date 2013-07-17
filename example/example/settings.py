@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Django settings for example project.
 
-DEBUG = True
+# Django settings for example project.
+import os
+import sys
+
+data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+sys.path.append(data_importer_path)
+
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-import os, sys
-BASEDIR = os.path.realpath(os.path.join(os.path.dirname(__file__), os.path.pardir))
-
 ADMINS = (
-    ('Valder Gallo', 'valdergallo@gmail.com'),
+    # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
 
-DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASEDIR, 'db', 'example.sqlite'),
@@ -46,24 +48,22 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
 USE_TZ = False
-
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(BASEDIR, 'media')
+MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = '/media/'
+MEDIA_URL = ''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(BASEDIR, 'static')
+STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -79,13 +79,13 @@ STATICFILES_DIRS = (
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-    # 'django.contrib.staticfiles.finders.FileSystemFinder',
-    # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '7kz-a^=8d2fy+t8kkfqf+cg8l)i+7r3ef*oqb!#=otz+$pwaua'
+SECRET_KEY = 'cxq@*7xgd763hq5hy30bdcr2r%(m)()kk$$qj(rpa@3%_i!q+6'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -116,23 +116,27 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
+    # 'django.contrib.auth',
+    # 'django.contrib.contenttypes',
+    # 'django.contrib.sessions',
+    # 'django.contrib.sites',
+    # 'django.contrib.messages',
     # 'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
-
-    #extra
-    'south',
-
-    #customer
+    # Uncomment the next line to enable the admin:
+    # 'django.contrib.admin',
+    # Uncomment the next line to enable admin documentation:
+    # 'django.contrib.admindocs',
+    'example',
+    'django_coverage',
+    'django_nose',
     'data_importer',
-    'example'
 )
 
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
 
 def skip_unreadable_post():
     return True
@@ -161,43 +165,17 @@ LOGGING = {
     }
 }
 
-if 'test' in sys.argv:
-    # REMOVE DEFAULT APPS FROM INSTALLED_APPS
-    sys.argv += ("-v2",)
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-    INSTALLED_APPS = (
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'data_importer',
-        'django_coverage',
-        'django_nose',
-    )
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    # '--with-coverage',
+    '--cover-html',
+    '--cover-package=data_importer',
+    '--cover-tests',
+    '--cover-erase',
+    ]
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:',
-        },
-    }
-
-    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-    # Tell nose to measure coverage on the 'foo' and 'bar' apps
-    NOSE_ARGS = [
-        # '--with-coverage',
-        '--cover-html',
-        '--cover-package=data_example',
-        '--cover-tests',
-        '--cover-erase',
-        ]
-
-    # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    # EMAIL_FILE_PATH = '/tmp/invest-messages'  # change this to a proper location
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
-# Local settings
-try:
-    execfile('example/settings_local.py')
-except IOError:
-    pass
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = '/tmp/invest-messages'  # change this to a proper location
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
