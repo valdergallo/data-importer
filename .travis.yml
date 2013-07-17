@@ -7,7 +7,7 @@ python:
 before_install:
   - sudo apt-get install -y libxml2-dev libxslt-dev
 
-script: python manage.py test --settings=importer.settings --verbosity=2
+script: python manage.py test --settings=example.settings --verbosity=2
 
 env:
   - DJANGO=1.2.7
