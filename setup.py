@@ -22,7 +22,7 @@ setup(name='data-importer',
           'Operating System :: OS Independent',
           'Topic :: Utilities'
       ],
-      version='1.0.0b',
+      version='1.0.0c',
       install_requires=install_requires,
       packages=['data_importer', 'data_importer.importers'],
 )
