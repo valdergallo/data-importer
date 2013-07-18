@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+
+{% block contents %}
+
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Upload File" />
+</form>
+
+{% endblock %}

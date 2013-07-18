@@ -3,6 +3,8 @@
 
 from django import forms
 from data_importer.models import FileHistory
+from data_importer.task import DataImpoterTask
+
 try:
     import celery
     HAS_CELERY = True
@@ -20,6 +22,4 @@ class FileUploadForm(forms.ModelForm):
         if not HAS_CELERY and self.instance.is_task:
             foms.ValidationError("You need install Celery to use Data importer as task")
         elif HAS_CELERY and self.install.is_task:
-            # TODO: check File
-            # Execute data importer as task
-            pass
+            DataImpoterTask.run(self.instance)
