@@ -7,7 +7,7 @@ python:
 before_install:
   - sudo apt-get install -y libxml2-dev libxslt-dev
 
-script: python example/manage.py test --settings=example.settings --verbosity=2
+script: make coverage
 
 env:
   - DJANGO=1.2.7
@@ -17,3 +17,10 @@ env:
 
 install:
   - pip install -q Django==$DJANGO -r example/requirements-travis.txt
+
+branches:
+  only:
+    - master
+
+after_success:
+  - coveralls
