@@ -6,12 +6,11 @@ import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
 
-from django.conf import settings as django_settings
 from data_importer import settings as data_importer_settings
 
-DATA_IMPORTER_EXCEL_DECODER = hasattr(django_settings, 'DATA_IMPORTER_EXCEL_DECODER') and django_settings.DATA_IMPORTER_EXCEL_DECODER or data_importer_settings.DATA_IMPORTER_EXCEL_DECODER
+DATA_IMPORTER_EXCEL_DECODER = data_importer_settings.DATA_IMPORTER_EXCEL_DECODER
 
-DATA_IMPORTER_DECODER = hasattr(django_settings, 'DATA_IMPORTER_DECODER') and django_settings.DATA_IMPORTER_DECODER or data_importer_settings.DATA_IMPORTER_DECODER
+DATA_IMPORTER_DECODER = data_importer_settings.DATA_IMPORTER_DECODER
 
 
 def objclass2dict(objclass):

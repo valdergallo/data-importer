@@ -16,8 +16,9 @@ exclude_lines =
     import .*
     from .*
     @property
-    @staticmethod 
+    @staticmethod
     @source.setter
+    class Meta
 
     # Don't complain if tests don't hit defensive assertion code:
     raise AssertionError
