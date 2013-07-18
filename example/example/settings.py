@@ -8,6 +8,8 @@ import sys
 data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 sys.path.append(data_importer_path)
 
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -17,6 +19,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASEDIR, 'db', 'example.sqlite'),
@@ -116,8 +119,6 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
     # 'django.contrib.sessions',
     # 'django.contrib.sites',
     # 'django.contrib.messages',
@@ -126,6 +127,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'example',
     'django_coverage',
     'django_nose',
