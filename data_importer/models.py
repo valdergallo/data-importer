@@ -19,6 +19,11 @@ CELERY_STATUS = ((1, 'Impoted'),
                  )
 
 
+class FileHistoryManager(models.Manager):
+    def get_query_set(self):
+        return super(FileHistoryManager, self).get_query_set().filter(active=True)
+
+
 class FileHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -28,19 +33,25 @@ class FileHistory(models.Model):
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
 
-    def send_file(self, request):
+    objects = FileHistoryManager()
+    all_objects = models.Manager()
+
+    class Meta:
+        verbose_name_plural = 'File Hitories'
+
+    def download_file(self, request):
         """
         Send a file through Django without loading the whole file into
         memory at once. The FileWrapper will turn the file object into an
         iterator for chunks of 8KB.
         """
-        filename = self.filename
-        wrapper = FileWrapper(file(filename))
-        response = HttpResponse(wrapper, content_type='text/plain')
+        filename = self.filename.path
+        wrapper = FileWrapper(open(filename, "rb"))
+        response = HttpResponse(wrapper, content_type='application/force-download')
         response['Content-Length'] = os.path.getsize(filename)
         return response
 
-    def send_zipfile(self, request):
+    def download_zipfile(self, request):
         """
         Create a ZIP file on disk and transmit it in chunks of 8KB,
         without loading the whole file into memory. A similar approach can
@@ -49,12 +60,12 @@ class FileHistory(models.Model):
         temp = tempfile.TemporaryFile()
         archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
         for index in range(10):
-            filename = self.filename
+            filename = self.filename.path
             archive.write(filename, 'file%d.txt' % index)
         archive.close()
         wrapper = FileWrapper(temp)
         response = HttpResponse(wrapper, content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=%s.zip' % self.filename.basename
+        response['Content-Disposition'] = 'attachment; filename=%s.zip' % self.filename
         response['Content-Length'] = temp.tell()
         temp.seek(0)
         return response
