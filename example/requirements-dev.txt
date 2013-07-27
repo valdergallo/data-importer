@@ -4,6 +4,7 @@ Pygments==1.6
 Sphinx==1.2b1
 django-debug-toolbar==0.9.4
 django-nose==1.1
+django_coverage==1.2.4
 docutils==0.10
 ipdb==0.7
 ipython==0.13.1

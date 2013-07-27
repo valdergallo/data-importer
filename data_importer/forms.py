@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from data_importer.models import FileHistory
-from data_importer.task import DataImpoterTask
+from .models import FileHistory
+from .tasks import DataImpoterTask
 
 try:
     import celery

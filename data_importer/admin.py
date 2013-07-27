@@ -2,6 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from data_importer.models import FileHistory
+from .models import FileHistory
 
-admin.site.register(FileHistory)
+
+class FileAdmin(admin.ModelAdmin):
+    list_display = ['filename', 'created_at', 'updated_at', 'owner', 'active', 'is_task', 'status']
+    list_filter = ['is_task', 'active', 'status']
+    search_fields = ['filename']
+
+admin.site.register(FileHistory, FileAdmin)

@@ -245,8 +245,3 @@ TEST
 |Acentuation with CSV  | Excel Win 2007 | OK  |
 +----------------------+----------------+-----+
 
-
-TODO
-____
-    ** MORE DOCS **
-

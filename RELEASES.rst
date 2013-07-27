@@ -1,3 +1,8 @@
+**Version:** 1.1.5
+- Remove chardet
+- Add GenericViewImporter
+- Add Settings define decode
+
 **Version:** 1.0.1
 - Add owner on FileUploaderHistory
 - Rename FileUploaderHistory.content to FileUploaderHistory.filename

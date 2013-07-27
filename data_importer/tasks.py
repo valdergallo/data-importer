@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from datetime import datetime
 import os
 
 try:
@@ -71,7 +70,5 @@ class DataImpoterTask(Task):
             email.send()
 
             release_lock(lock_id)
-            logger.info("TASK FINISH: %s %s" % (lock_id, datetime.now()))
         else:
-            logger.info('TASK LOCKED: %s' % (datetime.now()))
             return 0
