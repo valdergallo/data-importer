@@ -9,6 +9,7 @@
 - Add data_importer.views.DataImporterDeleteView
 - Add data_importer.admin
 - Add data_importer.tasks.DataImpoterTask
+- Add default filter on FileHistory for active itens
 
 **Version:** 1.0.1
 - Add owner on FileUploaderHistory
