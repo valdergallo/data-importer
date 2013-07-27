@@ -6,11 +6,12 @@ import os
 import sys
 
 data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+print data_importer_path
 sys.path.append(data_importer_path)
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -22,7 +23,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASEDIR, 'db', 'example.sqlite'),
+        'NAME': 'example.sqlite',
     }
 }
 
@@ -119,14 +120,14 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    # 'django.contrib.sessions',
-    # 'django.contrib.sites',
-    # 'django.contrib.messages',
-    # 'django.contrib.staticfiles',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'example',
@@ -141,32 +142,14 @@ INSTALLED_APPS = (
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 
-def skip_unreadable_post():
-    return True
+if 'test' in sys.argv:
+    INSTALLED_APPS = ('django.contrib.auth',
+                        'django.contrib.contenttypes',
+                        'example',
+                        'django_coverage',
+                        'django_nose',
+                        'data_importer')
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'special': {
-            '()': skip_unreadable_post,
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['special'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
