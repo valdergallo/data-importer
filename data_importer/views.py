@@ -5,19 +5,33 @@ from .forms import FileUploadForm
 from .models import FileHistory
 from django.contrib import messages
 try:
-    from django.views.generic.edit import FormView, CreateView, UpdateView
+    from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+    from django.views.generic.detail import DetailView
 except ImportError:
+    """
+    Add suport to django 1.2
+    """
     try:
         from django.views.generic.create_update import create_object as FormView
+        from django.views.generic.create_update import create_object as CreateView
+        from django.views.generic.create_update import update_object as UpdateView
+        from django.views.generic.create_update import delete_object as DeleteView
+        from django.views.generic.date_based import object_detail as DetailView
     except ImportError:
         pass
 
 
-class DataImporterFormView(FormView):
+class DataImporterDetailView(DetailView):
+    model = FileHistory
+    template_name = 'data_importer_detail.html'
+
+
+class DataImporterFormBase(FormView):
+    model = FileHistory
     template_name = 'data_importer.html'
     form_class = FileUploadForm
     success_url = '.'
-    extra_context = {'title': 'Data Importer'}
+    extra_context = {'title': 'Form Data Importer'}
 
     # def get(self, *args, **kwargs):
     #     # You can access url variables from kwargs
@@ -38,15 +52,14 @@ class DataImporterFormView(FormView):
         return super(DataImporterFormView, self).form_valid(form)
 
 
-class DataImporterCreateView(CreateView):
-    template_name = 'data_importer.html'
-    model = FileHistory
-    success_url = '.'
-    extra_context = {'title': 'Data Importer'}
+class DataImporterCreateView(DataImporterFormBase, CreateView):
+    extra_context = {'title': 'Create Form Data Importer'}
 
 
-class DataImporterUpdateView(UpdateView):
-    template_name = 'data_importer.html'
-    model = FileHistory
-    success_url = '.'
-    extra_context = {'title': 'Data Importer'}
+class DataImporterUpdateView(DataImporterFormBase, UpdateView):
+    extra_context = {'title': 'Update Form Data Importer'}
+
+
+class DataImporterDeleteView(DataImporterFormBase, DeleteView):
+    extra_context = {'title': 'Delete Form Data Importer'}
+    template_name = 'data_importer_delete.html'

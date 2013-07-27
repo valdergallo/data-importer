@@ -1,12 +1,14 @@
 **Version:** 1.1.5
 - Remove chardet
 - Add Settings define decode
-- Add data_impoter.forms.FileUploadForm
-- Add data_impoter.views.DataImporterFormView
-- Add data_impoter.views.DataImporterCreateView
-- Add data_impoter.views.DataImporterUpdateView
-- Add data_impoter.admin
-
+- Add data_importer.forms.FileUploadForm
+- Add data_importer.views.DataImporterFormView
+- Add data_importer.views.DataImporterCreateView
+- Add data_importer.views.DataImporterUpdateView
+- Add data_importer.views.DataImporterDetailView
+- Add data_importer.views.DataImporterDeleteView
+- Add data_importer.admin
+- Add data_importer.tasks.DataImpoterTask
 
 **Version:** 1.0.1
 - Add owner on FileUploaderHistory
