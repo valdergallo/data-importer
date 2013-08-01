@@ -162,7 +162,7 @@ class BaseImporter(object):
         """
         self._reader = csv.reader(self.source, delimiter=self.meta.get('delimiter', ';'))
 
-    def _clean_content(self, row, values):
+    def process_row(self, row, values):
         """
         Read clean_ functions from importer and return tupla with row number, field and value
         """
@@ -195,7 +195,7 @@ class BaseImporter(object):
         except Exception, e:
             self._error.append(('__pre_clean__', repr(e)))
 
-        for data in self._lines():
+        for data in self._read_file():
             self._cleaned_data += (data, )
 
         try:
@@ -227,7 +227,7 @@ class BaseImporter(object):
         Custom clean method
         """
 
-    def _lines(self):
+    def _read_file(self):
         """
         Create cleaned_data content
         """
@@ -237,7 +237,7 @@ class BaseImporter(object):
             if row == -1:
                 pass
             else:
-                yield self._clean_content(row, values)
+                yield self.process_row(row, values)
 
     def cache(self, value, obj=None):
         """

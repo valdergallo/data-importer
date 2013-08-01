@@ -5,6 +5,7 @@ from django.test import TestCase
 from .. import BaseImporter
 from ..importers.base import objclass2dict
 from cStringIO import StringIO
+import data_importer
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 
@@ -26,6 +27,15 @@ class TestBaseImportMeta(TestCase):
 
     def test_meta_values(self):
         self.assertEqual(self.importer.Meta.get('exclude'), ['test2_field', 'test3_field'])
+
+    def test_get_author(self):
+        self.assertEqual(data_importer.__author__, 'Valder Gallo <valdergallo@gmail.com>')
+
+    def test_get_version(self):
+        self.assertEqual(data_importer.__version__, '1.1.5')
+
+    def test_get_doc(self):
+        self.assertEqual(data_importer.__doc__, 'Data Importer')
 
     def test_private_values(self):
         base = BaseImporter()
