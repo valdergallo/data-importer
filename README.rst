@@ -248,10 +248,10 @@ TEST
 |Acentuation with CSV  | Excel Win 2007 | OK  |
 +----------------------+----------------+-----+
 
-
 -----------------------------------------------------------
-    South: Support migrations
-    Python: python 2.7
-    Version: 1.1.5
-    Tested in Django: 1.3.7; 1.4.5; 1.5.1
+
+    :Python: python 2.7
+    :Version: 1.1.5
+    :Django: 1.3.7; 1.4.5; 1.5.1
+
 
