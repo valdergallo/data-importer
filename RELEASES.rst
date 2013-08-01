@@ -10,6 +10,8 @@
 - Add data_importer.admin
 - Add data_importer.tasks.DataImpoterTask
 - Add default filter on FileHistory for active itens
+- Refactory _lines to _read_file
+- Refactory _clean_content to process_row
 
 **Version:** 1.0.1
 - Add owner on FileUploaderHistory
