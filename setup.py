@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#!/usr/bin/env python
 import os
 from setuptools import setup
 
@@ -22,7 +25,7 @@ setup(name='data-importer',
           'Operating System :: OS Independent',
           'Topic :: Utilities'
       ],
-      version='1.0.1',
+      version='1.1.5',
       install_requires=install_requires,
       packages=['data_importer', 'data_importer.importers'],
 )
