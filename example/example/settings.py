@@ -144,11 +144,11 @@ INSTALLED_APPS = (
 
 if 'test' in sys.argv:
     INSTALLED_APPS = ('django.contrib.auth',
-                        'django.contrib.contenttypes',
-                        'example',
-                        'django_coverage',
-                        'django_nose',
-                        'data_importer')
+                      'django.contrib.contenttypes',
+                      'example',
+                      'django_coverage',
+                      'django_nose',
+                      'data_importer')
 
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
