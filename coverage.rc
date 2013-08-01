@@ -2,7 +2,6 @@
 source = data_importer
 omit = */migrations/*
 
-
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =

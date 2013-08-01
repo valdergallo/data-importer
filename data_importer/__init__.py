@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-    Django Data Importer
-"""
-
+__doc__ = 'Data Importer'
 __version__ = '1.1.5'
 __author__ = 'Valder Gallo <valdergallo@gmail.com>'
 
