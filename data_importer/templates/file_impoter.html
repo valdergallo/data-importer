@@ -6,17 +6,17 @@
 
 {% block contents %}
 
-    {% form.as_ul() %}
+{% form.as_ul() %}
 
-    {% if template_file %}
-        <p>
-                Please, follow <a href="{{ template_file }}">this template file</a> to avoid validation errors.
-        </p>
-    {% endif %}
+{% if template_file %}
+    <p>
+        Please, follow <a href="{{ template_file }}">this template file</a> to avoid validation errors.
+    </p>
+{% endif %}
 
-        {% if redirect_to %}
-                <br/>
-                <a href="{{ redirect_to }}" class="button">Back</a>
-        {% endif %}
+{% if redirect_to %}
+    <br/>
+    <a href="{{ redirect_to }}" class="button">Back</a>
+{% endif %}
 
 {% endblock %}
