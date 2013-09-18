@@ -4,6 +4,7 @@
 from .forms import FileUploadForm
 from .models import FileHistory
 from django.contrib import messages
+
 try:
     from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
     from django.views.generic.detail import DetailView
@@ -18,7 +19,7 @@ except ImportError:
         from django.views.generic.create_update import delete_object as DeleteView
         from django.views.generic.date_based import object_detail as DetailView
     except ImportError:
-        pass
+        raise ImportError('Django must be version 1.2 or greater')
 
 
 class DataImporterDetailView(DetailView):
@@ -40,7 +41,7 @@ class DataImporterFormBase(FormView):
     #     self.subscriber = get_subscriber(kwargs['username'])
 
     # def post(self, request, *args, **kwargs):
-    #     # Process view when the form gets POSTed
+    #     # Process view when the form gets Posted
     #     pass
 
     def form_valid(self, form):
@@ -49,7 +50,7 @@ class DataImporterFormBase(FormView):
             "Uploaded file sucess"
         )
         FileHistory.objects.get_or_create(filename=form.cleaned_data['filename'])
-        return super(DataImporterFormView, self).form_valid(form)
+        return super(DataImporterFormBase, self).form_valid(form)
 
 
 class DataImporterCreateView(DataImporterFormBase, CreateView):
