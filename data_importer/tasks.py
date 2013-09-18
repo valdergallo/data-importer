@@ -54,7 +54,7 @@ class DataImpoterTask(Task):
         return getattr(self, function_name)
 
     def run(self, instance, **kwargs):
-        logger = self.get_logger(**kwargs)
+        # logger = self.get_logger(**kwargs)
         lock_id = "%s-lock" % (self.name)
 
         if acquire_lock(lock_id):
