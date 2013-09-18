@@ -6,7 +6,8 @@ from .models import FileHistory
 
 
 class FileAdmin(admin.ModelAdmin):
-    list_display = ['filename', 'created_at', 'updated_at', 'owner', 'active', 'is_task', 'status']
+    list_display = ['filename', 'created_at', 'updated_at', 'owner',
+                    'active', 'is_task', 'status']
     list_filter = ['is_task', 'active', 'status']
     search_fields = ['filename']
 
