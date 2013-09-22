@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Django Data Importer documentation build configuration file, created by
@@ -267,9 +268,10 @@ import inspect
 from django.utils.html import strip_tags
 from django.utils.encoding import force_unicode
 
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/../../'))
+BASEDIR = os.path.abspath(os.path.dirname(__file__) + '/../../example/')
+sys.path.append(BASEDIR)
 
-from importer import settings
+from example import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 
