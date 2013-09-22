@@ -13,7 +13,6 @@ send_package:
 
 clean:
 	find . -name '*.pyc' -delete
-	rm -rf django_choices_flow.egg-info
 	rm -rf dist
 	rm -rf cover
 
