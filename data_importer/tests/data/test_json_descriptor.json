@@ -1,0 +1,10 @@
+[
+{
+    "model": "mytest.Contact",
+    "fields":  {
+        "name": "My Name",
+        "year": "My Year",
+        "last": 3
+    }
+}
+]

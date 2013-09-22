@@ -152,7 +152,6 @@ class BaseImporter(object):
     def load_descriptor(self):
         descriptor = ReadDescriptor(self.Meta.descriptor, self.Meta.model)
         self.fields = descriptor.get_fields()
-
         self.exclude_fields()
 
     @property
