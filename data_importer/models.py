@@ -37,7 +37,7 @@ class FileHistory(models.Model):
     all_objects = models.Manager()
 
     class Meta:
-        verbose_name_plural = 'File Hitories'
+        verbose_name_plural = 'File Histories'
 
     def download_file(self, request):
         """
