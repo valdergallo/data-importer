@@ -6,12 +6,12 @@ import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
 
-from data_importer import settings as data_importer_settings
+from data_importer import default_settings
 from data_importer.importers.descriptor import ReadDescriptor
 
-DATA_IMPORTER_EXCEL_DECODER = data_importer_settings.DATA_IMPORTER_EXCEL_DECODER
+DATA_IMPORTER_EXCEL_DECODER = default_settings.DATA_IMPORTER_EXCEL_DECODER
 
-DATA_IMPORTER_DECODER = data_importer_settings.DATA_IMPORTER_DECODER
+DATA_IMPORTER_DECODER = default_settings.DATA_IMPORTER_DECODER
 
 
 def objclass2dict(objclass):
