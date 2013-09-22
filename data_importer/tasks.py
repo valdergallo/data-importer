@@ -32,7 +32,7 @@ class DataImpoterTask(Task):
     """
     This tasks is executed by Celery.
     """
-    name = 'flowbot.add_data_importer_task'
+    name = 'data_importer_task'
     queue = DATA_IMPORTER_QUEUE
     time_limit = 60 * 15
     mimetype = None
