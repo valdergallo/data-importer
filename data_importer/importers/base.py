@@ -38,15 +38,18 @@ def objclass2dict(objclass):
     return Dict(zip(obj_list, obj_values))
 
 
+class StopImporter(Exception):
+    """
+    Stop interator and raise error message
+    """
+
+
 class BaseImporter(object):
     """
     Base Importer method to create simples importes CSV files.
 
     set_reader: can be override to create new importers files
     """
-    _cache = ()
-    _fields = []
-
     def __new__(cls, **kargs):
         """
         Provide custom methods in subclass Meta
@@ -56,6 +59,7 @@ class BaseImporter(object):
         return super(BaseImporter, cls).__new__(cls)
 
     def __init__(self, source=None):
+        self._fields = []
         self._error = []
         self._cleaned_data = ()
         self._reader = None
@@ -194,6 +198,8 @@ class BaseImporter(object):
                 else:
                     try:
                         values[k] = clean_function(v)
+                    except StopImporter, e:
+                        raise StopImporter((row, type(e).__name__, unicode(e)))
                     except Exception, e:
                         self._error.append((row, type(e).__name__, unicode(e)))
 
@@ -212,6 +218,7 @@ class BaseImporter(object):
         except Exception, e:
             self._error.append(('__pre_clean__', repr(e)))
 
+        # create clean content
         for data in self._read_file():
             self._cleaned_data += (data, )
 
@@ -244,6 +251,11 @@ class BaseImporter(object):
         Custom clean method
         """
 
+    def pre_commit(self):
+        """
+        Executed before commit multiple register
+        """
+
     def _read_file(self):
         """
         Create cleaned_data content
@@ -256,17 +268,6 @@ class BaseImporter(object):
             else:
                 yield self.process_row(row, values)
 
-    def cache(self, value, obj=None):
-        """
-        TODO: not implemented
-        """
-        cache = [i[1] for i in self._cache if value == i[0]]
-        if cache:
-            return cache
-        else:
-            self._cache += (value, obj)
-        return value
-
     def save(self, instance=None):
         if not instance:
             instance = self.Meta.model
@@ -277,17 +278,26 @@ class BaseImporter(object):
         if self.Meta.transaction:
             with transaction.atomic():
                 for row, data in self.cleaned_data:
-                    print data
                     record = instance(**data)
                     record.save()
+
+                try:
+                    self.pre_commit()
+                except Exception, e:
+                    self._error.append(('__pre_commit__', repr(e)))
+                    transaction.rollback()
+
                 try:
                     transaction.commit()
                 except Exception, e:
                     self._error.append(('__trasaction__', repr(e)))
                     transaction.rollback()
+
         else:
             for row, data in self.cleaned_data:
                 record = instance(**data)
                 record.save()
+
+            self.post_save_all_lines()
 
         return True
