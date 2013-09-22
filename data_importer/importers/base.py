@@ -7,6 +7,7 @@ from django.db import transaction
 from django.utils.encoding import force_unicode
 
 from data_importer import settings as data_importer_settings
+from data_importer.descriptor import ReadDescriptor
 
 DATA_IMPORTER_EXCEL_DECODER = data_importer_settings.DATA_IMPORTER_EXCEL_DECODER
 
@@ -71,13 +72,6 @@ class BaseImporter(object):
         Importer configurations
         """
 
-    @property
-    def source(self):
-        """
-        Return source opened
-        """
-        return self._source
-
     @staticmethod
     def to_unicode(bytestr):
         """
@@ -92,6 +86,13 @@ class BaseImporter(object):
             decoded = force_unicode(bytestr, DATA_IMPORTER_DECODER)
 
         return decoded
+
+    @property
+    def source(self):
+        """
+        Return source opened
+        """
+        return self._source
 
     @source.setter
     def source(self, source):
@@ -129,11 +130,27 @@ class BaseImporter(object):
         if self.Meta.model and not hasattr(self, 'fields'):
             all_models_fields = [i.name for i in self.Meta.model._meta.fields if i.name != 'id']
             self.fields = all_models_fields
+
+        self.exclude_fields()
+
+        if self.Meta.descriptor:
+            self.load_descriptor()
+
+    def exclude_fields(self):
+        """
+        Exclude fields from Meta.exclude
+        """
         if self.Meta.exclude and not self._excluded:
             self._excluded = True
             for exclude in self.Meta.exclude:
                 if exclude in self.fields:
                     self.fields.remove(exclude)
+
+    def load_descriptor(self):
+        descriptor = ReadDescriptor(self.Meta.descriptor, self.Meta.model)
+        self.fields = descriptor.get_fields()
+
+        self.exclude_fields()
 
     @property
     def errors(self):
