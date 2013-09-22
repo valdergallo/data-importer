@@ -256,6 +256,11 @@ class BaseImporter(object):
         Executed before commit multiple register
         """
 
+    def post_save_all_lines(self):
+        """
+        End exection
+        """
+
     def _read_file(self):
         """
         Create cleaned_data content
@@ -298,6 +303,6 @@ class BaseImporter(object):
                 record = instance(**data)
                 record.save()
 
-            self.post_save_all_lines()
+        self.post_save_all_lines()
 
         return True
