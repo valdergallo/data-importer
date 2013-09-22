@@ -9,7 +9,7 @@ from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.core.urlresolvers import reverse
+
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
 
