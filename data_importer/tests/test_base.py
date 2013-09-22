@@ -41,7 +41,6 @@ class TestBaseImportMeta(TestCase):
         base = BaseImporter()
 
         self.assertFalse(base._error)
-        self.assertFalse(base._cache)
         self.assertFalse(base._cleaned_data)
         self.assertFalse(base._fields)
         self.assertFalse(base._reader)
