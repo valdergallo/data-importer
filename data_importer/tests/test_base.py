@@ -31,9 +31,6 @@ class TestBaseImportMeta(TestCase):
     def test_get_author(self):
         self.assertEqual(data_importer.__author__, 'Valder Gallo <valdergallo@gmail.com>')
 
-    def test_get_version(self):
-        self.assertEqual(data_importer.__version__, '1.1.5')
-
     def test_get_doc(self):
         self.assertEqual(data_importer.__doc__, 'Data Importer')
 
