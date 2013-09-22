@@ -16,4 +16,5 @@ def delete_filefield(sender, instance, **kwargs):
         if os.path.exists(instance.filename.path):
             os.unlink(instance.filename.path)
 
+
 post_delete.connect(delete_filefield, sender=FileHistory)

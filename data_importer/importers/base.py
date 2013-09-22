@@ -125,9 +125,8 @@ class BaseImporter(object):
 
     def start_fields(self):
         """
-        Initial function to find fields or headers values.
-        This values will be used on process to clean_ and save method
-
+        Initial function to find fields or headers values
+        This values will be used to process clean and save method
         If this method not have fields and have Meta.model this method
         will use model fields to populate content without id
         """
@@ -159,7 +158,7 @@ class BaseImporter(object):
     @property
     def errors(self):
         """
-        Show errors catch by clean_ methods
+        Show errors catch by clean methods
         """
         return self._error
 
@@ -185,7 +184,7 @@ class BaseImporter(object):
 
     def process_row(self, row, values):
         """
-        Read clean_ functions from importer and return tupla with row number, field and value
+        Read clean functions from importer and return tupla with row number, field and value
         """
         values_encoded = [self.to_unicode(i) for i in values]
         values = dict(zip(self.fields, values_encoded))
