@@ -8,15 +8,21 @@ except ImportError:
     Task = object
 
 from django.core.cache import cache
+from data_importer import default_settings
 from data_importer import BaseImporter, XMLImporter, XLSImporter, XLSXImporter
 from django.conf import settings
-from data_importer import settings as data_importer_settings
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 
-LOCK_EXPIRE = hasattr(settings, 'DATA_IMPORTER_TASK_LOCK_EXPIRE') and settings.DATA_IMPORTER_TASK_LOCK_EXPIRE or data_importer_settings.DATA_IMPORTER_TASK_LOCK_EXPIRE
+try:
+    LOCK_EXPIRE = settings.DATA_IMPORTER_TASK_LOCK_EXPIRE
+except AttributeError:
+    LOCK_EXPIRE = default_settings.DATA_IMPORTER_TASK_LOCK_EXPIRE
 
-DATA_IMPORTER_QUEUE = hasattr(settings, 'DATA_IMPORTER_QUEUE') and settings.DATA_IMPORTER_QUEUE or data_importer_settings.DATA_IMPORTER_QUEUE
+try:
+    DATA_IMPORTER_QUEUE = settings.DATA_IMPORTER_QUEUE
+except AttributeError:
+    DATA_IMPORTER_QUEUE = default_settings.DATA_IMPORTER_QUEUE
 
 acquire_lock = lambda lock_id: cache.add(lock_id, "true", LOCK_EXPIRE)
 release_lock = lambda lock_id: cache.delete(lock_id)
