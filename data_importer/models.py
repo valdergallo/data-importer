@@ -9,6 +9,7 @@ from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
 
@@ -38,6 +39,12 @@ class FileHistory(models.Model):
 
     class Meta:
         verbose_name_plural = 'File Histories'
+
+    def file_link(self):
+        _url = self.filename.url
+        return "<a href='%s' tartget='_blank'>Download</a>" % _url
+
+    file_link.allow_tags = True
 
     def download_file(self, request):
         """
@@ -69,6 +76,11 @@ class FileHistory(models.Model):
         response['Content-Length'] = temp.tell()
         temp.seek(0)
         return response
+
+    @property
+    def compose_file_name(self):
+        basename = os.path.basename(self.filename.file.name)
+        return "%s (%s)" % (basename, self.owner)
 
 
 class FileHistoryLog(models.Model):
