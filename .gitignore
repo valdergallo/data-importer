@@ -5,3 +5,5 @@
 .coverage
 cover/*
 _build/*
+example/media/*
+*.c
