@@ -4,6 +4,6 @@
 .DS_Store
 .coverage
 cover/*
-_build/*
+docs/_build/*
 example/media/*
 *.c
