@@ -146,6 +146,9 @@ class BaseImporter(object):
                     self.fields.remove(exclude)
 
     def load_descriptor(self):
+        """
+        Set fields from descriptor file
+        """
         descriptor = ReadDescriptor(self.Meta.descriptor, self.Meta.model)
         self.fields = descriptor.get_fields()
         self.exclude_fields()
@@ -268,6 +271,10 @@ class BaseImporter(object):
                 yield self.process_row(row, values)
 
     def save(self, instance=None):
+        """
+        Save all contents
+        DONT override this method
+        """
         if not instance:
             instance = self.Meta.model
 

@@ -22,15 +22,9 @@ class ReadDescriptorTestCase(TestCase):
 
     def test_invalid_model(self):
         descriptor = ReadDescriptor(file_name=JSON_FILE, model_name='TestInvalidModel')
-
-        with self.assertRaises(InvalidModel) as error:
-            descriptor.get_model()
-
-        self.assertEqual(unicode(error.exception), "Model Name does not exist in descriptor")
+        self.assertRaises(InvalidModel, lambda: descriptor.get_model())
 
     def test_invalid_file(self):
-        with self.assertRaises(InvalidDescriptor) as error:
-            ReadDescriptor(file_name='invalid_file.er', model_name='TestInvalidModel')
-
-        self.assertEqual(unicode(error.exception), "Invalid JSON File Source")
+        self.assertRaises(InvalidDescriptor, lambda: ReadDescriptor(file_name='invalid_file.er',
+                          model_name='TestInvalidModel'))
 
