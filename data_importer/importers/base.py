@@ -8,6 +8,8 @@ from django.utils.encoding import force_unicode
 
 from data_importer import default_settings
 from data_importer.importers.descriptor import ReadDescriptor
+from data_importer.exceptions import StopImporter
+
 
 DATA_IMPORTER_EXCEL_DECODER = default_settings.DATA_IMPORTER_EXCEL_DECODER
 
@@ -36,12 +38,6 @@ def objclass2dict(objclass):
     for objitem in obj_list:
         obj_values.append(getattr(objclass, objitem))
     return Dict(zip(obj_list, obj_values))
-
-
-class StopImporter(Exception):
-    """
-    Stop interator and raise error message
-    """
 
 
 class BaseImporter(object):

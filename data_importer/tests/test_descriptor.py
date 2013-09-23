@@ -30,7 +30,7 @@ class ReadDescriptorTestCase(TestCase):
 
     def test_invalid_file(self):
         with self.assertRaises(InvalidDescriptor) as error:
-            descriptor = ReadDescriptor(file_name='invalid_file.er', model_name='TestInvalidModel')
+            ReadDescriptor(file_name='invalid_file.er', model_name='TestInvalidModel')
 
         self.assertEqual(unicode(error.exception), "Invalid JSON File Source")
 

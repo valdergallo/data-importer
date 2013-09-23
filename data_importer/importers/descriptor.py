@@ -2,23 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
+from data_importer.exceptions import InvalidModel, InvalidDescriptor
 try:
     import json
 except ImportError:
     import simplejson as json
-
-
-class InvalidModel(Exception):
-    """
-    Invalid model in descriptor
-    """
-
-
-class InvalidDescriptor(Exception):
-    """
-    Invalid Descriptor File
-    Descriptor must be one valid JSON
-    """
 
 
 class ReadDescriptor(object):

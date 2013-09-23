@@ -6,5 +6,12 @@
         "year",
         "last"
     ]
+},
+{
+    "model": "mytest.State",
+    "fields":[
+        "name",
+        "abbr"
+    ]
 }
 ]
