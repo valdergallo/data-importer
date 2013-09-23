@@ -8,6 +8,19 @@ except ImportError:
     import simplejson as json
 
 
+class InvalidModel(Exception):
+    """
+    Invalid model in descriptor
+    """
+
+
+class InvalidDescriptor(Exception):
+    """
+    Invalid Descriptor File
+    Descriptor must be one valid JSON
+    """
+
+
 class ReadDescriptor(object):
 
     def __init__(self, file_name=None, model_name=None):
@@ -19,7 +32,7 @@ class ReadDescriptor(object):
 
     def read_file(self):
         if not os.path.exists(self.file_name):
-            raise ValueError('Invalid JSON File Source')
+            raise InvalidDescriptor('Invalid JSON File Source')
 
         read_file = open(self.file_name, 'r')
         self.source = json.loads(read_file.read())
@@ -27,10 +40,13 @@ class ReadDescriptor(object):
     def get_model(self):
         valid_model = [i for i in self.source if self.model_name in i.get('model')]
         if not valid_model:
-            raise ValueError("Model Name does not exist in descriptor")
+            raise InvalidModel("Model Name does not exist in descriptor")
 
         return valid_model[0]
 
     def get_fields(self):
         model = self.get_model()
-        return model.get('fields').keys()
+        fields = model.get('fields')
+        if isinstance(fields, dict):
+            fields = fields.keys()
+        return fields
