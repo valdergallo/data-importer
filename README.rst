@@ -4,9 +4,6 @@ Django Data Importer
 .. image:: https://travis-ci.org/valdergallo/django-data-importer.png?branch=master
     :target: https://travis-ci.org/valdergallo/django-data-importer
 
-.. image:: https://coveralls.io/repos/valdergallo/data-importer/badge.png?branch=master
-    :target: https://coveralls.io/r/valdergallo/data-importer
-
 **Django Data Importer** is a tool which allow you to transform easily a CSV, XML, XLS and XLSX file into a python object or a django model instance. It is based on the django-style declarative model.
 
 .. toctree::
@@ -237,21 +234,75 @@ If you are using XLSX you will need use XLSXImporter to made same importer
     **transaction** `(beta) not tested`
         Use transaction to save objects
 
+
+Descriptor
+----------
+
+Using file descriptor to define fields for large models.
+
+
+import_test.json
+
+.. code-block:: javascript
+
+    {
+      'app_name': 'mytest.Contact',
+        {
+        // field name / name on import file or key index
+        'name': 'My Name',
+        'year': 'My Year',
+        'last': 3
+        }
+    }
+
+
+model.py
+
+.. code-block:: python
+
+    class Contact(models.Model):
+      name = models.CharField(max_length=50)
+      year = models.CharField(max_length=10)
+      laster = models.CharField(max_length=5)
+      phone = models.CharField(max_length=5)
+      address = models.CharField(max_length=5)
+      state = models.CharField(max_length=5)
+
+
+importer.py
+
+.. code-block:: python
+
+    class MyImpoter(BaseImpoter):
+      class Meta:
+        config_file = 'import_test.json'
+        model = Contact
+        delimiter = ','
+        ignore_first_line = True
+
+
+content_file.csv
+
+.. code-block:: guest
+
+    name,year,last
+    Test,12,1
+    Test2,13,2
+    Test3,14,3
+
+
 TEST
 ----
 
-+----------------------+----------------+-----+
-|Acentuation with XLS  | Excel MAC 2011 | OK  |
-+----------------------+----------------+-----+
-|Acentuation with XLSX | Excel MAC 2011 | OK  |
-+----------------------+----------------+-----+
-|Acentuation with CSV  | Excel Win 2007 | OK  |
-+----------------------+----------------+-----+
-
------------------------------------------------------------
-
-    :Python: python 2.7
-    :Version: 1.1.5
-    :Django: 1.3.7; 1.4.5; 1.5.1
-
++-----------------------+--------------------+-----+
+|Acentuation with XLS   | Excel MAC 2011     | OK  |
++-----------------------+--------------------+-----+
+|Acentuation with XLS   | Excel WIN 2011     | OK  |
++-----------------------+--------------------+-----+
+|Acentuation with XLSX  | Excel MAC 2011     | OK  |
++-----------------------+--------------------+-----+
+|Acentuation with XLSX  | Excel WIN 2011     | OK  |
++-----------------------+--------------------+-----+
+|Acentuation with CSV   | Excel Win 2007     | OK  |
++-----------------------+--------------------+-----+
 
