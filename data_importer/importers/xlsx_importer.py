@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import datetime
-import openpyxl
 from openpyxl import load_workbook
 from .base import BaseImporter
 
@@ -10,6 +8,7 @@ from .base import BaseImporter
 class XLSXImporter(BaseImporter):
 
     def set_reader(self, use_iterators=True):
+        "Read XLSX files"
         self.workbook = load_workbook(self.source, use_iterators=use_iterators)
         if self.Meta.sheet_name:
             self.worksheet = self.workbook.get_sheet_by_name(self.Meta.sheet_name)
@@ -32,6 +31,10 @@ class XLSXImporter(BaseImporter):
         return item.internal_value # return string
 
     def get_items(self):
+        """
+        Get values from cells
+        :return: generator
+        """
         for line, row in enumerate(self.worksheet.iter_rows()):
             values = [self.convert_value(cell) for cell in row]
             if not any(values):

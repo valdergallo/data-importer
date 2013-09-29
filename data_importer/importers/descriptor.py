@@ -19,6 +19,7 @@ class ReadDescriptor(object):
         self.read_file()
 
     def read_file(self):
+        "Read json file"
         if not os.path.exists(self.file_name):
             raise InvalidDescriptor('Invalid JSON File Source')
 
@@ -26,6 +27,7 @@ class ReadDescriptor(object):
         self.source = json.loads(read_file.read())
 
     def get_model(self):
+        "Read model from JSON descriptor"
         valid_model = [i for i in self.source if self.model_name in i.get('model')]
         if not valid_model:
             raise InvalidModel("Model Name does not exist in descriptor")
@@ -33,6 +35,7 @@ class ReadDescriptor(object):
         return valid_model[0]
 
     def get_fields(self):
+        "Get content"
         model = self.get_model()
         fields = model.get('fields')
         if isinstance(fields, dict):

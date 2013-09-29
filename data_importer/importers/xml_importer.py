@@ -5,9 +5,13 @@ from .base import BaseImporter
 import xml.etree.ElementTree as et
 
 class XMLImporter(BaseImporter):
+    """
+    Import XML files
+    """
     root = 'root'
 
     def xml_to_dict(self):
+        "Convert XML to Dict"
         tree = et.fromstring(self.source)
         elements = tree.findall(self.root)
         for elem in elements:

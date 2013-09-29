@@ -45,7 +45,11 @@ class XLSImporter(BaseImporter):
         return item.value
 
     def get_items(self):
-        for i in range(0, self.worksheet.nrows):
+        """
+        Get values from cells
+        :return: generator
+        """
+        for i in xrange(0, self.worksheet.nrows):
             values = [self.convert_value(cell) for cell in self.worksheet.row(i)]
             if not any(values):
                 continue  # empty lines are ignored
