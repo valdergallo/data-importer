@@ -14,5 +14,6 @@ send_package:
 clean:
 	find . -name '*.pyc' -delete
 	rm -rf dist
+	rm -rf data_importer.egg-info
 	rm -rf cover
 

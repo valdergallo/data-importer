@@ -4,13 +4,18 @@
 #!/usr/bin/env python
 import os
 from setuptools import setup
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example.settings")
+
 import data_importer
+
 
 install_requires = [
     'django>=1.2',
     'openpyxl==1.6.1',
     'xlrd==0.9.0',
 ]
+
 
 setup(name='data-importer',
       url='https://github.com/valdergallo/data-importer',

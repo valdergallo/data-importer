@@ -5,7 +5,7 @@
 import os
 import sys
 
-data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 print data_importer_path
 sys.path.append(data_importer_path)
 
