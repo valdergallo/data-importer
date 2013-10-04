@@ -5,6 +5,8 @@ from django.db import models
 import os
 import tempfile
 import zipfile
+from datetime import date
+from uuid import uuid4
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -20,6 +22,16 @@ CELERY_STATUS = ((1, 'Impoted'),
                  )
 
 
+def get_random_filename(instance, filename):
+    _, ext = os.path.splitext(filename)
+    filename = "%s.%s" % (str(uuid4()), ext)
+
+    return os.path.join('upload_history',
+                        instance.owner.username,
+                        date.today().strftime("%Y/%m/%d"),
+                        filename)
+
+
 class FileHistoryManager(models.Manager):
     def get_query_set(self):
         return super(FileHistoryManager, self).get_query_set().filter(active=True)
@@ -29,7 +41,7 @@ class FileHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
-    filename = models.FileField(upload_to="upload_history/%Y/%m/%d/")
+    filename = models.FileField(upload_to=get_random_filename)
     owner = models.ForeignKey(User, null=True)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
