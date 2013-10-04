@@ -297,13 +297,13 @@ TEST
 +-----------------------+--------------------+-----+
 |Acentuation with XLS   | Excel MAC 2011     | OK  |
 +-----------------------+--------------------+-----+
-|Acentuation with XLS   | Excel WIN 2011     | OK  |
+|Acentuation with XLS   | Excel WIN 2010     | OK  |
 +-----------------------+--------------------+-----+
 |Acentuation with XLSX  | Excel MAC 2011     | OK  |
 +-----------------------+--------------------+-----+
-|Acentuation with XLSX  | Excel WIN 2011     | OK  |
+|Acentuation with XLSX  | Excel WIN 2010     | OK  |
 +-----------------------+--------------------+-----+
-|Acentuation with CSV   | Excel Win 2007     | OK  |
+|Acentuation with CSV   | Excel Win 2010     | OK  |
 +-----------------------+--------------------+-----+
 
 -----------------------------------------------------------
