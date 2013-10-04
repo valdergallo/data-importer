@@ -4,6 +4,7 @@
 #!/usr/bin/env python
 import os
 from setuptools import setup
+import data_importer
 
 install_requires = [
     'django>=1.2',
@@ -25,7 +26,7 @@ setup(name='data-importer',
           'Operating System :: OS Independent',
           'Topic :: Utilities'
       ],
-      version='1.1.5',
+      version=data_importer.__version__,
       install_requires=install_requires,
       packages=['data_importer', 'data_importer.importers'],
 )
