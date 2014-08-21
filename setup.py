@@ -5,8 +5,6 @@
 import os
 from setuptools import setup
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example.settings")
-
 import data_importer
 
 
