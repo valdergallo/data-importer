@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from django.conf.urls.defaults import patterns, url
+import django
+if django.VERSION >= "1.6":
+    from django.conf.urls import patterns, url
+else:
+    from django.conf.urls.defaults import patterns, url
 from data_importer.views import DataImporterCreateView, DataImporterUpdateView, DataImporterDeleteView, DataImporterDetailView
 
 urlpatterns = patterns('',

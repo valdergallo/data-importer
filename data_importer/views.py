@@ -49,7 +49,11 @@ class DataImporterFormBase(FormView):
             self.request,
             "Uploaded file sucess"
         )
-        FileHistory.objects.get_or_create(filename=form.cleaned_data['filename'])
+        if self.request.user.id:
+            owner = self.request.user
+        else:
+            owner = None
+        FileHistory.objects.get_or_create(filename=form.cleaned_data['filename'], owner=owner)
         return super(DataImporterFormBase, self).form_valid(form)
 
 

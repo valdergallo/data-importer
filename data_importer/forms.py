@@ -21,5 +21,5 @@ class FileUploadForm(forms.ModelForm):
         super(FileUploadForm, self)._post_clean()
         if not HAS_CELERY and self.instance.is_task:
             foms.ValidationError("You need install Celery to use Data importer as task")
-        elif HAS_CELERY and self.install.is_task:
+        elif HAS_CELERY and self.instance.is_task:
             DataImpoterTask.run(self.instance)
