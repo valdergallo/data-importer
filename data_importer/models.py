@@ -15,7 +15,7 @@ from django.conf import settings
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
 
-CELERY_STATUS = ((1, 'Impoted'),
+CELERY_STATUS = ((1, 'Imported'),
                  (2, 'Waiting'),
                  (3, 'Cancelled'),
                  (-1, 'Error'),
@@ -25,9 +25,11 @@ CELERY_STATUS = ((1, 'Impoted'),
 def get_random_filename(instance, filename):
     _, ext = os.path.splitext(filename)
     filename = "%s.%s" % (str(uuid4()), ext)
-
+    user_dir = "anonymous"
+    if instance.owner:
+        user_dir = instance.owner.username
     return os.path.join('upload_history',
-                        instance.owner.username,
+                        user_dir,
                         date.today().strftime("%Y/%m/%d"),
                         filename)
 
