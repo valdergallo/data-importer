@@ -173,4 +173,3 @@ class TestReadContent(TestCase):
         self.assertEquals(importer.cleaned_data[0],
                           (0, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
-

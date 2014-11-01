@@ -47,7 +47,7 @@ class TestXLSImportMeta(TestCase):
 
 
 
-class Invoice(models.Model):
+class InvoiceXLS(models.Model):
     business_place = models.CharField(max_length=2)
     doc_number = models.IntegerField()
     doc_data = models.DateTimeField(max_length=10)
@@ -62,7 +62,7 @@ class TestModelXLSImporter(TestCase):
         class TestMeta(XLSImporter):
             class Meta:
                 ignore_first_line = True
-                model = Invoice
+                model = InvoiceXLS
 
         self.xls_file = os.path.join(LOCAL_DIR, 'data/test.xls')
         self.importer = TestMeta(source=self.xls_file)
@@ -85,14 +85,14 @@ class TestModelXLSImporter(TestCase):
 
     def test_save_data(self):
         for row, data in self.importer.cleaned_data:
-            instace = Invoice(**data)
+            instace = InvoiceXLS(**data)
             self.assertTrue(instace.save())
 
     def test_save_importer(self):
         self.assertTrue(self.importer.save())
 
 
-class Mercado(models.Model):
+class MercadoXLS(models.Model):
     item = models.CharField(max_length=50)
     qtde = models.IntegerField(default=0)
 
@@ -106,7 +106,7 @@ class TestPTBRXLSImporter(TestCase):
         class TestMeta(XLSImporter):
             class Meta:
                 ignore_first_line = True
-                model = Mercado
+                model = MercadoXLS
 
         self.xls_file = os.path.join(LOCAL_DIR, 'data/ptbr_test.xls')
         self.importer = TestMeta(source=self.xls_file)
