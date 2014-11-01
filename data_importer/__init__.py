@@ -3,7 +3,7 @@
 
 
 __doc__ = 'Data Importer'
-__version__ = '1.2.3'
+__version__ = '1.2.9'
 __author__ = 'Valder Gallo <valdergallo@gmail.com>'
 
 

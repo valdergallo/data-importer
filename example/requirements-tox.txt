@@ -1,0 +1,8 @@
+django-debug-toolbar
+django-nose
+django_coverage
+docutils
+nose
+openpyxl
+xlrd
+South
