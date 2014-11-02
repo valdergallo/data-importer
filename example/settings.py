@@ -4,6 +4,7 @@
 # Django settings for example project.
 import os
 import sys
+import django
 
 data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 print data_importer_path
@@ -29,7 +30,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -43,15 +44,6 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
-USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
@@ -151,7 +143,10 @@ if 'test' in sys.argv:
                       'data_importer')
 
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+if django.VERSION < '1.6':
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+else:
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
