@@ -7,3 +7,5 @@ cover/*
 docs/_build/*
 example/media/*
 *.c
+.tox/*
+*.egg-info/*
