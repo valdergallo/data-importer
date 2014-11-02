@@ -18,7 +18,7 @@ def readme():
 
 install_requires = [
     'django>=1.4',
-    'openpyxl==2.1.2',
+    'openpyxl==2.1.1',
     'xlrd==0.9.3',
 ]
 
