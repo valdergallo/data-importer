@@ -2,7 +2,13 @@ Django Data Importer
 ====================
 
 .. image:: https://travis-ci.org/valdergallo/django-data-importer.png?branch=master
-    :target: https://travis-ci.org/valdergallo/django-data-importer
+    :target: https://travis-ci.org/valdergallo/django-data-importer 
+
+.. image:: https://pypip.in/d/data-importer/badge.png
+    :target: https://www.djangopackages.com/packages/p/data-importer/
+    
+.. image:: http://img.shields.io/badge/license-BSD-yellow.svg
+    :target: http://opensource.org/licenses/BSD-3-Clause
 
 **Django Data Importer** is a tool which allow you to transform easily a CSV, XML, XLS and XLSX file into a python object or a django model instance. It is based on the django-style declarative model.
 
