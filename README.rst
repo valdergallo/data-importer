@@ -1,8 +1,8 @@
 Django Data Importer
 ====================
 
-.. image:: https://travis-ci.org/valdergallo/django-data-importer.png?branch=master
-    :target: https://travis-ci.org/valdergallo/django-data-importer
+.. image:: https://travis-ci.org/valdergallo/data-importer.png?branch=master
+    :target: https://travis-ci.org/valdergallo/data-importer
 
 .. image:: http://img.shields.io/pypi/v/data-importer.svg
     :target: https://pypi.python.org/pypi/data-importer
