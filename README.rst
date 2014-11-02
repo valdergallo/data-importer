@@ -4,8 +4,8 @@ Django Data Importer
 .. image:: https://travis-ci.org/valdergallo/django-data-importer.png?branch=master
     :target: https://travis-ci.org/valdergallo/django-data-importer
 
-.. image:: http://img.shields.io/pypi/v/django-data-importer.svg
-    :target: https://pypi.python.org/pypi/django-data-importer
+.. image:: http://img.shields.io/pypi/v/data-importer.svg
+    :target: https://pypi.python.org/pypi/data-importer
 
 .. image:: https://pypip.in/d/data-importer/badge.png
     :target: https://www.djangopackages.com/packages/p/data-importer/
