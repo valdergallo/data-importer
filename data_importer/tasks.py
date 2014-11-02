@@ -9,7 +9,10 @@ except ImportError:
 
 from django.core.cache import cache
 from data_importer import default_settings
-from data_importer import BaseImporter, XMLImporter, XLSImporter, XLSXImporter
+from data_importer.importers import BaseImporter
+from data_importer.importers import XMLImporter
+from data_importer.importers import XLSImporter
+from data_importer.importers import XLSXImporter
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from .. import XLSXImporter
+from data_importer.importers.xlsx_importer import XLSXImporter
 import os
 import datetime
 from django.db import models

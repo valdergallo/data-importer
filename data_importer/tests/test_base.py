@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from .. import BaseImporter
-from ..importers.base import objclass2dict
+from data_importer.importers.base import objclass2dict
+from data_importer.importers.base import BaseImporter
 from cStringIO import StringIO
 import data_importer
 
@@ -66,15 +66,15 @@ class TestBaseImportMeta(TestCase):
 class TestImporters(TestCase):
     def test_xls_importers(self):
         import data_importer
-        self.assertTrue(data_importer.XLSImporter)
+        self.assertTrue(data_importer.importers.XLSImporter)
 
     def test_xlsx_importers(self):
         import data_importer
-        self.assertTrue(data_importer.XLSXImporter)
+        self.assertTrue(data_importer.importers.XLSXImporter)
 
     def test_base_importers(self):
         import data_importer
-        self.assertTrue(data_importer.XMLImporter)
+        self.assertTrue(data_importer.importers.XMLImporter)
 
 
 class TestClassObjToLazyDict(TestCase):

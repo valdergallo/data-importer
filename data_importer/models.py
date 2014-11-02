@@ -11,6 +11,8 @@ from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
@@ -35,7 +37,7 @@ def get_random_filename(instance, filename):
 
 
 class FileHistoryManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return super(FileHistoryManager, self).get_query_set().filter(active=True)
 
 
@@ -47,6 +49,10 @@ class FileHistory(models.Model):
     owner = models.ForeignKey(User, null=True)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
+
+    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     objects = FileHistoryManager()
     all_objects = models.Manager()
@@ -95,12 +101,3 @@ class FileHistory(models.Model):
     def compose_file_name(self):
         basename = os.path.basename(self.filename.file.name)
         return "%s (%s)" % (basename, self.owner)
-
-
-class FileHistoryLog(models.Model):
-    filehistory = models.ForeignKey(FileHistory)
-    created_at = models.DateTimeField(auto_now_add=True)
-    log = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return self.log

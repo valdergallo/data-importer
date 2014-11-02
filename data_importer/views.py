@@ -4,6 +4,7 @@
 from .forms import FileUploadForm
 from .models import FileHistory
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 
 try:
     from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
@@ -27,10 +28,11 @@ class DataImporterDetailView(DetailView):
     template_name = 'data_importer_detail.html'
 
 
-class DataImporterFormBase(FormView):
+class DataImporterForm(FormView):
     model = FileHistory
     template_name = 'data_importer.html'
     form_class = FileUploadForm
+    importer_model = None
     success_url = '.'
     extra_context = {'title': 'Form Data Importer'}
 
@@ -44,16 +46,19 @@ class DataImporterFormBase(FormView):
     #     # Process view when the form gets Posted
     #     pass
 
-    def form_valid(self, form):
+    def form_valid(self, form, owner=None):
         messages.info(
             self.request,
             "Uploaded file sucess"
         )
+
         if self.request.user.id:
             owner = self.request.user
-        else:
-            owner = None
-        FileHistory.objects.get_or_create(filename=form.cleaned_data['filename'], owner=owner)
+
+        FileHistory.objects.get_or_create(filename=form.cleaned_data['filename'],
+                                          owner=owner,
+                                          content_object=self.importer_model)
+
         return super(DataImporterFormBase, self).form_valid(form)
 
 

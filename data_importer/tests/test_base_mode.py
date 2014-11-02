@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from .. import BaseImporter
-from cStringIO import StringIO
+from data_importer.importers.base import BaseImporter
 import os
 from django.core.files import File as DjangoFile
-from ..models_test import Person, Mercado, PersonFile
+from data_importer.models_test import Person, Mercado, PersonFile
 
 LOCAL_DIR = os.path.dirname(__file__)
 

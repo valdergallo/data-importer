@@ -3,7 +3,7 @@
 
 from django.test import TestCase
 from django.db import models
-from .. import XMLImporter
+from data_importer.importers.xml_importer import XMLImporter
 
 
 class Musics(models.Model):

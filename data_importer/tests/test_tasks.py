@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from ..tasks import DataImpoterTask
+from data_importer.tasks import DataImpoterTask
 
 
 class FakeFileInstance(object):
