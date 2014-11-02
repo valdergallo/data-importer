@@ -7,9 +7,11 @@ from .base import BaseImporter
 
 class XLSXImporter(BaseImporter):
 
-    def set_reader(self, use_iterators=True):
+    def set_reader(self, use_iterators=True, data_only=True):
         "Read XLSX files"
-        self.workbook = load_workbook(self.source, use_iterators=use_iterators)
+        self.workbook = load_workbook(self.source,
+                                      use_iterators=use_iterators,
+                                      data_only=data_only)
         if self.Meta.sheet_name:
             self.worksheet = self.workbook.get_sheet_by_name(self.Meta.sheet_name)
         else:
@@ -21,14 +23,7 @@ class XLSXImporter(BaseImporter):
         """
         Handle different value types for XLSX. Item is a cell object.
         """
-        if item.is_date:
-            return item.internal_value # return datetime
-
-        if type(item.internal_value) == float:
-            if item.internal_value % 1 == 0:  # return integers
-                return int(item.internal_value)
-
-        return item.internal_value # return string
+        return item.value
 
     def get_items(self):
         """
