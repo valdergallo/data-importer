@@ -2,14 +2,14 @@ Django Data Importer
 ====================
 
 .. image:: https://travis-ci.org/valdergallo/django-data-importer.png?branch=master
-    :target: https://travis-ci.org/valdergallo/django-data-importer 
-    
+    :target: https://travis-ci.org/valdergallo/django-data-importer
+
 .. image:: http://img.shields.io/pypi/v/django-data-importer.svg
     :target: https://pypi.python.org/pypi/django-data-importer
 
 .. image:: https://pypip.in/d/data-importer/badge.png
     :target: https://www.djangopackages.com/packages/p/data-importer/
-    
+
 .. image:: http://img.shields.io/badge/license-BSD-yellow.svg
     :target: http://opensource.org/licenses/BSD-3-Clause
 
@@ -318,4 +318,4 @@ TEST
 -----------------------------------------------------------
 
     :Python: python 2.7
-    :Django: 1.3.7; 1.4.5; 1.5.1
+    :Django: 1.2+
