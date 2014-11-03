@@ -3,10 +3,10 @@ setup:
 	pip install -r example/requirements.txt
 
 test:
-	python example/manage.py test data_importer -v2
+	python example/manage.py test data_importer -v 2
 
 coverage:
-	python example/manage.py test data_importer -v2 --with-coverage
+	python example/manage.py test data_importer -v 2 --with-coverage
 
 send_package:
 	python setup.py register sdist upload
