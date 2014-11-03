@@ -36,11 +36,6 @@ def get_random_filename(instance, filename):
                         filename)
 
 
-class FileHistoryManager(models.Manager):
-    def get_queryset(self):
-        return super(FileHistoryManager, self).get_query_set().filter(active=True)
-
-
 class FileHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -53,9 +48,6 @@ class FileHistory(models.Model):
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-
-    objects = FileHistoryManager()
-    all_objects = models.Manager()
 
     class Meta:
         verbose_name_plural = 'File Histories'

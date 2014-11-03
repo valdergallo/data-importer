@@ -6,38 +6,11 @@ import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
 
-from data_importer import default_settings
-from data_importer.importers.descriptor import ReadDescriptor
+from data_importer.django.descriptor import ReadDescriptor
 from data_importer.exceptions import StopImporter
-
-
-DATA_IMPORTER_EXCEL_DECODER = default_settings.DATA_IMPORTER_EXCEL_DECODER
-
-DATA_IMPORTER_DECODER = default_settings.DATA_IMPORTER_DECODER
-
-
-def objclass2dict(objclass):
-    """
-    Meta is a objclass on python 2.7 and no have __dict__ attribute.
-
-    This method convert one objclass to one lazy dict without AttributeError
-    """
-    class Dict(dict):
-        def __init__(self, data={}):
-            super(Dict, self).__init__(data)
-            self.__dict__ = dict(self.items())
-
-        def __getattr__(self, key):
-            try:
-                return self.__getattribute__(key)
-            except AttributeError:
-                return False
-
-    obj_list = [i for i in dir(objclass) if not str(i).startswith("__")]
-    obj_values = []
-    for objitem in obj_list:
-        obj_values.append(getattr(objclass, objitem))
-    return Dict(zip(obj_list, obj_values))
+from data_importer.base import objclass2dict
+from data_importer.base import DATA_IMPORTER_EXCEL_DECODER
+from data_importer.base import DATA_IMPORTER_DECODER
 
 
 class BaseImporter(object):
@@ -262,7 +235,13 @@ class BaseImporter(object):
         """
         Create cleaned_data content
         """
-        for row, values in enumerate(self._reader):
+
+        if hasattr('read', self._readed):
+            reader = self._readed.read()
+        else:
+            reader = self._readed
+
+        for row, values in enumerate(reader):
             if self.Meta.ignore_first_line:
                 row -= 1
             if row == -1:
