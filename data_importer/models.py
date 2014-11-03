@@ -45,7 +45,7 @@ class FileHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
-    filename = models.FileField(upload_to=get_random_filename)
+    file_upload = models.FileField(upload_to=get_random_filename)
     owner = models.ForeignKey(User, null=True)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)

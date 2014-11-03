@@ -33,10 +33,10 @@ class XLSImporter(BaseImporter):
         Handle different value types for XLS. Item is a cell object.
         """
         # Thx to Augusto C Men to point fast solution for XLS/XLSX dates
-        if item.ctype == 3: #XL_CELL_DATE:
+        if item.ctype == 3:  # XL_CELL_DATE:
             return datetime.datetime(*xlrd.xldate_as_tuple(item.value, self.workbook.datemode))
 
-        if item.ctype == 2: #XL_CELL_NUMBER:
+        if item.ctype == 2:  # XL_CELL_NUMBER:
             if item.value % 1 == 0:  # integers
                 return int(item.value)
             else:
@@ -54,4 +54,3 @@ class XLSImporter(BaseImporter):
             if not any(values):
                 continue  # empty lines are ignored
             yield values
-
