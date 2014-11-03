@@ -63,8 +63,8 @@ Basic example
 
 Consider the following:
 
->>> from data_importer.base import BaseImporter
->>> class MyCSVImporterModel(BaseImporter):
+>>> from data_importer.importers import CSVImporter
+>>> class MyCSVImporterModel(CSVImporter):
 ...     fields = ['name', 'age', 'length']
 ...     class Meta:
 ...         delimiter = ";"
@@ -98,9 +98,9 @@ If you now want to interact with a django model, you just have to add a **Meta.m
 ...     age = models.CharField(max_length=150)
 ...     length = models.CharField(max_length=150)
 
->>> from data_importer.base import BaseImporter
+>>> from data_importer.importers import CSVImporter
 >>> from data_importer.model import MyModel
->>> class MyCSVImporterModel(BaseImporter):
+>>> class MyCSVImporterModel(CSVImporter):
 ...     class Meta:
 ...         delimiter = ";"
 ...         model = MyModel
@@ -159,7 +159,7 @@ XML file example:
 ...     age = models.CharField(max_length=150)
 ...     height = models.CharField(max_length=150)
 
->>> from data_importer import XMLImporter
+>>> from data_importer.importers import XMLImporter
 >>> from data_importer.model import MyModel
 >>> class MyCSVImporterModel(XMLImporter):
 ...     root = 'file'
