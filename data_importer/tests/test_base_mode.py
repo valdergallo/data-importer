@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.test import TestCase
-from data_importer.importers.base import BaseImporter
+from data_importer.importers import CSVImporter
 import os
 from django.core.files import File as DjangoFile
 from data_importer.models_test import Person, Mercado, PersonFile
@@ -15,7 +15,7 @@ person_content = """first_name,last_name,age\ntest_first_name_1,test_last_name_1
 
 class TestBaseWithModel(TestCase):
     def setUp(self):
-        class TestMeta(BaseImporter):
+        class TestMeta(CSVImporter):
             class Meta:
                 model = Person
                 delimiter = ','
@@ -36,18 +36,18 @@ class TestBaseWithModel(TestCase):
         self.assertEquals(self.importer.cleaned_data[0], (0, content))
 
     def test_source_importer_file(self):
-        base = BaseImporter(source=open('test.txt', 'w'))
+        base = CSVImporter(source=open('test.txt', 'w'))
         self.assertEqual(type(base._source), file, type(base._source))
 
     def test_source_importer_list(self):
-        base = BaseImporter(source=['test1', 'test2'])
+        base = CSVImporter(source=['test1', 'test2'])
         self.assertEqual(type(base._source), list, type(base._source))
 
     def test_source_importer_django_file(self):
         person = PersonFile()
         person.filefield = DjangoFile(open('test.txt', 'w'))
 
-        base = BaseImporter(source=person.filefield)
+        base = CSVImporter(source=person.filefield)
         self.assertEqual(type(base._source), file, type(base._source))
 
     def test_save_data_content(self):
@@ -65,7 +65,7 @@ class TestBaseWithModel(TestCase):
 class TestPTBRCSVImporter(TestCase):
 
     def setUp(self):
-        class TestMeta(BaseImporter):
+        class TestMeta(CSVImporter):
             class Meta:
                 ignore_first_line = True
                 delimiter = ';'

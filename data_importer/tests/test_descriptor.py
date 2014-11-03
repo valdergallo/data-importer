@@ -3,9 +3,9 @@
 
 import os
 from django.test import TestCase
-from data_importer.importers.descriptor import ReadDescriptor
-from data_importer.importers.descriptor import InvalidDescriptor
-from data_importer.importers.descriptor import InvalidModel
+from data_importer.core.descriptor import ReadDescriptor
+from data_importer.core.descriptor import InvalidDescriptor
+from data_importer.core.descriptor import InvalidModel
 
 BASEDIR = os.path.dirname(__file__)
 JSON_FILE = os.path.abspath(os.path.join(BASEDIR, '../tests/data/test_json_descriptor.json'))

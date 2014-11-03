@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import csv
 import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
 
-from data_importer.django.descriptor import ReadDescriptor
-from data_importer.exceptions import StopImporter
-from data_importer.base import objclass2dict
-from data_importer.base import DATA_IMPORTER_EXCEL_DECODER
-from data_importer.base import DATA_IMPORTER_DECODER
+from data_importer.core.descriptor import ReadDescriptor
+from data_importer.core.exceptions import StopImporter
+from data_importer.core.base import objclass2dict
+from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
+from data_importer.core.base import DATA_IMPORTER_DECODER
 
 
 class BaseImporter(object):
@@ -151,7 +150,7 @@ class BaseImporter(object):
             response: [['value_myfield1', 'value_myfield2'],
                         ['value2_myfield1', 'value2_myfield2']]
         """
-        self._reader = csv.reader(self.source, delimiter=self.meta.get('delimiter', ';'))
+        raise NotImplemented('No reader')
 
     def process_row(self, row, values):
         """
@@ -236,10 +235,10 @@ class BaseImporter(object):
         Create cleaned_data content
         """
 
-        if hasattr('read', self._readed):
-            reader = self._readed.read()
+        if hasattr(self._reader, 'read'):
+            reader = self._reader.read()
         else:
-            reader = self._readed
+            reader = self._reader
 
         for row, values in enumerate(reader):
             if self.Meta.ignore_first_line:

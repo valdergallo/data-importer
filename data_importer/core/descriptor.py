@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from data_importer.exceptions import InvalidModel, InvalidDescriptor
+from data_importer.core.exceptions import InvalidModel, InvalidDescriptor
 try:
     import json
 except ImportError:

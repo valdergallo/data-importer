@@ -8,7 +8,7 @@ except ImportError:
     Task = object
 
 from django.core.cache import cache
-from data_importer import default_settings
+from data_importer.core import default_settings
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe

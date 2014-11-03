@@ -140,7 +140,7 @@ class TestReadContent(TestCase):
 
     def test_raise_error_on_clean(self):
         class TestMetaClean(CSVImporter):
-            fields = ['test',]
+            fields = ['test', ]
 
             def clean_test(self, value):
                 value.coisa = 1

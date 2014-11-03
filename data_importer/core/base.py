@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from data_importer import default_settings
+import default_settings
 DATA_IMPORTER_EXCEL_DECODER = default_settings.DATA_IMPORTER_EXCEL_DECODER
 DATA_IMPORTER_DECODER = default_settings.DATA_IMPORTER_DECODER
 
