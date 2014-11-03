@@ -52,7 +52,7 @@ class DataImpoterTask(Task):
 
             if instance.owner and instance.owner.email:
                 email = EmailMessage(subject='[Data Importer] %s was processed' % (os.path.basename(instance.filename.name),),
-                     body=mark_safe(parse.errors),
+                     body=mark_safe(parser.errors),
                      to=[instance.owner.email],
                      headers={'Content-Type': 'text/plain'})
             email.send()
