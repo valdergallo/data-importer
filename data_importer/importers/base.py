@@ -10,6 +10,7 @@ from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
+from data_importer.models import FileHistory
 
 
 class BaseImporter(object):
@@ -77,6 +78,8 @@ class BaseImporter(object):
             self._source = open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
+        elif isinstance(source, FileHistory):
+            self._source = source.file_upload
         elif hasattr(source, 'file'):
             self._source = open(source.file.name, 'rb')
         else:
@@ -182,6 +185,8 @@ class BaseImporter(object):
         if self._readed:
             return self._cleaned_data
 
+        self._readed = True
+
         try:
             self.pre_clean()
         except Exception, e:
@@ -201,7 +206,6 @@ class BaseImporter(object):
         except Exception, e:
             self._error.append(('__post_clean__', repr(e)))
 
-        self._readed = True
         return self._cleaned_data
 
     def pre_clean(self):
