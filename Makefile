@@ -1,4 +1,12 @@
 # Make content for developer
+help:
+	@echo "setup			Instal requirements"
+	@echo "test			Run suit test"
+	@echo "coverage		Run Coverage"
+	@echo "clean			Remove trash files"
+	@echo "send_package		Send Package to Pypi"
+
+
 setup:
 	pip install -r example/requirements.txt
 
