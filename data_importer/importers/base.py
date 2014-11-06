@@ -4,13 +4,23 @@
 import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
-
+from contextlib import contextmanager
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 from data_importer.models import FileHistory
+
+
+@contextmanager
+def wrap_error(self, row):
+    try:
+        yield
+    except StopImporter, e:
+        raise StopImporter((row, type(e).__name__, unicode(e)))
+    except Exception, e:
+        self._error.append((row, type(e).__name__, unicode(e)))
 
 
 class BaseImporter(object):
@@ -159,8 +169,16 @@ class BaseImporter(object):
         """
         Read clean functions from importer and return tupla with row number, field and value
         """
-        values_encoded = [self.to_unicode(i) for i in values]
-        values = dict(zip(self.fields, values_encoded))
+        if self.Meta.raise_errors:
+            values_encoded = [self.to_unicode(i) for i in values]
+            values = dict(zip(self.fields, values_encoded))
+        else:
+            with wrap_error(self, row):
+                values_encoded = [self.to_unicode(i) for i in values]
+                values = dict(zip(self.fields, values_encoded))
+
+        self.line = values
+
         for k, v in values.items():
             if hasattr(self, 'clean_%s' % k):
                 clean_function = getattr(self, 'clean_%s' % k)
@@ -168,12 +186,8 @@ class BaseImporter(object):
                 if self.Meta.raise_errors:
                     values[k] = clean_function(v)
                 else:
-                    try:
+                    with wrap_error(self, row):
                         values[k] = clean_function(v)
-                    except StopImporter, e:
-                        raise StopImporter((row, type(e).__name__, unicode(e)))
-                    except Exception, e:
-                        self._error.append((row, type(e).__name__, unicode(e)))
 
         return (row, values)
 
