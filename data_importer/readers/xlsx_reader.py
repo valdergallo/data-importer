@@ -19,6 +19,4 @@ class XLSXReader(object):
     def read(self):
         for line, row in enumerate(self.worksheet.iter_rows()):
             values = [cell.value for cell in row]
-            if not any(values):
-                continue  # empty lines are ignored
             yield values

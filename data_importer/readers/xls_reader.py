@@ -44,6 +44,4 @@ class XLSReader(object):
     def read(self):
         for i in xrange(0, self.worksheet.nrows):
             values = [self.convert_value(cell, self.workbook) for cell in self.worksheet.row(i)]
-            if not any(values):
-                continue  # empty lines are ignored
             yield values
