@@ -10,7 +10,6 @@ from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
-from data_importer.models import FileHistory
 
 
 @contextmanager
@@ -88,7 +87,7 @@ class BaseImporter(object):
             self._source = open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
-        elif isinstance(source, FileHistory):
+        elif hasattr(source, 'file_upload'):  # for FileHistory instances
             self._source = source.file_upload
         elif hasattr(source, 'file'):
             self._source = open(source.file.name, 'rb')
