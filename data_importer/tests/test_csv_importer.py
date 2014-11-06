@@ -173,3 +173,14 @@ class TestReadContent(TestCase):
         self.assertEquals(importer.cleaned_data[0],
                           (0, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
+
+    def test_error_not_is_cleaned_data(self):
+        class TestMetaClean(CSVImporter):
+            fields = ['test', ]
+
+            def clean_test(self, value):
+                value.coisa = 1
+
+        importer_error = TestMetaClean(source=['test1', ])
+        self.assertFalse(importer_error.is_valid())
+        self.assertEqual(importer_error.cleaned_data, ())

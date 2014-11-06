@@ -4,23 +4,12 @@
 import os
 from django.db import transaction
 from django.utils.encoding import force_unicode
-from contextlib import contextmanager
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 from data_importer.models import FileHistory
-
-
-@contextmanager
-def wrap_error(self, row):
-    try:
-        yield
-    except StopImporter, e:
-        raise StopImporter((row, type(e).__name__, unicode(e)))
-    except Exception, e:
-        self._error.append((row, type(e).__name__, unicode(e)))
 
 
 class BaseImporter(object):
@@ -169,15 +158,15 @@ class BaseImporter(object):
         """
         Read clean functions from importer and return tupla with row number, field and value
         """
-        if self.Meta.raise_errors:
-            values_encoded = [self.to_unicode(i) for i in values]
+        values_encoded = [self.to_unicode(i) for i in values]
+
+        try:
             values = dict(zip(self.fields, values_encoded))
-        else:
-            with wrap_error(self, row):
-                values_encoded = [self.to_unicode(i) for i in values]
-                values = dict(zip(self.fields, values_encoded))
+        except TypeError:
+            raise TypeError('Invalid Line: %s' % row)
 
         self.line = values
+        has_error = False
 
         for k, v in values.items():
             if hasattr(self, 'clean_%s' % k):
@@ -186,8 +175,16 @@ class BaseImporter(object):
                 if self.Meta.raise_errors:
                     values[k] = clean_function(v)
                 else:
-                    with wrap_error(self, row):
+                    try:
                         values[k] = clean_function(v)
+                    except StopImporter, e:
+                        raise StopImporter((row, type(e).__name__, unicode(e)))
+                    except Exception, e:
+                        self._error.append((row, type(e).__name__, unicode(e)))
+                        has_error = True
+
+        if has_error:
+            return None
 
         return (row, values)
 
@@ -206,14 +203,15 @@ class BaseImporter(object):
         except Exception, e:
             self._error.append(('__pre_clean__', repr(e)))
 
-        # create clean content
-        for data in self._read_file():
-            self._cleaned_data += (data, )
-
         try:
             self.clean()
         except Exception, e:
             self._error.append(('__clean_all__', repr(e)))
+
+        # create clean content
+        for data in self._read_file():
+            if data:
+                self._cleaned_data += (data, )
 
         try:
             self.post_clean()
