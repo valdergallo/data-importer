@@ -37,25 +37,32 @@ class DataImpoterTask(Task):
     mimetype = None
     parse = None
 
-    def run(self, instance=None, importer=None, **kwargs):
-        """
-        TODO:
-            - need create customer messages for tasks
-        """
-        if not importer or not instance:
+    @staticmethod
+    def send_email(subject='[Data Importer] was processed', body="", owner):
+        email = EmailMessage(subject=subject,
+                             body=body,
+                             to=[owner.email],
+                             headers={'Content-Type': 'text/plain'})
+        email.send()
+
+    def run(self, importer=None, owner=None, **kwargs):
+        if not importer:
             return
 
         lock_id = "%s-lock" % (self.name)
 
         if acquire_lock(lock_id):
-            parser = importer(instance.file_upload)
+            parser = importer()
+            parser.is_valid()
+            parser.save()
+            message += "\n"
 
-            if instance.owner and instance.owner.email:
-                email = EmailMessage(subject='[Data Importer] %s was processed' % (os.path.basename(instance.filename.name),),
-                     body=mark_safe(parser.errors),
-                     to=[instance.owner.email],
-                     headers={'Content-Type': 'text/plain'})
-            email.send()
+            if owner and owner.email and parser.errors:
+                message += mark_safe(parser.errors)
+            elif owner and owner.email and not parser.errors:
+                message = "Your file was imported with sucess"
+
+            self.send_email(body=message)
 
             release_lock(lock_id)
         else:

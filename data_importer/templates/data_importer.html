@@ -1,6 +1,8 @@
 {% extends "index.html" %}
 
 {% block contents %}
+<h1> {{ title }} </h1>
+
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -8,6 +10,8 @@
     {% endfor %}
 </ul>
 {% endif %}
+
+<a href="{{ template_file }}">download template file</a>
 
 <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
     {{ form.as_p }}
