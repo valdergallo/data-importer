@@ -9,12 +9,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 admin.autodiscover()
 
+from example.views import DataImporterCreateView
 
 urlpatterns = patterns('',
-    #: Example
-    url(r'^data_importer/', include('data_importer.urls',
-                            namespace='data_importer',
-                            app_name='data_importer')),
+    url(r'^$', DataImporterCreateView.as_view(), name='data_importer'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
