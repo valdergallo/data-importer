@@ -34,35 +34,34 @@ class DataImpoterTask(Task):
     name = 'data_importer_task'
     queue = DATA_IMPORTER_QUEUE
     time_limit = 60 * 15
-    mimetype = None
-    parse = None
 
     @staticmethod
-    def send_email(subject='[Data Importer] was processed', body="", owner):
+    def send_email(subject='[Data Importer] was processed', body="", owner=None):
         email = EmailMessage(subject=subject,
                              body=body,
                              to=[owner.email],
                              headers={'Content-Type': 'text/plain'})
         email.send()
 
-    def run(self, importer=None, owner=None, **kwargs):
+    def run(self, importer=None, owner=None, message="", **kwargs):
         if not importer:
             return
+
+        self.parser = importer
 
         lock_id = "%s-lock" % (self.name)
 
         if acquire_lock(lock_id):
-            parser = importer()
-            parser.is_valid()
-            parser.save()
+            self.parser.is_valid()
+            self.parser.save()
             message += "\n"
 
-            if owner and owner.email and parser.errors:
-                message += mark_safe(parser.errors)
-            elif owner and owner.email and not parser.errors:
+            if owner and owner.email and self.parser.errors:
+                message += mark_safe(self.parser.errors)
+            elif owner and owner.email and not self.parser.errors:
                 message = "Your file was imported with sucess"
 
-            self.send_email(body=message)
+            self.send_email(body=message, owner=owner)
 
             release_lock(lock_id)
         else:

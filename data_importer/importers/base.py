@@ -295,7 +295,7 @@ class BaseImporter(object):
         else:
             for row, data in self.cleaned_data:
                 record = instance(**data)
-                record.save()
+                record.save(force_update=False)
 
         self.post_save_all_lines()
 

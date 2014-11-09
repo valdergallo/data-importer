@@ -32,6 +32,7 @@ class DataImporterForm(FormView):
     model = FileHistory
     template_name = 'data_importer/data_importer.html'
     form_class = FileUploadForm
+    task = DataImpoterTask()
     importer = None
     is_task = True
     success_url = '.'
@@ -45,14 +46,14 @@ class DataImporterForm(FormView):
                                           owner=owner,
                                           content_object=self.importer.Meta.model)
 
-        if self.is_task:
-            importer = DataImpoterTask(self.importer)
-            if importer.errors:
-                messages.error(self.request, importer.errors)
+        if not self.is_task:
+            self.task.run(importer=self.importer, owner=owner)
+            if self.task.importer.errors:
+                messages.error(self.request, self.task.importer.errors)
             else:
                 messages.success(self.request, "Uploaded file sucess")
         else:
-            DataImpoterTask.delay(self.importer, owner)
+            self.task.delay(importer=self.importer, owner=owner)
             if owner:
                 messages.info(
                     self.request,
