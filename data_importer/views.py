@@ -39,6 +39,11 @@ class DataImporterForm(FormView):
     success_url = '.'
     extra_context = {'title': 'Form Data Importer', 'template_file': 'myfile.csv'}
 
+    def get_context_data(self, **kwargs):
+        context = super(DataImporterForm, self).get_context_data(**kwargs)
+        context.update(self.extra_context)
+        return context
+
     def form_valid(self, form, owner=None):
         if self.request.user.id:
             owner = self.request.user
