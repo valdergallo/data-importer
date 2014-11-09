@@ -274,7 +274,7 @@ import inspect
 from django.utils.html import strip_tags
 from django.utils.encoding import force_unicode
 
-BASEDIR = os.path.abspath(os.path.dirname(__file__) + '/../../example/')
+BASEDIR = os.path.abspath(os.path.dirname(__file__) + '/../example/')
 sys.path.append(BASEDIR)
 
 from example import settings
