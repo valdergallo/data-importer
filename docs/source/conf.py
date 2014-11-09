@@ -106,7 +106,8 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
-if not on_rtd:  # only import and set the theme if we're building docs locally
+# if not on_rtd:  # only import and set the theme if we're building docs locally
+if on_rtd:  # only import and set the theme if we're building docs locally
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
@@ -274,12 +275,10 @@ import inspect
 from django.utils.html import strip_tags
 from django.utils.encoding import force_unicode
 
-BASEDIR = os.path.abspath(os.path.dirname(__file__) + '/../example/')
+BASEDIR = os.path.abspath(os.path.dirname(__file__) + '../example/')
 sys.path.append(BASEDIR)
 
-from example import settings
-from django.core.management import setup_environ
-setup_environ(settings)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 import data_importer
 
@@ -319,6 +318,7 @@ def process_docstring(app, what, name, obj, options, lines):
 
     # Return the extended docstring
     return lines
+
 
 def setup(app):
     # Register the docstring processor with sphinx
