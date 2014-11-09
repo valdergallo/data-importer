@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from data_importer.models_test import Person
 from data_importer.importers import CSVImporter
 LOCAL_DIR = os.path.dirname(__file__)
+from django.core import mail
 
 
 class TestMeta(CSVImporter):
@@ -20,10 +21,11 @@ class DataImporterTaskTest(TestCase):
 
     def setUp(self):
         owner, _ = User.objects.get_or_create(username='test', email='test@test.com')
-        self.importer = TestMeta(source=os.path.join(LOCAL_DIR, 'data/person_test.csv'))
+        source = os.path.join(LOCAL_DIR, 'data/person_test.csv')
+        self.importer = TestMeta
 
         self.task = DataImpoterTask()
-        self.task.run(importer=self.importer, owner=owner)
+        self.task.run(importer=self.importer, source=source, owner=owner)
 
     def test_task_run(self):
         created_person = Person.objects.filter(first_name='Eldo',
@@ -33,3 +35,8 @@ class DataImporterTaskTest(TestCase):
 
     def test_task_create_all(self):
         self.assertEqual(Person.objects.all().count(), 3)
+
+    def test_send_email(self):
+        outbox = mail.outbox[0]
+        self.assertEqual(outbox.body, 'Your file was imported with sucess')
+        self.assertEqual(outbox.to, ['test@test.com'])

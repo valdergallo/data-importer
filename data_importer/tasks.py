@@ -43,11 +43,11 @@ class DataImpoterTask(Task):
                              headers={'Content-Type': 'text/plain'})
         email.send()
 
-    def run(self, importer=None, owner=None, message="", **kwargs):
+    def run(self, importer=None, source="", owner=None, message="", **kwargs):
         if not importer:
             return
 
-        self.parser = importer
+        self.parser = importer(source=source)
 
         lock_id = "%s-lock" % (self.name)
 
@@ -61,7 +61,8 @@ class DataImpoterTask(Task):
             elif owner and owner.email and not self.parser.errors:
                 message = "Your file was imported with sucess"
 
-            self.send_email(body=message, owner=owner)
+            if hasattr(owner, 'email'):
+                self.send_email(body=message, owner=owner)
 
             release_lock(lock_id)
         else:

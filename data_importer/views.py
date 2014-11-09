@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .forms import FileUploadForm
-from .models import FileHistory
+from data_importer.forms import FileUploadForm
+from data_importer.models import FileHistory
 from django.contrib import messages
 from data_importer.tasks import DataImpoterTask
+from django.contrib.contenttypes.models import ContentType
 
 try:
     from django.views.generic.edit import FormView
@@ -30,7 +31,7 @@ class DataImporterForm(FormView):
         importer = MyImporterModel
     """
     model = FileHistory
-    template_name = 'data_importer/data_importer.html'
+    template_name = 'data_importer.html'
     form_class = FileUploadForm
     task = DataImpoterTask()
     importer = None
@@ -42,18 +43,17 @@ class DataImporterForm(FormView):
         if self.request.user.id:
             owner = self.request.user
 
-        FileHistory.objects.get_or_create(file_uplaod=form.cleaned_data['file_uplaod'],
-                                          owner=owner,
-                                          content_object=self.importer.Meta.model)
+        content_type = ContentType.objects.get_for_model(self.importer.Meta.model)
+        file_history, _ = FileHistory.objects.get_or_create(file_upload=form.cleaned_data['file_upload'], owner=owner, content_type=content_type)
 
-        if not self.is_task:
-            self.task.run(importer=self.importer, owner=owner)
-            if self.task.importer.errors:
+        if not self.is_task or not hasattr(self.task, 'delay'):
+            self.task.run(importer=self.importer, source=file_history, owner=owner)
+            if self.task.parser.errors:
                 messages.error(self.request, self.task.importer.errors)
             else:
                 messages.success(self.request, "Uploaded file sucess")
         else:
-            self.task.delay(importer=self.importer, owner=owner)
+            self.task.delay(importer=self.importer, source=file_history, owner=owner)
             if owner:
                 messages.info(
                     self.request,
