@@ -53,7 +53,7 @@ class FileHistory(models.Model):
         verbose_name_plural = 'File Histories'
 
     def file_link(self):
-        _url = self.filename.url
+        _url = self.file_upload.url
         return "<a href='%s' tartget='_blank'>Download</a>" % _url
 
     file_link.allow_tags = True
@@ -64,7 +64,7 @@ class FileHistory(models.Model):
         memory at once. The FileWrapper will turn the file object into an
         iterator for chunks of 8KB.
         """
-        filename = self.filename.path
+        filename = self.file_upload.path
         wrapper = FileWrapper(open(filename, "rb"))
         response = HttpResponse(wrapper, content_type='application/force-download')
         response['Content-Length'] = os.path.getsize(filename)
@@ -91,5 +91,5 @@ class FileHistory(models.Model):
 
     @property
     def compose_file_name(self):
-        basename = os.path.basename(self.filename.file.name)
+        basename = os.path.basename(self.file_upload.file.name)
         return "%s (%s)" % (basename, self.owner)
