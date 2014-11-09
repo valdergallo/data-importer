@@ -300,6 +300,24 @@ content_file.csv
     Test3,14,3
 
 
+Default DataImporterForm
+------------------------
+
+DataImporterForm is one django.views.generic.edit.FormView
+to save file in FileUpload and parse content on success.
+
+Example
+-------
+
+.. code-block:: guest
+
+    class DataImporterCreateView(DataImporterForm):
+        extra_context = {'title': 'Create Form Data Importer',
+                         'template_file': 'myfile.csv'
+                        }
+        importer = MyCSVImporterModel
+
+
 TEST
 ----
 
