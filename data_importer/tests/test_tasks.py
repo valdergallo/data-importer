@@ -30,3 +30,6 @@ class DataImporterTaskTest(TestCase):
                                                last_name='Rock',
                                                age='28').exists()
         self.assertTrue(created_person)
+
+    def test_task_create_all(self):
+        self.assertEqual(Person.objects.all().count(), 3)
