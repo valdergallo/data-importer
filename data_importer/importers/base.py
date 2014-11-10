@@ -164,7 +164,6 @@ class BaseImporter(object):
         except TypeError:
             raise TypeError('Invalid Line: %s' % row)
 
-        self.line = values
         has_error = False
 
         for k, v in values.items():
@@ -183,6 +182,13 @@ class BaseImporter(object):
                         has_error = True
 
         if has_error:
+            return None
+
+        # validate full row data
+        try:
+            values = self.clean_row(values)
+        except Exception, e:
+            self._error.append((row, type(e).__name__, unicode(e)))
             return None
 
         return (row, values)
@@ -234,6 +240,12 @@ class BaseImporter(object):
         """
         Custom clean method
         """
+
+    def clean_row(self, row_values):
+        """
+        Custom clean method for full row data
+        """
+        return row_values
 
     def pre_commit(self):
         """
