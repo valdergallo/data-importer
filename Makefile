@@ -21,8 +21,8 @@ send_package:
 
 clean:
 	find . -name '*.pyc' -delete
-	rm -rf dist
 	rm -rf .tox
 	rm -rf data_importer.egg-info
 	rm -rf cover
+	python setup.py clean --all
 

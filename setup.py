@@ -3,7 +3,7 @@
 
 #!/usr/bin/env python
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 import data_importer
 
@@ -39,5 +39,6 @@ setup(name='data-importer',
       ],
       version=data_importer.__version__,
       install_requires=install_requires,
-      packages=['data_importer', 'data_importer.importers'],
+      package_dir={'': '.'},
+      packages=find_packages('.', exclude=['tests', '*.tests', 'docs', 'example', 'media']),
 )
