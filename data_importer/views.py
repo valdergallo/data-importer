@@ -56,7 +56,7 @@ class DataImporterForm(FormView):
             if self.task.parser.errors:
                 messages.error(self.request, self.task.importer.errors)
             else:
-                messages.success(self.request, "Uploaded file sucess")
+                messages.success(self.request, "File uploaded successfully")
         else:
             self.task.delay(importer=self.importer, source=file_history, owner=owner)
             if owner:
