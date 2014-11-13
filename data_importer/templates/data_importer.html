@@ -1,6 +1,4 @@
-{% extends "index.html" %}
-
-{% block contents %}
+{% comment %}Include this to your upload page template{% endcomment %}
 <h1> {{ title }} </h1>
 
 {% if messages %}
@@ -13,9 +11,7 @@
 
 <a href="{{ template_file }}">download template file</a>
 
-<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+<form action="{{ file_upload_url }}" method="post" enctype="multipart/form-data">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Upload File" />
 </form>
-
-{% endblock %}
