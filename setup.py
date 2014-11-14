@@ -23,22 +23,26 @@ install_requires = [
 ]
 
 
-setup(name='data-importer',
-      url='https://github.com/valdergallo/data-importer',
-      download_url='https://github.com/valdergallo/data-importer/tarball/%s/' % data_importer.__version__,
-      author="valdergallo",
-      author_email='valdergallo@gmail.com',
-      keywords='Django Data Importer XLS XLSX CSV XML',
-      description='Simple library to easily import data with Django',
-      license='BSD',
-      long_description=readme(),
-      classifiers=[
-          'Framework :: Django',
-          'Operating System :: OS Independent',
-          'Topic :: Utilities'
-      ],
-      version=data_importer.__version__,
-      install_requires=install_requires,
-      package_dir={'': '.'},
-      packages=find_packages('.', exclude=['tests', '*.tests', 'docs', 'example', 'media']),
+setup(
+    name='data-importer',
+    url='https://github.com/valdergallo/data-importer',
+    download_url='https://github.com/valdergallo/data-importer/tarball/%s/' % data_importer.__version__,
+    author="valdergallo",
+    author_email='valdergallo@gmail.com',
+    keywords='Django Data Importer XLS XLSX CSV XML',
+    description='Simple library to easily import data with Django',
+    license='BSD',
+    long_description=readme(),
+    classifiers=[
+      'Framework :: Django',
+      'Operating System :: OS Independent',
+      'Topic :: Utilities'
+    ],
+    version=data_importer.__version__,
+    install_requires=install_requires,
+    package_dir={'': '.'},
+    packages=find_packages('.', exclude=['tests', '*.tests', 'docs', 'example', 'media']),
+    package_data={
+        '': ['templates/data_importer.html', 'templates/my_upload.html']
+    }
 )
