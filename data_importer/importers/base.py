@@ -270,7 +270,9 @@ class BaseImporter(object):
         for row, values in enumerate(reader):
             if self.Meta.ignore_first_line:
                 row -= 1
-            if row == -1:
+            if self.Meta.starting_row and row < self.Meta.starting_row:
+                pass
+            elif row == -1:
                 pass
             else:
                 yield self.process_row(row, values)
