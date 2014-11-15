@@ -2,7 +2,7 @@ Views
 =====
 
 DataImporterForm
-================
+----------------
 
     Is a mixin of `django.views.generic.edit.FormView` with default template and form
     to upload files and importent content.
@@ -31,7 +31,7 @@ DataImporterForm
 
 
 Usage example
-==============
+-------------
 
 .. code-block:: python
 
