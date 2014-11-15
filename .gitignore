@@ -10,3 +10,4 @@ cover/*
 docs/_build/*
 /media
 *.zip
+README.rst
