@@ -23,6 +23,7 @@ Contents:
    importers
    forms
    models
+   views
 
 
 
