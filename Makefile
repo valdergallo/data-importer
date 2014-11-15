@@ -24,5 +24,6 @@ clean:
 	rm -rf .tox
 	rm -rf data_importer.egg-info
 	rm -rf cover
+	rm -rf README.rst
 	python setup.py clean --all
 
