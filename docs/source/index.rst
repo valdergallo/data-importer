@@ -6,7 +6,13 @@
 Welcome to Django Data Importer's documentation!
 ================================================
 
+Data importer documentation help
+
 Contents:
+
+* `Create Issues`_
+* `Report Bugs`_
+* `GitHub Project`_
 
 .. toctree::
    :maxdepth: 2
@@ -27,3 +33,6 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. _Report Bugs: https://github.com/valdergallo/data-importer/issues
+.. _Create Issues: https://github.com/valdergallo/data-importer/issues
+.. _GitHub Project: https://github.com/valdergallo/data-importer
