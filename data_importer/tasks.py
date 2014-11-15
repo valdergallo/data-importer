@@ -9,9 +9,13 @@ except ImportError:
 
 from django.core.cache import cache
 from data_importer.core import default_settings
-from django.conf import settings
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
+
+try:
+    from django.conf import settings
+except ImportError, e:
+    settings = None
 
 try:
     LOCK_EXPIRE = settings.DATA_IMPORTER_TASK_LOCK_EXPIRE
