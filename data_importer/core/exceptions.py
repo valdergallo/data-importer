@@ -7,6 +7,12 @@ class StopImporter(Exception):
     """
 
 
+class UnsuportedFile(Exception):
+    """
+    Unsuported file type
+    """
+
+
 class InvalidModel(Exception):
     """
     Invalid model in descriptor
