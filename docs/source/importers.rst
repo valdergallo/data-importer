@@ -7,3 +7,4 @@ Importers
    importers/xlsimporter
    importers/xlsximporter
    importers/xmlimporter
+   importers/generic

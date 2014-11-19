@@ -2,11 +2,12 @@
 from data_importer.readers.xls_reader import XLSReader
 from data_importer.readers.xlsx_reader import XLSXReader
 from data_importer.readers.csv_reader import CSVReader
+from data_importer.readers.xml_reader import XMLReader
 from data_importer.core.exceptions import UnsuportedFile
 from .base import BaseImporter
 
 
-class DefaultImporter(BaseImporter):
+class GenericImporter(BaseImporter):
     """
     An implementation of BaseImporter that sets the right reader
     by file extension.
@@ -23,6 +24,7 @@ class DefaultImporter(BaseImporter):
         readers = {
             'xls': XLSReader,
             'xlsx': XLSXReader,
+            'xml': XMLReader,
             'csv': CSVReader,
             }
         source_file_extension = self.get_source_file_extension()

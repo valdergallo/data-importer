@@ -14,3 +14,4 @@ readline
 wsgiref
 xlrd
 South
+mock
