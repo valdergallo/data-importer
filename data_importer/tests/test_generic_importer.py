@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 import mock
 import os
-
+import django
 from django.test import TestCase
+from unittest import skipIf
 from data_importer.importers.generic import GenericImporter
 from data_importer.readers.xls_reader import XLSReader
 from data_importer.readers.xlsx_reader import XLSXReader
@@ -44,6 +45,7 @@ class TestGeneralImpoerterSetup(TestCase):
         importer = GenericImporter(source=self.csv_file)
         self.assertEquals(importer.get_source_file_extension(), 'csv')
 
+    @skipIf((django.get_version() < '1.4'), "not supported in this library version")
     def test_unsuported_raise_error_message(self):
         with self.assertRaisesMessage(UnsuportedFile, 'Unsuported File'):
             GenericImporter(source=self.unsuported_file)
