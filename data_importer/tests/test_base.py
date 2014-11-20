@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from django.test import TestCase
-from data_importer.importers.base import objclass2dict
-from data_importer.importers import CSVImporter
 from cStringIO import StringIO
+from data_importer.importers import BaseImporter
+from data_importer.importers import CSVImporter
+from data_importer.importers.base import objclass2dict
+from django.test import TestCase
+from unittest import skipIf
 import data_importer
+import django
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 
@@ -145,7 +148,7 @@ class TestReadContent(TestCase):
             def clean_test(self, value):
                 value.coisa = 1
 
-        importer_error = TestMetaClean(source=['test1',])
+        importer_error = TestMetaClean(source=['test1', ])
 
         self.assertFalse(importer_error.is_valid())
         self.assertEqual(importer_error.errors, [(0, 'AttributeError', u"'unicode' object has no attribute 'coisa'")])
@@ -173,3 +176,19 @@ class TestReadContent(TestCase):
         self.assertEquals(importer.cleaned_data[0],
                           (0, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
+
+
+class TestImporter(BaseImporter):
+    fields = ('name', 'value')
+
+    class Meta:
+        delimiter = ','
+
+
+class BaseImporterTest(TestCase):
+
+    @skipIf(django.VERSION < (1, 4), "not supported in this library version")
+    def test_raise_not_implemented(self):
+        with self.assertRaisesMessage(NotImplementedError, "No reader implemented"):
+            instance = TestImporter(source=source_content)
+            instance.set_reader()

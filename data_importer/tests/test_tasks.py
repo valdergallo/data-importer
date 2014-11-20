@@ -6,8 +6,9 @@ from data_importer.tasks import DataImpoterTask
 from django.contrib.auth.models import User
 from data_importer.models_test import Person
 from data_importer.importers import CSVImporter
-LOCAL_DIR = os.path.dirname(__file__)
 from django.core import mail
+
+LOCAL_DIR = os.path.dirname(__file__)
 
 
 class TestMeta(CSVImporter):

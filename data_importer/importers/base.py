@@ -123,7 +123,7 @@ class BaseImporter(object):
         """
         Set fields from descriptor file
         """
-        descriptor = ReadDescriptor(self.Meta.descriptor, self.Meta.model)
+        descriptor = ReadDescriptor(self.Meta.descriptor, self.Meta.descriptor_model)
         self.fields = descriptor.get_fields()
         self.exclude_fields()
 
@@ -152,7 +152,7 @@ class BaseImporter(object):
             response: [['value_myfield1', 'value_myfield2'],
                         ['value2_myfield1', 'value2_myfield2']]
         """
-        raise NotImplemented('No reader')
+        raise NotImplementedError('No reader implemented')
 
     def clean_field(self, field_name, value):
         """
