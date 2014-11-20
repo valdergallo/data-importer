@@ -6,7 +6,7 @@ python:
 before_install:
   - sudo apt-get install -y libxml2-dev libxslt-dev
 
-script: python example/manage.py test data_importer -v2
+script: coverage run --source="." example/manage.py test data_importer -v2
 
 env:
   - DJANGO=1.3
