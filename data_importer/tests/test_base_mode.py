@@ -9,6 +9,7 @@ from data_importer.models_test import Person
 from data_importer.models_test import Mercado
 from data_importer.models_test import PersonFile
 from data_importer.models_test import Invoice
+import django
 
 
 LOCAL_DIR = os.path.dirname(__file__)
@@ -135,5 +136,8 @@ class TestModelValidator(TestCase):
 
     def test_errors_values(self):
         self.importer.is_valid()
-        error = [(0, 'ValidationError', u'[u"\'23,98\' value must be a float."]')]
+        if django.get_version > '1.4':
+            error = [(0, 'ValidationError', u"[u'This value must be a float.']")]
+        else:
+            error = [(0, 'ValidationError', u'[u"\'23,98\' value must be a float."]')]
         self.assertEquals(self.importer.errors, error)
