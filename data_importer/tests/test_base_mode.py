@@ -5,7 +5,11 @@ from django.test import TestCase
 from data_importer.importers import CSVImporter
 import os
 from django.core.files import File as DjangoFile
-from data_importer.models_test import Person, Mercado, PersonFile
+from data_importer.models_test import Person
+from data_importer.models_test import Mercado
+from data_importer.models_test import PersonFile
+from data_importer.models_test import Invoice
+
 
 LOCAL_DIR = os.path.dirname(__file__)
 
@@ -112,3 +116,24 @@ class TestPTBRCSVImporter(TestCase):
 
         self.assertEquals(self.importer.cleaned_data[3], (3, content),
                           self.importer.cleaned_data)
+
+
+class TestModelValidator(TestCase):
+
+    def setUp(self):
+        class TestMeta(CSVImporter):
+            class Meta:
+                ignore_first_line = True
+                delimiter = ';'
+                model = Invoice
+
+        self.csv_file = os.path.join(LOCAL_DIR, 'data/invoice.csv')
+        self.importer = TestMeta(source=self.csv_file)
+
+    def test_values_is_valid(self):
+        self.assertFalse(self.importer.is_valid())
+
+    def test_errors_values(self):
+        self.importer.is_valid()
+        error = [(0, 'ValidationError', u'[u"\'23,98\' value must be a float."]')]
+        self.assertEquals(self.importer.errors, error)

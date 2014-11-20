@@ -31,3 +31,12 @@ class Mercado(models.Model):
 
     def __unicode__(self):
         return self.item
+
+
+class Invoice(models.Model):
+    name = models.CharField(max_length=50)
+    sales_date = models.DateField()
+    price = models.FloatField()
+
+    def __unicode__(self):
+        return self.name
