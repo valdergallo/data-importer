@@ -3,6 +3,7 @@
 
 import os
 from django.db import transaction
+from django.db.models.fields import FieldDoesNotExist
 from django.utils.encoding import force_unicode
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
@@ -153,6 +154,25 @@ class BaseImporter(object):
         """
         raise NotImplemented('No reader')
 
+    def clean_field(self, field_name, value):
+        """
+        User default django field validators to clean content
+        and run custom validates
+        """
+        if self.Meta.model:
+            # default django validate field
+            try:
+                field = self.Meta.model._meta.get_field(field_name)
+                field.clean(value, field)
+            except FieldDoesNotExist:
+                pass  # do nothing if not find this field in model
+
+        clean_function = getattr(self, 'clean_%s' % field_name, False)
+
+        if clean_function:
+            return clean_function(value)
+        return value
+
     def process_row(self, row, values):
         """
         Read clean functions from importer and return tupla with row number, field and value
@@ -167,19 +187,16 @@ class BaseImporter(object):
         has_error = False
 
         for k, v in values.items():
-            if hasattr(self, 'clean_%s' % k):
-                clean_function = getattr(self, 'clean_%s' % k)
-
-                if self.Meta.raise_errors:
-                    values[k] = clean_function(v)
-                else:
-                    try:
-                        values[k] = clean_function(v)
-                    except StopImporter, e:
-                        raise StopImporter((row, type(e).__name__, unicode(e)))
-                    except Exception, e:
-                        self._error.append((row, type(e).__name__, unicode(e)))
-                        has_error = True
+            if self.Meta.raise_errors:
+                values[k] = self.clean_field(k, v)
+            else:
+                try:
+                    values[k] = self.clean_field(k, v)
+                except StopImporter, e:
+                    raise StopImporter((row, type(e).__name__, unicode(e)))
+                except Exception, e:
+                    self._error.append((row, type(e).__name__, unicode(e)))
+                    has_error = True
 
         if has_error:
             return None
