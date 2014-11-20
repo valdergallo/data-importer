@@ -10,20 +10,40 @@ Django Data Importer
 
 **Django Data Importer** is a tool which allow you to transform easily a `CSV, XML, XLS and XLSX` file into a python object or a django model instance. It is based on the django-style declarative model.
 
-Documentation and usage
------------------------
+Features
+--------
 
-Read docs online in Read the Docs:
-
-https://django-data-importer.readthedocs.org/
-
-
-You can generate everything at the above site in your local folder by:
-```
-    $ cd doc
-    $ make html
-    $ open _build/html/index.html # Or your preferred web browser
-```
+* Accept custom clean_fields
+* Accept post_clean
+* Accept post_save
+* Accept post_save_all_lines
+* Accept pre_clean
+* Accept pre_commit
+* Accept save with transaction
+* Auto generate async importers
+* Auto Importer CSV
+* Auto Importer XLS
+* Auto Importer XLSX
+* Auto Importer XML
+* Check import status on Django Admin
+* Convert text values by default as unicode
+* Default FormView
+* Django Admin intragration to download files in File History
+* Easy interface to create Importers
+* Easy interface to create Readers
+* File History intregrated with FormView
+* GenericImporter to import files (CSV, XLS, XLSX, XML)
+* Get fields from Django Models
+* Ignore First Row
+* Integrated with Celery
+* Integrated with Django Models
+* Integrated with Django Models Validators
+* Open file to read
+* Read source as File, cStringIO, Text, FileField
+* Set starting_row
+* Set XLS/XLSX importer by sheet_index
+* Set XLS/XLSX importer by sheet_name
+* Suport to user a JSON descriptor with Fields
 
 
 Installation
