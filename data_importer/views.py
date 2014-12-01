@@ -52,9 +52,12 @@ class DataImporterForm(FormView):
         file_history, _ = FileHistory.objects.get_or_create(file_upload=form.cleaned_data['file_upload'], owner=owner, content_type=content_type)
 
         if not self.is_task or not hasattr(self.task, 'delay'):
-            self.task.run(importer=self.importer, source=file_history, owner=owner)
+            self.task.run(importer=self.importer,
+                          source=file_history,
+                          owner=owner,
+                          send_email=False)
             if self.task.parser.errors:
-                messages.error(self.request, self.task.importer.errors)
+                messages.error(self.request, self.task.parser.errors)
             else:
                 messages.success(self.request, "File uploaded successfully")
         else:
