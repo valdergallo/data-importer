@@ -13,6 +13,7 @@ Django Data Importer
 Features
 --------
 
+* (beta) QuerysetToWorkbook
 * Accept custom clean_fields
 * Accept post_clean
 * Accept post_save
