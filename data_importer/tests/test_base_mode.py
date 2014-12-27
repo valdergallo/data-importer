@@ -58,7 +58,8 @@ class TestBaseWithModel(TestCase):
     def test_save_data_content(self):
         for row, data in self.importer.cleaned_data:
             instace = Person(**data)
-            self.assertTrue(instace.save())
+            instace.save()
+            self.assertTrue(instace.id)
 
     def tearDown(self):
         try:

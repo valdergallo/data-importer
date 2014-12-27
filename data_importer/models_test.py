@@ -9,11 +9,6 @@ class Person(models.Model):
     last_name = models.CharField(max_length=255)
     age = models.CharField(max_length=10)
 
-    def save(self, force_update=True, *args, **kwargs):
-        if force_update:
-            return self.full_clean() is None
-        super(Person, self).save(*args, **kwargs)
-
     def __unicode__(self):
         return self.first_name
 
