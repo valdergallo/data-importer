@@ -2,11 +2,15 @@
 from django.test import TestCase
 from data_importer.writers.utils import QuerysetToWorkbook
 from data_importer.models_test import Person
-from django.utils import timezone
 from django.core.files import File
 from django.http import HttpResponse
 import cStringIO
 import os
+
+try:
+    from django.utils import timezone
+except ImportError:
+    from datetime import datetime as timezone
 
 
 def createFivePerson():
