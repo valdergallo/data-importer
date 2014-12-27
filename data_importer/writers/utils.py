@@ -8,10 +8,11 @@ from django.core.files import File
 from django.utils.safestring import mark_safe
 from django.utils.datastructures import SortedDict
 import unicodedata
+
 try:
     from django.utils import timezone
 except ImportError:
-    from datatime import datetime as timezone
+    from datetime import datetime as timezone
 
 # default yellow backgroung for first line
 DEFAULT_HEADER_STYLE = styles.Style(fill=styles.PatternFill(patternType='solid', fgColor=styles.colors.YELLOW))
