@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import xlrd
+from django.db.models.fields.files import FieldFile
 #from xlrd/biffh.py
 # (
 #     XL_CELL_EMPTY,
@@ -17,7 +18,13 @@ import xlrd
 class XLSReader(object):
 
     def __init__(self, instance, sheet_name=None, sheet_index=0, on_demand=True):
-        self.workbook = xlrd.open_workbook(instance.source, on_demand=on_demand)
+
+        if isinstance(instance.source, FieldFile):
+            source = instance.source.path
+        else:
+            source = instance.source
+
+        self.workbook = xlrd.open_workbook(source, on_demand=on_demand)
 
         if sheet_name:
             self.worksheet = self.workbook.sheet_by_name(instance.Meta.sheet_name)
