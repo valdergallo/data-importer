@@ -192,7 +192,7 @@ class BaseImporter(object):
 
         if self.Meta.ignore_empty_lines:
             # ignore empty lines
-            if not all(values.values()):
+            if not any(values.values()):
                 return None
 
         for k, v in values.items():
