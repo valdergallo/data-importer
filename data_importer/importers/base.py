@@ -4,6 +4,7 @@
 import os
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
+from django.core.exceptions import ValidationError
 from django.utils.encoding import force_unicode
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
@@ -166,6 +167,10 @@ class BaseImporter(object):
                 field.clean(value, field)
             except FieldDoesNotExist:
                 pass  # do nothing if not find this field in model
+            except ValidationError as msg:
+                default_msg = msg.messages[0].replace('This field', '')
+                new_msg = "Field (%s) %s" % (field.name, default_msg)
+                raise ValidationError(new_msg)
 
         clean_function = getattr(self, 'clean_%s' % field_name, False)
 
@@ -178,13 +183,17 @@ class BaseImporter(object):
         Read clean functions from importer and return tupla with row number, field and value
         """
         values_encoded = [self.to_unicode(i) for i in values]
-
         try:
             values = dict(zip(self.fields, values_encoded))
         except TypeError:
             raise TypeError('Invalid Line: %s' % row)
 
         has_error = False
+
+        if self.Meta.ignore_empty_lines:
+            # ignore empty lines
+            if not all(values.values()):
+                return None
 
         for k, v in values.items():
             if self.Meta.raise_errors:
@@ -284,7 +293,7 @@ class BaseImporter(object):
         else:
             reader = self._reader
 
-        for row, values in enumerate(reader):
+        for row, values in enumerate(reader, 1):
             if self.Meta.ignore_first_line:
                 row -= 1
             if self.Meta.starting_row and row < self.Meta.starting_row:
