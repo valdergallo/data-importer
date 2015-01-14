@@ -202,9 +202,9 @@ class BaseImporter(object):
                 try:
                     values[k] = self.clean_field(k, v)
                 except StopImporter, e:
-                    raise StopImporter((row, self.get_error_message(e)))
+                    raise StopImporter(self.get_error_message(e, row))
                 except Exception, e:
-                    self._error.append((row, self.get_error_message(e)))
+                    self._error.append(self.get_error_message(e, row))
                     has_error = True
 
         if has_error:
@@ -214,20 +214,27 @@ class BaseImporter(object):
         try:
             values = self.clean_row(values)
         except Exception, e:
-            self._error.append((row, self.get_error_message(e)))
+            self._error.append(self.get_error_message(e, row))
             return None
 
         return (row, values)
 
-    def get_error_message(self, error):
+    def get_error_message(self, error, row=None, error_type=None):
         if not hasattr(error, 'message') or not hasattr(error, 'messages'):
             raise ValueError("Invalid error")
 
+        if not error_type:
+            error_type = type(error).__name__
+
         if error.message:
-            return type(error).__name__, u"%s" % error.message
+            messages = u"%s" % error.message
         else:
             messages = u','.join(error.messages)
-            return type(error).__name__, messages
+
+        if row:
+            return row, error_type, messages
+        else:
+            return error_type, messages
 
     @property
     def cleaned_data(self):
@@ -242,12 +249,12 @@ class BaseImporter(object):
         try:
             self.pre_clean()
         except Exception, e:
-            self._error.append(('__pre_clean__', self.get_error_message(e)))
+            self._error.append(self.get_error_message(e, error_type='__pre_clean__'))
 
         try:
             self.clean()
         except Exception, e:
-            self._error.append(('__clean_all__', self.get_error_message(e)))
+            self._error.append(self.get_error_message(e, error_type='__clean_all__'))
 
         # create clean content
         for data in self._read_file():
@@ -257,7 +264,7 @@ class BaseImporter(object):
         try:
             self.post_clean()
         except Exception, e:
-            self._error.append(('__post_clean__', self.get_error_message(e)))
+            self._error.append(self.get_error_message(e, error_type='__post_clean__'))
 
         return self._cleaned_data
 
@@ -333,13 +340,13 @@ class BaseImporter(object):
                 try:
                     self.pre_commit()
                 except Exception, e:
-                    self._error.append(('__pre_commit__', self.get_error_message(e)))
+                    self._error.append(self.get_error_message(e, error_type='__pre_commit__'))
                     transaction.rollback()
 
                 try:
                     transaction.commit()
                 except Exception, e:
-                    self._error.append(('__trasaction__', self.get_error_message(e)))
+                    self._error.append(self.get_error_message(e, error_type='__trasaction__'))
                     transaction.rollback()
 
         else:
