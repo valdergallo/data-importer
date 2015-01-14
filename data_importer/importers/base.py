@@ -169,7 +169,7 @@ class BaseImporter(object):
                 pass  # do nothing if not find this field in model
             except ValidationError as msg:
                 default_msg = msg.messages[0].replace('This field', '')
-                new_msg = "Field (%s) %s" % (field.name, default_msg)
+                new_msg = u"Field (%s) %s" % (field.name, default_msg)
                 raise ValidationError(new_msg)
 
         clean_function = getattr(self, 'clean_%s' % field_name, False)
@@ -186,7 +186,7 @@ class BaseImporter(object):
         try:
             values = dict(zip(self.fields, values_encoded))
         except TypeError:
-            raise TypeError('Invalid Line: %s' % row)
+            raise TypeError("Invalid Line: %s" % row)
 
         has_error = False
 
@@ -202,9 +202,9 @@ class BaseImporter(object):
                 try:
                     values[k] = self.clean_field(k, v)
                 except StopImporter, e:
-                    raise StopImporter((row, type(e).__name__, unicode(e)))
+                    raise StopImporter((row, self.get_error_message(e)))
                 except Exception, e:
-                    self._error.append((row, type(e).__name__, unicode(e)))
+                    self._error.append((row, self.get_error_message(e)))
                     has_error = True
 
         if has_error:
@@ -214,10 +214,20 @@ class BaseImporter(object):
         try:
             values = self.clean_row(values)
         except Exception, e:
-            self._error.append((row, type(e).__name__, unicode(e)))
+            self._error.append((row, self.get_error_message(e)))
             return None
 
         return (row, values)
+
+    def get_error_message(self, error):
+        if not hasattr(error, 'message') or not hasattr(error, 'messages'):
+            raise ValueError("Invalid error")
+
+        if error.message:
+            return type(error).__name__, u"%s" % error.message
+        else:
+            messages = u','.join(error.messages)
+            return type(error).__name__, messages
 
     @property
     def cleaned_data(self):
@@ -232,12 +242,12 @@ class BaseImporter(object):
         try:
             self.pre_clean()
         except Exception, e:
-            self._error.append(('__pre_clean__', repr(e)))
+            self._error.append(('__pre_clean__', self.get_error_message(e)))
 
         try:
             self.clean()
         except Exception, e:
-            self._error.append(('__clean_all__', repr(e)))
+            self._error.append(('__clean_all__', self.get_error_message(e)))
 
         # create clean content
         for data in self._read_file():
@@ -247,7 +257,7 @@ class BaseImporter(object):
         try:
             self.post_clean()
         except Exception, e:
-            self._error.append(('__post_clean__', repr(e)))
+            self._error.append(('__post_clean__', self.get_error_message(e)))
 
         return self._cleaned_data
 
@@ -323,13 +333,13 @@ class BaseImporter(object):
                 try:
                     self.pre_commit()
                 except Exception, e:
-                    self._error.append(('__pre_commit__', repr(e)))
+                    self._error.append(('__pre_commit__', self.get_error_message(e)))
                     transaction.rollback()
 
                 try:
                     transaction.commit()
                 except Exception, e:
-                    self._error.append(('__trasaction__', repr(e)))
+                    self._error.append(('__trasaction__', self.get_error_message(e)))
                     transaction.rollback()
 
         else:
