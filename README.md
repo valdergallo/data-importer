@@ -14,6 +14,7 @@ Features
 --------
 
 * (beta) QuerysetToWorkbook
+* Ignore empty line
 * Accept custom clean_fields
 * Accept post_clean
 * Accept post_save
