@@ -38,7 +38,7 @@ class TestBaseWithModel(TestCase):
     def test_cleaned_data_content(self):
         content = {'first_name': 'test_first_name_1',
             'last_name': 'test_last_name_1', 'age': 'age1'}
-        self.assertEquals(self.importer.cleaned_data[0], (0, content))
+        self.assertEquals(self.importer.cleaned_data[0], (1, content))
 
     def test_source_importer_file(self):
         base = CSVImporter(source=open('test.txt', 'w'))
@@ -92,7 +92,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': u'1',
             }
 
-        self.assertEquals(self.importer.cleaned_data[0], (0, content),
+        self.assertEquals(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data[0])
 
         content = {
@@ -100,7 +100,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': u'2',
             }
 
-        self.assertEquals(self.importer.cleaned_data[1], (1, content),
+        self.assertEquals(self.importer.cleaned_data[1], (2, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -108,7 +108,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': u'3',
             }
 
-        self.assertEquals(self.importer.cleaned_data[2], (2, content),
+        self.assertEquals(self.importer.cleaned_data[2], (3, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -116,7 +116,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': u'4',
             }
 
-        self.assertEquals(self.importer.cleaned_data[3], (3, content),
+        self.assertEquals(self.importer.cleaned_data[3], (4, content),
                           self.importer.cleaned_data)
 
 
@@ -138,7 +138,7 @@ class TestModelValidator(TestCase):
     def test_errors_values(self):
         self.importer.is_valid()
         if django.VERSION < (1, 4):
-            error = [(0, 'ValidationError', u"[u'This value must be a float.']")]
+            error = [(1, 'ValidationError', u"[u'Field (price) This value must be a float.']")]
         else:
-            error = [(0, 'ValidationError', u'[u"\'23,98\' value must be a float."]')]
+            error = [(1, 'ValidationError', u'[u"Field (price) \'23,98\' value must be a float."]')]
         self.assertEquals(self.importer.errors, error)

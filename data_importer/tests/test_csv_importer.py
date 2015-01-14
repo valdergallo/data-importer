@@ -127,7 +127,7 @@ class TestReadContent(TestCase):
 
     def test_read_content_first_line(self):
         self.assertEquals(self.importer.cleaned_data[0],
-                          (0, {'test2_field': 'header2', 'test_field': 'HEADER1'}),
+                          (1, {'test2_field': 'header2', 'test_field': 'HEADER1'}),
                           self.importer.cleaned_data[0])
 
     def test_errors(self):
@@ -148,7 +148,7 @@ class TestReadContent(TestCase):
         importer_error = TestMetaClean(source=['test1',])
 
         self.assertFalse(importer_error.is_valid())
-        self.assertEqual(importer_error.errors, [(0, 'AttributeError', u"'unicode' object has no attribute 'coisa'")])
+        self.assertEqual(importer_error.errors, [(1, 'AttributeError', u"'unicode' object has no attribute 'coisa'")])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(CSVImporter):
@@ -171,7 +171,7 @@ class TestReadContent(TestCase):
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
         self.assertEquals(importer.cleaned_data[0],
-                          (0, {'test_number_field': '1', 'test_field': 'TEST1'}),
+                          (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
 
     def test_error_not_is_cleaned_data(self):

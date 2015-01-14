@@ -41,7 +41,7 @@ class TestXMLImporter(TestCase):
         self.importer = TestXML(source=sxml)
 
     def test_read_content(self):
-        self.assertEquals(self.importer.cleaned_data[0], (0, {'bitrate': '131',
+        self.assertEquals(self.importer.cleaned_data[0], (1, {'bitrate': '131',
                           'name': 'some filename.mp3', 'encoder': 'Gogo (after 3.0)'}))
 
     def test_values_is_valid(self):
@@ -61,7 +61,7 @@ class TestXMLCleanImporter(TestCase):
         self.importer = TestXML(source=sxml)
 
     def test_read_content(self):
-        self.assertEquals(self.importer.cleaned_data[0], (0, {'bitrate': '131',
+        self.assertEquals(self.importer.cleaned_data[0], (1, {'bitrate': '131',
                           'name': 'SOME FILENAME.MP3', 'encoder': 'Gogo (after 3.0)'}))
 
     def test_values_is_valid(self):
@@ -89,7 +89,7 @@ class TestXMLModelImporter(TestCase):
         content = {'bitrate': '131',
         'encoder': 'Gogo (after 3.0)',
         'name': 'SOME FILENAME.MP3'}
-        self.assertEquals(self.importer.cleaned_data[0], (0, content))
+        self.assertEquals(self.importer.cleaned_data[0], (1, content))
 
     def test_values_is_valid(self):
         self.assertTrue(self.importer.is_valid())
