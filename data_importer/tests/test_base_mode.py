@@ -138,7 +138,7 @@ class TestModelValidator(TestCase):
     def test_errors_values(self):
         self.importer.is_valid()
         if django.VERSION < (1, 4):
-            error = [(1, 'ValidationError', u"[u'Field (price) This value must be a float.']")]
+            error = [(1, 'ValidationError', u"Field (price) This value must be a float.")]
         else:
-            error = [(1, 'ValidationError', u'[u"Field (price) \'23,98\' value must be a float."]')]
+            error = [(1, 'ValidationError', u'Field (price) \'23,98\' value must be a float.')]
         self.assertEquals(self.importer.errors, error)
