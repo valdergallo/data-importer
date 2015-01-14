@@ -202,9 +202,9 @@ class BaseImporter(object):
                 try:
                     values[k] = self.clean_field(k, v)
                 except StopImporter, e:
-                    raise StopImporter((row, type(e).__name__, unicode(e.message)))
+                    raise StopImporter((row, type(e).__name__, unicode(e)))
                 except Exception, e:
-                    self._error.append((row, type(e).__name__, unicode(e.message)))
+                    self._error.append((row, type(e).__name__, unicode(e)))
                     has_error = True
 
         if has_error:
@@ -214,7 +214,7 @@ class BaseImporter(object):
         try:
             values = self.clean_row(values)
         except Exception, e:
-            self._error.append((row, type(e).__name__, unicode(e.message)))
+            self._error.append((row, type(e).__name__, unicode(e)))
             return None
 
         return (row, values)
@@ -340,5 +340,3 @@ class BaseImporter(object):
         self.post_save_all_lines()
 
         return True
-
-
