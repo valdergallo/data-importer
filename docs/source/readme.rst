@@ -118,6 +118,9 @@ That will automatically match to the following django model.
     **transaction** `(beta) not tested`
         Use transaction to save objects
 
+    **ignore_empty_lines**
+        Not validate empty lines
+
 
 Django XML
 ------------
