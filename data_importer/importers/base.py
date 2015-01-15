@@ -234,6 +234,7 @@ class BaseImporter(object):
                 messages = u','.join(error.messages)
 
         messages = re.sub('\'', '', messages)
+        error_type = re.sub('\'', '', error_type)
 
         if row:
             return row, error_type, messages
