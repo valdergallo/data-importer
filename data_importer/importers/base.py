@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
 from django.core.exceptions import ValidationError
@@ -169,7 +170,7 @@ class BaseImporter(object):
                 pass  # do nothing if not find this field in model
             except ValidationError as msg:
                 default_msg = msg.messages[0].replace('This field', '')
-                new_msg = u"Field (%s) %s" % (field.name, default_msg)
+                new_msg = u'Field (%s) %s' % (field.name, default_msg)
                 raise ValidationError(new_msg)
 
         clean_function = getattr(self, 'clean_%s' % field_name, False)
@@ -186,7 +187,7 @@ class BaseImporter(object):
         try:
             values = dict(zip(self.fields, values_encoded))
         except TypeError:
-            raise TypeError("Invalid Line: %s" % row)
+            raise TypeError('Invalid Line: %s' % row)
 
         has_error = False
 
@@ -223,14 +224,16 @@ class BaseImporter(object):
         messages = error
 
         if not error_type:
-            error_type = type(error).__name__
+            error_type = u"%s" % type(error).__name__
 
-        if  hasattr(error, 'message'):
+        if hasattr(error, 'message'):
             if error.message:
-                messages = u"%s" % error.message
+                messages = u'%s' % error.message
         elif hasattr(error, 'messages'):
             if error.messages:
                 messages = u','.join(error.messages)
+
+        messages = re.sub('\'', '', messages)
 
         if row:
             return row, error_type, messages
@@ -330,7 +333,7 @@ class BaseImporter(object):
             instance = self.Meta.model
 
         if not instance:
-            raise AttributeError("Invalid instance model")
+            raise AttributeError('Invalid instance model')
 
         if self.Meta.transaction:
             with transaction.atomic():
