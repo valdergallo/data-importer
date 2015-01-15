@@ -16,7 +16,7 @@ from data_importer.models import FileHistory
 LOCAL_DIR = os.path.dirname(__file__)
 
 
-class TestGeneralImpoerterSetup(TestCase):
+class TestGeneralImporterSetup(TestCase):
 
     def setUp(self):
         self.xls_file = os.path.join(LOCAL_DIR, 'data/test.xls')
