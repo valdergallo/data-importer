@@ -15,7 +15,17 @@ class GenericImporter(BaseImporter):
     """
     def set_reader(self):
         reader = self.get_reader_class()
-        self._reader = reader(self)
+
+        # default importers configurations
+        extra_values = {
+            'xlsx': {'user_iterator': True, 'data_only': True},
+            'xls': {'sheet_by_name': self.Meta.sheet_name or None, 'sheet_by_index': self.Meta.sheet_index or 0},
+            'csv': {'delimiter': self.Meta.delimiter or ';'},
+            'xml': {},
+        }
+
+        selected_extra_values = extra_values[self.get_source_file_extension()]
+        self._reader = reader(self, **selected_extra_values)
 
     def get_reader_class(self):
         """
