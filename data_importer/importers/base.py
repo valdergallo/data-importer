@@ -29,6 +29,7 @@ class BaseImporter(object):
         return super(BaseImporter, cls).__new__(cls)
 
     def __init__(self, source=None, *args, **kwargs):
+        self.file_history = None
         self._fields = []
         self._error = []
         self._cleaned_data = ()
