@@ -49,12 +49,14 @@ class GenericImporter(BaseImporter):
         """
         Gets the source file extension. Used to choose the right reader
         """
-        if isinstance(self.source, str):
-            filename = self.source
+        if hasattr(self.source, 'file'):
+            filename = self.source.file.name  # DataImporter.FileHistory instances
+        elif hasattr(self.source, 'file_upload'):
+            filename = self.source.file_upload.name  # Default Python opened file
+        elif hasattr(self.source, 'name'):
+            filename = self.source.name
         else:
-            try:
-                filename = self.source.file.name  # DataImporter.FileHistory instances
-            except AttributeError:
-                filename = self.source.name  # Default Python opened file
+            filename = self.source
+
         ext = filename.split('.')[-1]
         return ext.lower()
