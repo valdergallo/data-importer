@@ -80,7 +80,8 @@ class BaseImporter(object):
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances
-            self._source = source
+            self._source = source.file_upload
+            self.file_history = source
         elif hasattr(source, 'file'):
             self._source = open(source.file.name, 'rb')
         else:
