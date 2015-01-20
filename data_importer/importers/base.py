@@ -28,7 +28,7 @@ class BaseImporter(object):
             cls.Meta = objclass2dict(cls.Meta)
         return super(BaseImporter, cls).__new__(cls)
 
-    def __init__(self, source=None):
+    def __init__(self, source=None, *args, **kwargs):
         self._fields = []
         self._error = []
         self._cleaned_data = ()

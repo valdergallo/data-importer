@@ -14,4 +14,5 @@ class XLSImporter(BaseImporter):
         sheet_by_name = self.Meta.sheet_name or None
         sheet_by_index = self.Meta.sheet_index or 0
 
-        self._reader = XLSReader(self, sheet_by_name, sheet_by_index)
+        self._reader = XLSReader(self, sheet_name=sheet_by_name, sheet_index=sheet_by_index)
+

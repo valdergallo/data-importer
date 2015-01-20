@@ -19,7 +19,7 @@ class GenericImporter(BaseImporter):
         # default importers configurations
         extra_values = {
             'xlsx': {'user_iterator': True, 'data_only': True},
-            'xls': {'sheet_by_name': self.Meta.sheet_name or None, 'sheet_by_index': self.Meta.sheet_index or 0},
+            'xls': {'sheet_name': self.Meta.sheet_name or None, 'sheet_index': self.Meta.sheet_index or 0},
             'csv': {'delimiter': self.Meta.delimiter or ';'},
             'xml': {},
         }
@@ -49,12 +49,15 @@ class GenericImporter(BaseImporter):
         """
         Gets the source file extension. Used to choose the right reader
         """
-        if hasattr(self.source, 'file'):
-            filename = self.source.file.name  # DataImporter.FileHistory instances
+        if hasattr(self.source, 'file') and hasattr(self.source.file, 'name'):
+            filename = self.source.file.name # File instances
         elif hasattr(self.source, 'file_upload'):
-            filename = self.source.file_upload.name  # Default Python opened file
+            if hasattr(self.source.file_upload, 'name'):
+                filename = self.source.file_upload.name  # Default DataImporter.models.FileUploadHistory
+            else:
+                filename = self.source.file_upload
         elif hasattr(self.source, 'name'):
-            filename = self.source.name
+            filename = self.source.name  # Default filename
         else:
             filename = self.source
 
