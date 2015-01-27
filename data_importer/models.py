@@ -9,7 +9,6 @@ from datetime import date
 from uuid import uuid4
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponse
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -29,7 +28,7 @@ def get_random_filename(instance, filename):
     filename = "%s%s" % (str(uuid4()), ext)
     user_dir = "anonymous"
     if instance.owner:
-        user_dir = instance.owner.username
+        user_dir = instance.owner.get_username()
     return os.path.join('upload_history',
                         user_dir,
                         date.today().strftime("%Y/%m/%d"),
@@ -41,7 +40,7 @@ class FileHistory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
     file_upload = models.FileField(upload_to=get_random_filename)
-    owner = models.ForeignKey(User, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
 
