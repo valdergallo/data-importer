@@ -13,7 +13,7 @@ Django Data Importer
 Features
 --------
 
-* Suport to Django Customer User
+* Support to Django Customer User
 * (beta) QuerysetToWorkbook
 * Ignore empty line
 * Accept custom clean_fields
