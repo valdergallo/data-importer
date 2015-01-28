@@ -13,6 +13,7 @@ Django Data Importer
 Features
 --------
 
+* Suport to Django Customer User
 * (beta) QuerysetToWorkbook
 * Ignore empty line
 * Accept custom clean_fields
@@ -342,4 +343,4 @@ Acentuation with CSV    | Excel Win 2010    |   **OK**
 
 Python | 2.7+
 -------|-----
-Django |  1.2+
+Django |  1.5+
