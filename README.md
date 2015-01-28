@@ -343,4 +343,4 @@ Acentuation with CSV    | Excel Win 2010    |   **OK**
 
 Python | 2.7+
 -------|-----
-Django |  1.5+
+Django |  1.6+

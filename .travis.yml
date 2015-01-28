@@ -9,7 +9,6 @@ before_install:
 script: python example/manage.py test data_importer -v 2 --with-coverage
 
 env:
-  - DJANGO=1.5
   - DJANGO=1.6
   - DJANGO=1.7
 
