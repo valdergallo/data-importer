@@ -12,11 +12,13 @@ from data_importer.readers.csv_reader import CSVReader
 from data_importer.readers.xml_reader import XMLReader
 from data_importer.core.exceptions import UnsuportedFile
 from data_importer.models import FileHistory
+from data_importer.models_test import Invoice
+
 
 LOCAL_DIR = os.path.dirname(__file__)
 
 
-class TestGeneralImporterSetup(TestCase):
+class TestGenericImporterSetup(TestCase):
 
     def setUp(self):
         self.xls_file = os.path.join(LOCAL_DIR, 'data/test.xls')
@@ -61,3 +63,22 @@ class TestGeneralImporterSetup(TestCase):
 
         importer = GenericImporter(source=file_mock)
         self.assertEquals(importer.get_source_file_extension(), 'csv')
+
+
+class CustomerDataImporter(GenericImporter):
+    class Meta:
+        model = Invoice
+
+
+class TestGenericImporterXLSXSetup(TestCase):
+
+    def setUp(self):
+        self.xls_file = os.path.join(LOCAL_DIR, 'data/test_invalid_lines.xlsx')
+
+    def test_save_lines_without_errors(self):
+        instance = CustomerDataImporter(source=self.xls_file)
+        self.assertFalse(instance.is_valid())
+        instance.save()
+        count_invoices = Invoice.objects.count()
+
+        self.assertEqual(count_invoices, 6, ('error', count_invoices))
