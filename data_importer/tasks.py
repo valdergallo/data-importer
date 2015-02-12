@@ -61,15 +61,10 @@ class DataImpoterTask(Task):
             If parser use raise_errors the error message will raise
             and logged by celery
             """
-
-            if not self.parser.raise_errors:
-                # validate content
-                self.parser.is_valid()
-                # save valid values
-                self.parser.save()
-            else:
-                if self.parser.is_valid():
-                    self.parser.save()
+            # validate content
+            self.parser.is_valid()
+            # save valid values
+            self.parser.save()
 
             message += "\n"
 
