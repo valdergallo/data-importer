@@ -57,8 +57,19 @@ class DataImpoterTask(Task):
         lock_id = "%s-lock" % (self.name)
 
         if acquire_lock(lock_id):
-            if self.parser.is_valid():
+            """
+            If parser use raise_errors the error message will raise
+            and logged by celery
+            """
+
+            if not self.parser.raise_errors:
+                # validate content
+                self.parser.is_valid()
+                # save valid values
                 self.parser.save()
+            else:
+                if self.parser.is_valid():
+                    self.parser.save()
 
             message += "\n"
 
