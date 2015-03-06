@@ -178,6 +178,30 @@ class TestReadContent(TestCase):
                           (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
 
+    def test_exclude_with_tupla(self):
+        class TestMeta(CSVImporter):
+                fields = [
+                    'test_field',
+                    'test_number_field',
+                    'test3_field',
+                ]
+
+                class Meta:
+                    exclude = ('test3_field',)
+                    delimiter = ','
+                    raise_errors = True
+                    ignore_first_line = True
+
+                def clean_test_field(self, value):
+                    return str(value).upper()
+
+        self.source_content.seek(0)
+        importer = TestMeta(source=self.source_content)
+        self.assertTrue(importer.is_valid(), importer.errors)
+        self.assertEquals(importer.cleaned_data[0],
+                          (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
+                          importer.cleaned_data[0])
+
 
 class TestImporter(BaseImporter):
     fields = ('name', 'value')

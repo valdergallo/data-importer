@@ -121,6 +121,7 @@ class BaseImporter(object):
             self._excluded = True
             for exclude in self.Meta.exclude:
                 if exclude in self.fields:
+                    self.fields = list(self.fields)
                     self.fields.remove(exclude)
 
     def load_descriptor(self):
