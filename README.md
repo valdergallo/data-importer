@@ -31,10 +31,10 @@ Features
 * Check import status on Django Admin
 * Convert text values by default as unicode
 * Default FormView
-* Django Admin intragration to download files in File History
+* Django Admin integration to download files in File History
 * Easy interface to create Importers
 * Easy interface to create Readers
-* File History intregrated with FormView
+* File History integrated with FormView
 * GenericImporter to import files (CSV, XLS, XLSX, XML)
 * Get fields from Django Models
 * Ignore First Row
@@ -46,7 +46,7 @@ Features
 * Set starting_row
 * Set XLS/XLSX importer by sheet_index
 * Set XLS/XLSX importer by sheet_name
-* Suport to user a JSON descriptor with Fields
+* Support to user a JSON descriptor with Fields
 
 
 Installation
@@ -100,7 +100,7 @@ To import the file or any iterable object, just do:
 ```
 
 Without an explicit declaration, data and columns are matched in the same
-order::
+order:
 
     Anthony --> Column 0 --> Field 0 --> name
     27      --> Column 1 --> Field 1 --> age
