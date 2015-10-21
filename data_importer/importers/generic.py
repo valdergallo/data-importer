@@ -50,7 +50,7 @@ class GenericImporter(BaseImporter):
         Gets the source file extension. Used to choose the right reader
         """
         if hasattr(self.source, 'file') and hasattr(self.source.file, 'name'):
-            filename = self.source.file.name # File instances
+            filename = self.source.file.name  # File instances
         elif hasattr(self.source, 'file_upload'):
             if hasattr(self.source.file_upload, 'name'):
                 filename = self.source.file_upload.name  # Default DataImporter.models.FileUploadHistory

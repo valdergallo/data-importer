@@ -12,5 +12,6 @@ class ExampleCSVImporter(CSVImporter):
 
 class DataImporterCreateView(DataImporterForm):
         extra_context = {'title': 'Create Form Data Importer',
-                         'template_file': 'myfile.csv'}
+                         'template_file': 'myfile.csv',
+                         'success_message': "File uploaded successfully"}
         importer = ExampleCSVImporter

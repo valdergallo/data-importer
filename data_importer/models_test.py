@@ -35,3 +35,11 @@ class Invoice(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class ItemInvoice(models.Model):
+    invoice = models.ForeignKey(Invoice)
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name

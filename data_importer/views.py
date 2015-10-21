@@ -37,7 +37,11 @@ class DataImporterForm(FormView):
     importer = None
     is_task = True
     success_url = '.'
-    extra_context = {'title': 'Form Data Importer', 'template_file': 'myfile.csv'}
+    extra_context = {
+        'title': 'Form Data Importer',
+        'template_file': 'myfile.csv',
+        'success_message': "File uploaded successfully"
+    }
 
     def get_context_data(self, **kwargs):
         context = super(DataImporterForm, self).get_context_data(**kwargs)
@@ -61,7 +65,8 @@ class DataImporterForm(FormView):
             if self.task.parser.errors:
                 messages.error(self.request, self.task.parser.errors)
             else:
-                messages.success(self.request, "File uploaded successfully")
+                messages.success(self.request,
+                                 self.extra_context.get('success_message', "File uploaded successfully"))
         else:
             self.task.delay(importer=self.importer, source=file_history, owner=owner)
             if owner:
