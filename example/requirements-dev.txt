@@ -10,7 +10,6 @@ ipdb
 ipython
 nose
 openpyxl
-readline
 wsgiref
 xlrd
 South

@@ -36,7 +36,7 @@ ALLOWED_HOSTS = ['*']
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -135,15 +135,15 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 
 if 'test' in sys.argv:
-    INSTALLED_APPS = ('django.contrib.auth',
+    INSTALLED_APPS = ('django_coverage',
+                      'django_nose',
+                      'django.contrib.auth',
                       'django.contrib.contenttypes',
                       'example',
-                      'django_coverage',
-                      'django_nose',
-                      'data_importer')
+                      'data_importer',)
 
 
-if django.VERSION < '1.6':
+if django.get_version() > '1.6':
     TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 else:
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
