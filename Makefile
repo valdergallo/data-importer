@@ -8,7 +8,7 @@ help:
 
 
 setup:
-	pip install -r example/requirements.txt
+	pip install -r example/requirements-dev.txt
 
 test:
 	python example/manage.py test data_importer -v 2
