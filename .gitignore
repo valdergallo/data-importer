@@ -2,6 +2,8 @@
 *.c
 *.pyo
 example/media/*
+.eggs/
+.vagrant
 *.pyc
 .coverage
 .tox/*
