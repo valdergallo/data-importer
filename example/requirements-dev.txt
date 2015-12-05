@@ -14,3 +14,5 @@ wsgiref
 xlrd
 South
 mock
+tox
+coverage
