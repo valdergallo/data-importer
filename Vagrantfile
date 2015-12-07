@@ -9,8 +9,8 @@ Vagrant.configure(2) do |config|
 
   # proxy config
   if Vagrant.has_plugin?("vagrant-proxyconf")
-    # config.proxy.http     = "http://87.254.212.121:8080"
-    # config.proxy.https    = "http://87.254.212.121:8080"
+    config.proxy.http     = "http://87.254.212.121:8080"
+    config.proxy.https    = "http://87.254.212.121:8080"
     config.proxy.no_proxy = "localhost,127.0.0.1"
   end
 
@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "hashicorp/precise32"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -81,16 +81,17 @@ Vagrant.configure(2) do |config|
     sudo apt-get install -y git
     sudo apt-get install -y sqlite
     sudo apt-get install -y vim
+    sudo apt-get install -y pandoc
     sudo easy_install virtualenv
     sudo easy_install pip
     sudo easy_install virtualenvwrapper
     # config default programs
-    wget -O ~/.vimrc https://gist.githubusercontent.com/valdergallo/2979412/raw/84f99d85dcc7d8 9d38cb79ad58e1a08a99db58ad/vimrc
-    wget -O ~/.screenrc https://gist.githubusercontent.com/valdergallo/2979409/raw/59d3e9c14d417977bed5071c6226d55acf43cec6/screenrc
-    wget -O ~/.gitconfig https://gist.githubusercontent.com/valdergallo/3427676/raw/da8224e818d12fdbaa366747b92a02b25f2fa70d/.gitconfig
-    mkdir ~/.vim
+    wget -O /home/vagrant/.vimrc https://gist.githubusercontent.com/valdergallo/2979412/raw/84f99d85dcc7d8 9d38cb79ad58e1a08a99db58ad/vimrc
+    wget -O /home/vagrant/.screenrc https://gist.githubusercontent.com/valdergallo/2979409/raw/59d3e9c14d417977bed5071c6226d55acf43cec6/screenrc
+    wget -O /home/vagrant/.gitconfig https://gist.githubusercontent.com/valdergallo/3427676/raw/da8224e818d12fdbaa366747b92a02b25f2fa70d/.gitconfig
+    mkdir /home/vagrant/.vim
     source /usr/local/bin/virtualenvwrapper.sh
-    echo "source /usr/local/bin/virtualenvwrapper.sh " >> ~/.bashrc
+    echo "source /usr/local/bin/virtualenvwrapper.sh " >> /home/vagrant/.bashrc
     ln -s /vagrant work_home
   SHELL
 end
