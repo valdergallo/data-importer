@@ -1,6 +1,7 @@
 .DS_Store
 *.c
 *.pyo
+dist/*
 example/media/*
 .eggs/
 .vagrant
@@ -13,3 +14,4 @@ docs/_build/*
 /media
 *.zip
 README.rst
+*.sqlite
