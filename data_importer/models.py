@@ -7,7 +7,12 @@ import tempfile
 import zipfile
 from datetime import date
 from uuid import uuid4
-from django.core.servers.basehttp import FileWrapper
+
+try:
+    from django.core.servers.basehttp import FileWrapper
+except ImportError:
+    from wsgiref.util import FileWrapper
+
 from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
