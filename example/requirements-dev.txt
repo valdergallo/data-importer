@@ -3,8 +3,6 @@ Jinja2
 Pygments
 Sphinx
 django-debug-toolbar
-django-nose
-django_coverage
 docutils
 ipdb
 ipython
@@ -16,3 +14,6 @@ South
 mock
 tox
 coverage
+pytest-django
+pytest-cov
+pytest-xdist

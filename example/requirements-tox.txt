@@ -1,8 +1,9 @@
-django-nose
-django_coverage
 docutils
 nose
 openpyxl
 xlrd
 South
 mock
+pytest-django
+pytest-cov
+pytest-xdist
