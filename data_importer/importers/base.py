@@ -224,15 +224,15 @@ class BaseImporter(object):
         return (row, values)
 
     def get_error_message(self, error, row=None, error_type=None):
-        messages = error
+        messages = ''
 
         if not error_type:
             error_type = u"%s" % type(error).__name__
 
-        if hasattr(error, 'message'):
-            if error.message:
-                messages = u'%s' % error.message
-        elif hasattr(error, 'messages'):
+        if hasattr(error, 'message') and error.message:
+            messages = u'%s' % error.message
+
+        if hasattr(error, 'messages') and not messages:
             if error.messages:
                 messages = u','.join(error.messages)
 

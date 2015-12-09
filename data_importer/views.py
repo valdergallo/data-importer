@@ -52,10 +52,11 @@ class DataImporterForm(FormView):
         if self.request.user.id:
             owner = self.request.user
 
-        content_type = ContentType.objects.get_for_model(self.importer.Meta.model)
-        file_history, _ = FileHistory.objects.get_or_create(file_upload=form.cleaned_data['file_upload'],
-                                                            owner=owner,
-                                                            content_type=content_type)
+        if self.importer.Meta.model:
+            content_type = ContentType.objects.get_for_model(self.importer.Meta.model)
+            file_history, _ = FileHistory.objects.get_or_create(file_upload=form.cleaned_data['file_upload'],
+                                                                owner=owner,
+                                                                content_type=content_type)
 
         if not self.is_task or not hasattr(self.task, 'delay'):
             self.task.run(importer=self.importer,
