@@ -17,6 +17,10 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 
+# port settings.AUTH_USER_MODEL
+# from django.contrib.auth import get_user_model
+User = settings.AUTH_USER_MODEL
+
 try:
     from django.contrib.contenttypes.fields import GenericForeignKey
 except ImportError:
@@ -49,7 +53,7 @@ class FileHistory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
     file_upload = models.FileField(upload_to=get_random_filename)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+    owner = models.ForeignKey(User, null=True)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
 

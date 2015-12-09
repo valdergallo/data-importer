@@ -65,40 +65,15 @@ STATIC_ROOT = os.path.join(BASEDIR, 'static')
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'cxq@*7xgd763hq5hy30bdcr2r%(m)()kk$$qj(rpa@3%_i!q+6'
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
 
 ROOT_URLCONF = 'example.urls'
 
@@ -111,11 +86,13 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+AUTH_USER_MODEL = 'auth.User'
+
 INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -135,18 +112,32 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 
 if 'test' in sys.argv:
-    INSTALLED_APPS = ('django_coverage',
-                      'django_nose',
-                      'django.contrib.auth',
-                      'django.contrib.contenttypes',
-                      'example',
-                      'data_importer',)
+    # INSTALLED_APPS = ('django.contrib.auth',
+    #                   'django.contrib.contenttypes',
+    #                   'example',
+    #                   'data_importer',)
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+        }
+    }
 
 
-if django.get_version() > '1.6':
-    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-else:
-    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+print 'Django version ', django.get_version()
+print 'Path ', sys.path
+
+from django.conf import settings
+print 'Settings.TEST_RUNNER', getattr(settings, 'TEST_RUNNER')
+
+# if float(django.get_version()) < 1.6:
+#     TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
+# elif float(django.get_version()) > 1.6:
+#     TEST_RUNNER = 'django.test.runner.DiscoverRunner'  #  django < 1.6
+# else:
+#     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
