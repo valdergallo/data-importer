@@ -15,3 +15,7 @@ docs/_build/*
 *.zip
 README.rst
 *.sqlite
+.cache/*
+htmlcov/*
+test.txt
+pytestdebug.log
