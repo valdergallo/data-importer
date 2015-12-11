@@ -1,9 +1,9 @@
 docutils
-nose
 openpyxl
 xlrd
 South
 mock
+pytest
 pytest-django
 pytest-cov
 pytest-xdist

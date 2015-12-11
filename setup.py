@@ -23,6 +23,12 @@ install_requires = [
     'xlrd>=0.9.3',
 ]
 
+tests_require = [
+    'pytest',
+    'pytest-django',
+    'pytest-cov',
+]
+
 
 setup(
     name='data-importer',
@@ -34,6 +40,7 @@ setup(
     description='Simple library to easily import data with Django',
     license='BSD',
     long_description=readme(),
+    tests_require=tests_require,
     classifiers=[
       'Framework :: Django',
       'Operating System :: OS Independent',

@@ -2,9 +2,9 @@ openpyxl==2.1.1
 xlrd==0.9.3
 South
 coverage
-nose
 coveralls
 mock
+pytest
 pytest-cov==2.2.0
 pytest-django==2.9.1
 pytest-xdist==1.13.1

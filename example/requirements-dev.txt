@@ -6,7 +6,6 @@ django-debug-toolbar
 docutils
 ipdb
 ipython
-nose
 openpyxl
 wsgiref
 xlrd
@@ -14,6 +13,7 @@ South
 mock
 tox
 coverage
+pytest
 pytest-django
 pytest-cov
 pytest-xdist
