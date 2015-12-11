@@ -1,7 +1,10 @@
 .DS_Store
 *.c
 *.pyo
+dist/*
 example/media/*
+.eggs/
+.vagrant
 *.pyc
 .coverage
 .tox/*
@@ -11,3 +14,9 @@ docs/_build/*
 /media
 *.zip
 README.rst
+*.sqlite
+.cache/*
+htmlcov/*
+test.txt
+pytestdebug.log
+build/*

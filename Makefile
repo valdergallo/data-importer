@@ -8,13 +8,13 @@ help:
 
 
 setup:
-	pip install -r example/requirements.txt
+	pip install -r example/requirements-dev.txt
 
 test:
-	python example/manage.py test data_importer -v 2
+	py.test
 
 coverage:
-	python example/manage.py test data_importer -v 2 --with-coverage
+	py.test --cov=data_importer --cov-report html
 
 send_package:
 	python setup.py register sdist upload

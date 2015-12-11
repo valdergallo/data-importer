@@ -1,7 +1,6 @@
 [run]
 source = data_importer
-omit = */migrations/*
-
+omit = */migrations/*, */tests/*
 
 [report]
 # Regexes for lines to exclude from consideration
