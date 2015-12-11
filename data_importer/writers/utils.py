@@ -6,8 +6,8 @@ from openpyxl import styles
 from cStringIO import StringIO
 from django.core.files import File
 from django.utils.safestring import mark_safe
-from django.utils.datastructures import SortedDict
 import unicodedata
+from collections import OrderedDict
 
 try:
     from django.utils import timezone
@@ -44,10 +44,10 @@ class QuerysetToWorkbook(object):
 
     def set_columns(self, values):
         if isinstance(values, dict):
-            self._columns = SortedDict(values)
+            self._columns = OrderedDict(values)
         if isinstance(values, tuple) or isinstance(values, list):
             keys = [slugify(i) for i in values]
-            self._columns = SortedDict(zip(keys, values))
+            self._columns = OrderedDict(zip(keys, values))
 
     columns = property(get_colums, set_columns)
 
@@ -70,7 +70,7 @@ class QuerysetToWorkbook(object):
                 cell.style = self.style
 
     def get_data(self, columns, data):
-        line_dict = SortedDict()
+        line_dict = OrderedDict()
         for k in columns.keys():
             line_dict[k] = getattr(data, k)
         return line_dict

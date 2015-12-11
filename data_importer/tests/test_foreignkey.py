@@ -3,7 +3,7 @@
 import os
 from django.test import TestCase
 from data_importer.importers import CSVImporter
-from data_importer.models_test import ItemInvoice
+from example.models import ItemInvoice
 
 
 LOCAL_DIR = os.path.dirname(__file__)

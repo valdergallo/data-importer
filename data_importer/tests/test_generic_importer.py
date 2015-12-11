@@ -12,7 +12,7 @@ from data_importer.readers.csv_reader import CSVReader
 from data_importer.readers.xml_reader import XMLReader
 from data_importer.core.exceptions import UnsuportedFile
 from data_importer.models import FileHistory
-from data_importer.models_test import Invoice
+from example.models import Invoice
 
 
 LOCAL_DIR = os.path.dirname(__file__)

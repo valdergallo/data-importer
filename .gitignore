@@ -19,3 +19,4 @@ README.rst
 htmlcov/*
 test.txt
 pytestdebug.log
+build/*

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from django.test import TestCase
 from data_importer.writers.utils import QuerysetToWorkbook
-from data_importer.models_test import Person
+from example.models import Person
 from django.core.files import File
 from django.http import HttpResponse
 import cStringIO

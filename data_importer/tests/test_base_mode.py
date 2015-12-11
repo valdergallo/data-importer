@@ -5,10 +5,10 @@ from django.test import TestCase
 from data_importer.importers import CSVImporter
 import os
 from django.core.files import File as DjangoFile
-from data_importer.models_test import Person
-from data_importer.models_test import Mercado
-from data_importer.models_test import PersonFile
-from data_importer.models_test import Invoice
+from example.models import Person
+from example.models import Mercado
+from example.models import PersonFile
+from example.models import Invoice
 import django
 
 

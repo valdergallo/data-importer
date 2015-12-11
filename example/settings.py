@@ -4,11 +4,11 @@
 # Django settings for example project.
 import os
 import sys
-import django
 
 data_importer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
-print data_importer_path
 sys.path.append(data_importer_path)
+sys.path.append('.')
+
 
 BASEDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
@@ -86,6 +86,11 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+MIDDLEWARE_CLASSES = (
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+)
+
 AUTH_USER_MODEL = 'auth.User'
 
 INSTALLED_APPS = (
@@ -110,32 +115,11 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 
 if 'test' in sys.argv:
-    # INSTALLED_APPS = ('django.contrib.auth',
-    #                   'django.contrib.contenttypes',
-    #                   'example',
-    #                   'data_importer',)
-
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
         }
     }
-
-
-print 'Django version ', django.get_version()
-print 'Path ', sys.path
-
-from django.conf import settings
-print 'Settings.TEST_RUNNER', getattr(settings, 'TEST_RUNNER')
-
-# if float(django.get_version()) < 1.6:
-#     TEST_RUNNER = 'django.test.simple.DjangoTestSuiteRunner'
-# elif float(django.get_version()) > 1.6:
-#     TEST_RUNNER = 'django.test.runner.DiscoverRunner'  #  django < 1.6
-# else:
-#     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [

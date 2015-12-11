@@ -8,7 +8,7 @@ from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.descriptor import InvalidDescriptor
 from data_importer.core.descriptor import InvalidModel
 from data_importer.importers.base import BaseImporter
-from data_importer.models_test import Person
+from example.models import Person
 
 
 BASEDIR = os.path.dirname(__file__)
