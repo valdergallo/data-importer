@@ -8,7 +8,6 @@ before_install:
 script: py.test -x
 
 env:
-  - DJANGO=1.2
   - DJANGO=1.3
   - DJANGO=1.4
   - DJANGO=1.5
