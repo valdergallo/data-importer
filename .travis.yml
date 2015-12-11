@@ -5,7 +5,7 @@ python:
 before_install:
   - sudo apt-get install -y libxml2-dev libxslt-dev
 
-script: py.test
+script: $PWD/py.test
 
 env:
   - DJANGO=1.4
@@ -14,7 +14,7 @@ env:
   - DJANGO=1.7
 
 install:
-  - PYTHONPATH=$PWD;
+  - export PYTHONPATH=$PWD;
   - pip install -q Django==$DJANGO -r example/requirements-travis.txt
 
 branches:
