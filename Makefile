@@ -11,7 +11,7 @@ setup:
 	pip install -r example/requirements-dev.txt
 
 test:
-	py.test
+	py.test -x
 
 coverage:
 	py.test --cov=data_importer --cov-report html
