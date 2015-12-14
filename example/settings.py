@@ -133,3 +133,12 @@ NOSE_ARGS = [
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # EMAIL_FILE_PATH = '/tmp/invest-messages'  # change this to a proper location
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+SOUTH_MIGRATION_MODULES = {
+    'data_importer': 'data_importer.south_migrations',
+}
+
+MIGRATION_MODULES = {
+    'data_importer': 'data_importer.django_migrations'
+},
