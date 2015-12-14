@@ -5,7 +5,7 @@ python:
 before_install:
   - sudo apt-get install -y libxml2-dev libxslt-dev
 
-script: py.test -x
+script: py.test -x --cov=data_importer
 
 env:
   - DJANGO=1.3
