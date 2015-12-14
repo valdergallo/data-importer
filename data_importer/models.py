@@ -7,6 +7,7 @@ import tempfile
 import zipfile
 from datetime import date
 from uuid import uuid4
+import django
 
 try:
     from django.core.servers.basehttp import FileWrapper
@@ -21,9 +22,10 @@ from django.contrib.contenttypes.models import ContentType
 # from django.contrib.auth import get_user_model
 User = settings.AUTH_USER_MODEL
 
-try:
-    from django.contrib.contenttypes.fields import GenericForeignKey
-except ImportError:
+
+if float(django.get_version()) < 1.7:
+    from django.contrib.contenttypes.fields import GenericForeignKey  # for Django > 1.7
+else:
     from django.contrib.contenttypes.generic import GenericForeignKey  # for Django < 1.9
 
 
