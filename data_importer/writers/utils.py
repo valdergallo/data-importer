@@ -125,7 +125,7 @@ class QuerysetToWorkbook(object):
 
     def response(self, compress=True, filename=None):
         from django.http import HttpResponse
-        from django.core.servers.basehttp import FileWrapper
+        from wsgiref.util import FileWrapper
 
         if compress:
             response = HttpResponse(FileWrapper(self.get_compressed_file()))
