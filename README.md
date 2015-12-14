@@ -73,6 +73,20 @@ Customize data_importer decoders
 >    Default value is UTF-8
 
 
+Add support to South Migrations and Django Migrations
+
+
+```
+    SOUTH_MIGRATION_MODULES = {
+        'data_importer': 'data_importer.south_migrations',
+    }
+
+    MIGRATION_MODULES = {
+        'data_importer': 'data_importer.django_migrations'
+    },
+```
+
+
 Basic example
 -------------
 
@@ -343,4 +357,4 @@ Acentuation with CSV    | Excel Win 2010    |   **OK**
 
 Python | 2.7+
 -------|-----
-Django |  1.6+
+Django |  1.4+
