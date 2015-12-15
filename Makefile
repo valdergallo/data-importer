@@ -14,6 +14,7 @@ test:
 	py.test -x
 
 coverage:
+	rm -rf htmlcov
 	py.test --cov=data_importer --cov-report html
 
 send_package:

@@ -43,9 +43,7 @@ class BaseImporter(object):
             self.set_reader()
 
     class Meta:
-        """
-        Importer configurations
-        """
+        """Importer configurations"""
 
     @staticmethod
     def to_unicode(bytestr):
@@ -64,16 +62,12 @@ class BaseImporter(object):
 
     @property
     def source(self):
-        """
-        Return source opened
-        """
+        """Return source opened"""
         return self._source
 
     @source.setter
     def source(self, source):
-        """
-        Open source to reader
-        """
+        """Open source to reader"""
         if isinstance(source, file):
             self._source = source
         elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
@@ -91,9 +85,7 @@ class BaseImporter(object):
 
     @property
     def meta(self):
-        """
-        Is same to use .Meta
-        """
+        """Is same to use .Meta"""
         if hasattr(self, 'Meta'):
             return self.Meta
 

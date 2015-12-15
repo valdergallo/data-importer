@@ -37,6 +37,28 @@ class TestBaseImportMeta(TestCase):
     def test_get_doc(self):
         self.assertEqual(data_importer.__doc__, 'Data Importer')
 
+    def test_get_Meta_doc(self):
+        self.assertEqual(BaseImporter.Meta.__doc__, 'Importer configurations')
+
+    def test_get_meta_doc(self):
+        self.assertEqual(BaseImporter.meta.__doc__, 'Is same to use .Meta')
+
+    def test_raise_error_in_process_row(self):
+        row = ['test1', 'test2', 'test3']
+        values = ['test1', 'test2', 'test3', 'test3', 'test3', 'test3']
+        base = BaseImporter()
+        base.fields = []
+        self.assertRaisesMessage(base.process_row(row, values), 'Invalid Line: 2')
+
+    def test_ignore_empty_lines(self):
+        base = BaseImporter()
+        row = ['test1', 'test2', 'test3']
+        values = [False, False, False]
+        base.fields = row
+        base.Meta.ignore_empty_lines = True
+
+        self.assertFalse(base.process_row(row, values))
+
     def test_private_values(self):
         base = CSVImporter()
 
