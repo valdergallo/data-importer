@@ -48,7 +48,7 @@ class TestBaseImportMeta(TestCase):
         values = ['test1', 'test2', 'test3', 'test3', 'test3', 'test3']
         base = BaseImporter()
         base.fields = []
-        self.assertRaisesMessage(base.process_row(row, values), 'Invalid Line: 2')
+        self.assertRaises(TypeError, base.process_row(row, values), 'Invalid Line: 2')
 
     def test_ignore_empty_lines(self):
         base = BaseImporter()
