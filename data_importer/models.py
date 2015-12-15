@@ -6,7 +6,7 @@ import os
 import tempfile
 import zipfile
 from datetime import date
-from uuid import uuid4
+import uuid
 import django
 
 try:
@@ -41,7 +41,7 @@ CELERY_STATUS = ((1, 'Imported'),
 
 def get_random_filename(instance, filename):
     _, ext = os.path.splitext(filename)
-    filename = "%s%s" % (str(uuid4()), ext)
+    filename = "%s%s" % (str(uuid.uuid4()), ext)
     user_dir = "anonymous"
     if instance.owner:
         user_dir = instance.owner.get_username()

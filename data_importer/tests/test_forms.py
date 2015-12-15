@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
-from cStringIO import StringIO
 from mock import Mock
 import sys
 from data_importer import forms
-
-source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 
 
 class TestFileUploadForm(TestCase):

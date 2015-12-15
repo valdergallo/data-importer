@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+from data_importer import models
+from django.test import TestCase
+import mock
+from datetime import date
+
+
+def fake_uuid4():
+    return 'fake_uuid4'
+
+
+class TestDataImporterModels(TestCase):
+
+    @mock.patch('uuid.uuid4', fake_uuid4)
+    def test_get_random_filename_without_owner(self):
+        reload(models)
+        instance = models.FileHistory()
+        filename = 'test_file.xls'
+        today = date.today().strftime("%Y/%m/%d")
+        rand_filename = models.get_random_filename(instance, filename)
+
+        expected_name = 'upload_history/anonymous/%s/fake_uuid4.xls' % today
+        self.assertEqual(rand_filename, expected_name)
