@@ -27,7 +27,6 @@ if django.VERSION[0] == 1 and django.VERSION[1] > 7:
 else:
     from django.contrib.contenttypes.generic import GenericForeignKey  # for Django < 1.7
 
-
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
 
 CELERY_STATUS = ((1, 'Imported'),
