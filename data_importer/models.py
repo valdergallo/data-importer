@@ -8,6 +8,7 @@ import zipfile
 from datetime import date
 import uuid
 import django
+from distutils.version import StrictVersion
 
 try:
     from django.core.servers.basehttp import FileWrapper
@@ -22,9 +23,9 @@ from django.contrib.contenttypes.models import ContentType
 # from django.contrib.auth import get_user_model
 User = settings.AUTH_USER_MODEL
 
-DJANGO_VERSION = float(django.get_version())
+DJANGO_VERSION = StrictVersion(django.get_version())
 
-if DJANGO_VERSION > 1.7:
+if DJANGO_VERSION > StrictVersion('1.7'):
     from django.contrib.contenttypes.fields import GenericForeignKey  # for Django > 1.7
 else:
     from django.contrib.contenttypes.generic import GenericForeignKey  # for Django < 1.9
