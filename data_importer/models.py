@@ -22,13 +22,10 @@ from django.contrib.contenttypes.models import ContentType
 # from django.contrib.auth import get_user_model
 User = settings.AUTH_USER_MODEL
 
-DJANGO_VERSION = float(django.get_version())
-
-if DJANGO_VERSION > 1.7:
+if django.VERSION[0] == 1 and django.VERSION[1] > 7:
     from django.contrib.contenttypes.fields import GenericForeignKey  # for Django > 1.7
 else:
-    from django.contrib.contenttypes.generic import GenericForeignKey  # for Django < 1.9
-
+    from django.contrib.contenttypes.generic import GenericForeignKey  # for Django < 1.7
 
 DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
 
