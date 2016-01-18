@@ -9,6 +9,7 @@ from example.models import Person
 from example.models import Mercado
 from example.models import PersonFile
 from example.models import Invoice
+from distutils.version import StrictVersion
 import django
 
 
@@ -137,7 +138,8 @@ class TestModelValidator(TestCase):
 
     def test_errors_values(self):
         self.importer.is_valid()
-        if float(django.get_version()) < 1.4:
+        DJANGO_VERSION = StrictVersion(django.get_version())
+        if DJANGO_VERSION < StrictVersion('1.4'):
             error = [(1, 'ValidationError', u'Field (price) This value must be a float.')]
         else:
             error = [(1, 'ValidationError', u'Field (price) 23,98 value must be a float.')]
