@@ -10,7 +10,7 @@ class XMLReader(object):
 
     def read(self):
         "Convert XML to Dict"
-        tree = et.fromstring(self.instance.source)
+        tree = et.parse(self.instance.source)
         elements = tree.findall(self.instance.root)
         for elem in elements:
             items = list(elem)

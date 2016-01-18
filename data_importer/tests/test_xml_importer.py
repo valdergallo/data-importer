@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import os
 from django.test import TestCase
 from django.db import models
 from data_importer.importers.xml_importer import XMLImporter
+LOCAL_DIR = os.path.dirname(__file__)
+
+sxml = os.path.join(LOCAL_DIR, 'data/test_music.xml')
 
 
 class Musics(models.Model):
@@ -12,23 +15,7 @@ class Musics(models.Model):
     bitrate = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
-        return self.full_clean() == None
-
-
-sxml="""
-<encspot>
-  <file>
-   <Name>some filename.mp3</Name>
-   <Encoder>Gogo (after 3.0)</Encoder>
-   <Bitrate>131</Bitrate>
-  </file>
-  <file>
-   <Name>another filename.mp3</Name>
-   <Encoder>iTunes</Encoder>
-   <Bitrate>128</Bitrate>
-  </file>
-</encspot>
-"""
+        return self.full_clean() is None
 
 
 class TestXMLImporter(TestCase):
