@@ -13,6 +13,13 @@ from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 
+ALPHABETIC = 'ABCDEFGHIJKLNM0PKRSTUVWXYZ'
+FACTOR = 26
+
+DELAY = 1
+
+REGEX_NUMBER = r'\d+'
+
 
 class BaseImporter(object):
     """
@@ -20,6 +27,7 @@ class BaseImporter(object):
 
     set_reader: can be override to create new importers files
     """
+
     def __new__(cls, **kargs):
         """
         Provide custom methods in subclass Meta
@@ -178,9 +186,15 @@ class BaseImporter(object):
         """
         Read clean functions from importer and return tupla with row number, field and value
         """
-        values_encoded = [self.to_unicode(i) for i in values]
+        if isinstance(self.fields, dict):
+            values_encoded = [self.to_unicode(values[i]) for i in self.fields.values()]
+        else:
+            values_encoded = [self.to_unicode(i) for i in values]
         try:
-            values = dict(zip(self.fields, values_encoded))
+            if isinstance(self.fields, dict):
+                values = dict(zip(self.fields.keys(), values_encoded))
+            else:
+                values = dict(zip(self.fields, values_encoded))
         except TypeError:
             raise TypeError('Invalid Line: %s' % row)
 
@@ -259,7 +273,7 @@ class BaseImporter(object):
         # create clean content
         for data in self._read_file():
             if data:
-                self._cleaned_data += (data, )
+                self._cleaned_data += (data,)
 
         try:
             self.post_clean()
@@ -309,7 +323,8 @@ class BaseImporter(object):
             reader = self._reader.read()
         else:
             reader = self._reader
-
+        if isinstance(self.fields, dict):
+            self.fields = self.get_dict_fields(self.fields)
         for row, values in enumerate(reader, 1):
             if self.Meta.ignore_first_line:
                 row -= 1
@@ -357,3 +372,40 @@ class BaseImporter(object):
         self.post_save_all_lines()
 
         return True
+
+    @staticmethod
+    def convert_letter_to_number(letter):
+        try:
+            return ALPHABETIC.index(letter.upper())
+        except ValueError as ve:
+            raise ValueError(ve.message + 'on ALPHABETIC = {}'.format(ALPHABETIC))
+
+    @staticmethod
+    def convert_list_number_to_decimal_integer(list_number):
+        list_number_reversed = list(reversed(list_number))
+        final_number = 0
+        for number, exp in zip(list_number_reversed, range(len(list_number_reversed))):
+            final_number += (number + DELAY) * (FACTOR ** exp)
+        return final_number - DELAY
+
+    def convert_alphabetic_column_to_number(self, alphabetic_column):
+        number_list = map(self.convert_letter_to_number, list(alphabetic_column))
+        return self.convert_list_number_to_decimal_integer(number_list)
+
+    def get_dict_fields(self, dict_fields):
+        dict_field_out = {}
+        for field_name, column in dict_fields.items():
+            try:
+                column = int(column)
+            except ValueError:
+                if re.findall(REGEX_NUMBER, column):
+                    raise ValueError(
+                            'You can\'t mix letters and numbers in the same column. you pass: {}'.format(column))
+            if str == type(column):
+                dict_field_out[field_name] = self.convert_alphabetic_column_to_number(column)
+            elif int == type(column):
+                dict_field_out[field_name] = column
+            else:
+                raise ValueError(
+                        'Column must be [aA - zZ]+ or [1 - 9]+,you pass \{"{0}":{1}\}'.format(field_name, column))
+        return dict_field_out
