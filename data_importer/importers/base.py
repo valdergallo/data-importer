@@ -398,9 +398,10 @@ class BaseImporter(object):
             final_number += (number + DELAY) * (FACTOR ** exp)
         return final_number - DELAY
 
-    def convert_alphabetic_column_to_number(self, alphabetic_column):
-        number_list = map(self.convert_letter_to_number, list(alphabetic_column))
-        return self.convert_list_number_to_decimal_integer(number_list)
+    @staticmethod
+    def convert_alphabetic_column_to_number(alphabetic_column):
+        number_list = map(BaseImporter.convert_letter_to_number, list(alphabetic_column))
+        return BaseImporter.convert_list_number_to_decimal_integer(number_list)
 
     def get_dict_fields(self, dict_fields):
         dict_field_out = {}
