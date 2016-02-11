@@ -403,7 +403,8 @@ class BaseImporter(object):
         number_list = map(BaseImporter.convert_letter_to_number, list(alphabetic_column))
         return BaseImporter.convert_list_number_to_decimal_integer(number_list)
 
-    def get_dict_fields(self, dict_fields):
+    @staticmethod
+    def get_dict_fields(dict_fields):
         dict_field_out = {}
         for field_name, column in dict_fields.items():
             try:
@@ -413,7 +414,7 @@ class BaseImporter(object):
                     raise ValueError(
                             'You can\'t mix letters and numbers in the same column. you pass: {}'.format(column))
             if str == type(column):
-                dict_field_out[field_name] = self.convert_alphabetic_column_to_number(column)
+                dict_field_out[field_name] = BaseImporter.convert_alphabetic_column_to_number(column)
             elif int == type(column):
                 dict_field_out[field_name] = column
             else:
