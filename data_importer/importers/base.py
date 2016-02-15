@@ -13,7 +13,7 @@ from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 
-ALPHABETIC = 'ABCDEFGHIJKLNMOPQRSTUVWXYZ'
+ALPHABETIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 FACTOR = 26
 
 DELAY = 1
