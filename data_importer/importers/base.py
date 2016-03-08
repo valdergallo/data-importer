@@ -13,7 +13,7 @@ from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 
-ALPHABETIC = 'ABCDEFGHIJKLNM0PKRSTUVWXYZ'
+ALPHABETIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 FACTOR = 26
 
 DELAY = 1
@@ -44,8 +44,8 @@ class BaseImporter(object):
         self._reader = None
         self._excluded = False
         self._readed = False
-
         self.start_fields()
+        self.original_fields = None
         if source:
             self.source = source
             self.set_reader()
@@ -186,8 +186,17 @@ class BaseImporter(object):
         """
         Read clean functions from importer and return tupla with row number, field and value
         """
+
         if isinstance(self.fields, dict):
-            values_encoded = [self.to_unicode(values[i]) for i in self.fields.values()]
+            values_encoded = []
+            for key, value in self.fields.items():
+                try:
+                    values_encoded.append(values[value])
+                except IndexError as e:
+                    index = self.original_fields.get(key)
+                    if isinstance(index, str):
+                        index = '"{}"'.format(index)
+                    raise IndexError(e.message + '. Index with error: [ "{0}" : {1} ]'.format(key, index))
         else:
             values_encoded = [self.to_unicode(i) for i in values]
         try:
@@ -323,6 +332,7 @@ class BaseImporter(object):
             reader = self._reader.read()
         else:
             reader = self._reader
+        self.original_fields = self.fields
         if isinstance(self.fields, dict):
             self.fields = self.get_dict_fields(self.fields)
         for row, values in enumerate(reader, 1):
@@ -378,7 +388,7 @@ class BaseImporter(object):
         try:
             return ALPHABETIC.index(letter.upper())
         except ValueError as ve:
-            raise ValueError(ve.message + 'on ALPHABETIC = {}'.format(ALPHABETIC))
+            raise ValueError(ve.message + '[{0}] on ALPHABETIC = {1}'.format(letter.upper(), ALPHABETIC))
 
     @staticmethod
     def convert_list_number_to_decimal_integer(list_number):
@@ -388,11 +398,13 @@ class BaseImporter(object):
             final_number += (number + DELAY) * (FACTOR ** exp)
         return final_number - DELAY
 
-    def convert_alphabetic_column_to_number(self, alphabetic_column):
-        number_list = map(self.convert_letter_to_number, list(alphabetic_column))
-        return self.convert_list_number_to_decimal_integer(number_list)
+    @staticmethod
+    def convert_alphabetic_column_to_number(alphabetic_column):
+        number_list = map(BaseImporter.convert_letter_to_number, list(alphabetic_column))
+        return BaseImporter.convert_list_number_to_decimal_integer(number_list)
 
-    def get_dict_fields(self, dict_fields):
+    @staticmethod
+    def get_dict_fields(dict_fields):
         dict_field_out = {}
         for field_name, column in dict_fields.items():
             try:
@@ -402,7 +414,7 @@ class BaseImporter(object):
                     raise ValueError(
                             'You can\'t mix letters and numbers in the same column. you pass: {}'.format(column))
             if str == type(column):
-                dict_field_out[field_name] = self.convert_alphabetic_column_to_number(column)
+                dict_field_out[field_name] = BaseImporter.convert_alphabetic_column_to_number(column)
             elif int == type(column):
                 dict_field_out[field_name] = column
             else:
