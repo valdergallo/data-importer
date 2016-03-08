@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
+from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.writers.utils import QuerysetToWorkbook
 from example.models import Person
 from django.core.files import File
 from django.http import HttpResponse
-import cStringIO
+from io import BytesIO
 import os
 
 try:
@@ -14,7 +15,7 @@ except ImportError:
 
 
 def createFivePerson():
-    for i in xrange(1, 5):
+    for i in range(1, 5):
         Person.objects.create(first_name='first_name_' + str(i),
                              last_name='last_name_' + str(i),
                              age='1' + str(i))
@@ -76,11 +77,11 @@ class TestQuerysetToWorkbookMethods(TestCase):
 
     def test_get_content(self):
         string_io = self.instance.get_content()
-        self.assertIsInstance(string_io, cStringIO.OutputType)
+        self.assertIsInstance(string_io, BytesIO)
 
     def test_get_compressed_file(self):
         string_io = self.instance.get_compressed_file()
-        self.assertIsInstance(string_io, cStringIO.OutputType)
+        self.assertIsInstance(string_io, BytesIO)
 
     def test_compress_django_file(self):
         django_file = self.instance.compress_django_file()

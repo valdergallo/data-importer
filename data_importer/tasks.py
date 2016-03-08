@@ -14,7 +14,7 @@ from django.utils.safestring import mark_safe
 
 try:
     from django.conf import settings
-except ImportError, e:
+except ImportError as e:
     settings = None
 
 try:

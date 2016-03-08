@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.importers.base import objclass2dict
 from data_importer.importers import CSVImporter
-from cStringIO import StringIO
+from io import StringIO
 import data_importer
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")

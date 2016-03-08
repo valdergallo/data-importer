@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.importers import CSVImporter
 import os
@@ -38,7 +38,8 @@ class TestBaseWithModel(TestCase):
 
     def test_cleaned_data_content(self):
         content = {'first_name': 'test_first_name_1',
-            'last_name': 'test_last_name_1', 'age': 'age1'}
+                   'last_name': 'test_last_name_1',
+                   'age': 'age1'}
         self.assertEquals(self.importer.cleaned_data[0], (1, content))
 
     def test_source_importer_file(self):
@@ -143,4 +144,5 @@ class TestModelValidator(TestCase):
             error = [(1, 'ValidationError', u'Field (price) This value must be a float.')]
         else:
             error = [(1, 'ValidationError', u'Field (price) 23,98 value must be a float.')]
-        self.assertEquals(self.importer.errors, error)
+
+        self.assertEquals(self.importer.errors, error, self.importer.cleaned_data)

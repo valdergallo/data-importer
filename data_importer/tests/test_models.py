@@ -3,6 +3,7 @@ from data_importer import models
 from django.test import TestCase
 import mock
 from datetime import date
+from imp import reload
 
 
 def fake_uuid4():
