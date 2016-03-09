@@ -12,6 +12,8 @@ from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
+from collections import OrderedDict
+
 
 ALPHABETIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 FACTOR = 26
@@ -79,6 +81,8 @@ class BaseImporter(object):
         if isinstance(source, file):
             self._source = source
         elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
+            self._source = open(source, 'rb')
+        elif isinstance(source, unicode) and os.path.exists(source) and source.endswith('csv'):
             self._source = open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
@@ -220,9 +224,9 @@ class BaseImporter(object):
             else:
                 try:
                     values[k] = self.clean_field(k, v)
-                except StopImporter, e:
+                except StopImporter as e:
                     raise StopImporter(self.get_error_message(e, row))
-                except Exception, e:
+                except Exception as e:
                     self._error.append(self.get_error_message(e, row))
                     has_error = True
 
@@ -232,7 +236,7 @@ class BaseImporter(object):
         # validate full row data
         try:
             values = self.clean_row(values)
-        except Exception, e:
+        except Exception as e:
             self._error.append(self.get_error_message(e, row))
             return None
 
@@ -271,12 +275,12 @@ class BaseImporter(object):
 
         try:
             self.pre_clean()
-        except Exception, e:
+        except Exception as e:
             self._error.append(self.get_error_message(e, error_type='__pre_clean__'))
 
         try:
             self.clean()
-        except Exception, e:
+        except Exception as e:
             self._error.append(self.get_error_message(e, error_type='__clean_all__'))
 
         # create clean content
@@ -286,7 +290,7 @@ class BaseImporter(object):
 
         try:
             self.post_clean()
-        except Exception, e:
+        except Exception as e:
             self._error.append(self.get_error_message(e, error_type='__post_clean__'))
 
         return self._cleaned_data
@@ -364,13 +368,13 @@ class BaseImporter(object):
 
                 try:
                     self.pre_commit()
-                except Exception, e:
+                except Exception as e:
                     self._error.append(self.get_error_message(e, error_type='__pre_commit__'))
                     transaction.rollback()
 
                 try:
                     transaction.commit()
-                except Exception, e:
+                except Exception as e:
                     self._error.append(self.get_error_message(e, error_type='__trasaction__'))
                     transaction.rollback()
 
@@ -405,8 +409,8 @@ class BaseImporter(object):
 
     @staticmethod
     def get_dict_fields(dict_fields):
-        dict_field_out = {}
-        for field_name, column in dict_fields.items():
+        dict_field_out = OrderedDict()
+        for field_name, column in OrderedDict(dict_fields).items():
             try:
                 column = int(column)
             except ValueError:

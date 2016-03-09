@@ -47,6 +47,7 @@ Features
 * Set XLS/XLSX importer by sheet_index
 * Set XLS/XLSX importer by sheet_name
 * Support to user a JSON descriptor with Fields
+* Fields as Dict (2.3.5+)
 
 
 Installation
@@ -119,6 +120,52 @@ order:
     Anthony --> Column 0 --> Field 0 --> name
     27      --> Column 1 --> Field 1 --> age
     1.75    --> Column 2 --> Field 2 --> length
+
+
+Using Fields as Dict
+---------------------
+
+You can use diferents ways to define the fields as dicts
+
+
+```
+>>> class TestMetaDict(XLSImporter):
+...     fields = {
+...         'business_place': 'A',
+...         'doc_number': 'b',
+...         'doc_data': 'C',
+...     }
+```
+
+or
+
+```
+>>> class TestMetaDict(XLSImporter):
+...     fields = {
+...         'business_place': 0,
+...         'doc_number': 1,
+...         'doc_data': 2,
+...     }
+```
+
+or
+
+```
+>>> class TestMetaDict(XLSImporter):
+...     fields = {
+...         'business_place': '0',
+...         'doc_number': 1,
+...         'doc_data': 'C',
+...     }
+```
+
+Using declaration, data and columns are matched in the same
+order:
+
+    New York   --> Column 0 --> Field 0 --> business_place
+    664736     --> Column 1 --> Field 1 --> doc_number
+    2015-01-01 --> Column 2 --> Field 2 --> doc_data
+
 
 Django Model
 ------------

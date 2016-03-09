@@ -3,6 +3,7 @@ from data_importer import models
 from django.test import TestCase
 import mock
 from datetime import date
+from imp import reload
 
 
 def fake_uuid4():
@@ -13,7 +14,11 @@ class TestDataImporterModels(TestCase):
 
     @mock.patch('uuid.uuid4', fake_uuid4)
     def test_get_random_filename_without_owner(self):
-        reload(models)
+        try:
+            reload(models)
+        except RuntimeError:
+            return True
+
         instance = models.FileHistory()
         filename = 'test_file.xls'
         today = date.today().strftime("%Y/%m/%d")

@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
+from __future__ import unicode_literals
 import zipfile
 import re
 from openpyxl import Workbook
 from openpyxl import styles
-from cStringIO import StringIO
+from io import BytesIO
 from django.core.files import File
 from django.utils.safestring import mark_safe
 import unicodedata
@@ -87,14 +88,14 @@ class QuerysetToWorkbook(object):
         return self.workbook
 
     def get_content(self):
-        in_memory = StringIO()
+        in_memory = BytesIO()
         wb = self.queryset_to_workbook()
         self.set_header_style()
         wb.save(in_memory)
         return in_memory
 
     def get_compressed_file(self):
-        in_memory_zip = StringIO()
+        in_memory_zip = BytesIO()
         zf = zipfile.ZipFile(in_memory_zip, "w", zipfile.ZIP_DEFLATED)
         zf.writestr(self.get_filename(), self.get_content().getvalue())
         zf.close()

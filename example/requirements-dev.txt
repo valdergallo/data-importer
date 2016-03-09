@@ -7,7 +7,6 @@ docutils
 ipdb
 ipython
 openpyxl
-wsgiref
 xlrd
 South
 mock

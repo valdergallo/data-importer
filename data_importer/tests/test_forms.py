@@ -3,6 +3,7 @@ from django.test import TestCase
 from mock import Mock
 import sys
 from data_importer import forms
+from imp import reload
 
 
 class TestFileUploadForm(TestCase):

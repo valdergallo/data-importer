@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 import os
-from cStringIO import StringIO
 from django.test import TestCase
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.descriptor import InvalidDescriptor
 from data_importer.core.descriptor import InvalidModel
 from data_importer.importers.base import BaseImporter
-from example.models import Person
 
 
 BASEDIR = os.path.dirname(__file__)
