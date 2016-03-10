@@ -197,16 +197,8 @@ class BaseImporter(object):
                 try:
                     values_encoded.append(values[value])
                 except IndexError as e:
-                    # index = self.original_fields.get(key)
-                    # if isinstance(index, str):
-                    #     index = '"{}"'.format(index)
-                    # raise IndexError(e.message + '. Index with error: [ "{0}" : {1} ]'.format(key, index))
-                    print u'values: {}'.format(values)
-                    print u'value: {}'.format(value)
-                    print u'key: {}'.format(key)
-                    print u'row: {}'.format(row)
-                    print u'l: {} - {}'.format(l, len(values))
-                    traceback.print_exc()
+                    self._error.append(self.get_error_message(e, row))
+                    return None
         else:
             values_encoded = [self.to_unicode(i) for i in values]
         try:
