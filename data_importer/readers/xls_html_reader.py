@@ -13,7 +13,8 @@ class XLSHTMLReader(object):
         main_table = beautiful_soup.find(self.instance.table_selector)
         for tr in main_table.find_all('tr'):
             values = [self.clean_td(td.string) for td in tr.find_all('td')]
-            yield values
+            if values:
+                yield values
 
     @classmethod
     def clean_td(cls, string):
