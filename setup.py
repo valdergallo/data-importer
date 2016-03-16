@@ -21,6 +21,7 @@ install_requires = [
     'django>=1.4',
     'openpyxl>=2.1.4',
     'xlrd>=0.9.3',
+    'beautifulsoup4==4.4.1',
 ]
 
 tests_require = [

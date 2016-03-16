@@ -13,7 +13,7 @@ from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 from collections import OrderedDict
-
+import traceback
 
 ALPHABETIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 FACTOR = 26
@@ -190,17 +190,15 @@ class BaseImporter(object):
         """
         Read clean functions from importer and return tupla with row number, field and value
         """
-
+        l = len(values)
         if isinstance(self.fields, dict):
             values_encoded = []
             for key, value in self.fields.items():
                 try:
                     values_encoded.append(values[value])
                 except IndexError as e:
-                    index = self.original_fields.get(key)
-                    if isinstance(index, str):
-                        index = '"{}"'.format(index)
-                    raise IndexError(e.message + '. Index with error: [ "{0}" : {1} ]'.format(key, index))
+                    self._error.append(self.get_error_message(e, row))
+                    return None
         else:
             values_encoded = [self.to_unicode(i) for i in values]
         try:
