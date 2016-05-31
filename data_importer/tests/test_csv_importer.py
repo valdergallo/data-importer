@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.importers.base import objclass2dict
@@ -149,7 +147,7 @@ class TestReadContent(TestCase):
 
         self.assertFalse(importer_error.is_valid())
         self.assertEqual(importer_error.errors, [(1, 'AttributeError',
-                         u"unicode object has no attribute coisa")])
+                         "unicode object has no attribute coisa")])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(CSVImporter):

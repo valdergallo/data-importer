@@ -49,6 +49,6 @@ class XLSReader(object):
         return item.value
 
     def read(self):
-        for i in xrange(0, self.worksheet.nrows):
+        for i in range(0, self.worksheet.nrows):
             values = [self.convert_value(cell, self.workbook) for cell in self.worksheet.row(i)]
             yield values

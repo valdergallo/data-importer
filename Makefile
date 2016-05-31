@@ -11,11 +11,11 @@ setup:
 	pip install -r example/requirements-dev.txt
 
 test:
-	py.test -x
+	PYTHONPATH=`pwd` py.test
 
 coverage:
 	rm -rf htmlcov
-	py.test --cov=data_importer --cov-report html
+	PYTHONPATH=`pwd` py.test --cov=data_importer --cov-report html
 
 send_package:
 	python setup.py register sdist upload

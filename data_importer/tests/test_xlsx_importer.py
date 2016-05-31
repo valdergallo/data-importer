@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.importers.xlsx_importer import XLSXImporter
 import os
@@ -36,7 +34,7 @@ class TestXLSImportMeta(TestCase):
         self.assertEqual(len(self.importer.cleaned_data), 9)
 
     def test_cleaned_data_content(self):
-        content = {'doc_number': 1000000, 'business_place': u'SP',
+        content = {'doc_number': 1000000, 'business_place': 'SP',
         'doc_data': datetime.datetime(1982, 11, 1, 0, 0)}
 
         self.assertEquals(self.importer.cleaned_data[0], (1, content),
@@ -71,7 +69,7 @@ class TestModelXLSImporter(TestCase):
         self.assertEqual(len(self.importer.cleaned_data), 9)
 
     def test_cleaned_data_content(self):
-        content = {'doc_number': 1000000, 'business_place': u'SP',
+        content = {'doc_number': 1000000, 'business_place': 'SP',
         'doc_data': datetime.datetime(1982, 11, 1, 0, 0)}
 
         self.assertEquals(self.importer.cleaned_data[0], (1, content),
@@ -113,7 +111,7 @@ class TestPTBRXLSImporter(TestCase):
 
     def test_cleaned_data_content(self):
         content = {
-            'item': u'Caça',
+            'item': 'Caça',
             'qtde': 1,
             }
 
@@ -121,7 +119,7 @@ class TestPTBRXLSImporter(TestCase):
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Amanhã',
+            'item': 'Amanhã',
             'qtde': 2,
             }
 
@@ -129,7 +127,7 @@ class TestPTBRXLSImporter(TestCase):
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Qüanto',
+            'item': 'Qüanto',
             'qtde': 3,
             }
 
@@ -137,7 +135,7 @@ class TestPTBRXLSImporter(TestCase):
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Será',
+            'item': 'Será',
             'qtde': 4,
             }
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from io import StringIO
 from data_importer.importers import CSVImporter
@@ -65,7 +63,7 @@ class TestReadContent(TestCase):
 
         self.assertFalse(importer_error.is_valid())
         self.assertEqual(importer_error.errors, [(1, 'AttributeError',
-                         u"unicode object has no attribute coisa")])
+                         "unicode object has no attribute coisa")])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(CSVImporter):
@@ -87,7 +85,7 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        should_be = (1, OrderedDict({u'test_number_field': u'test1', u'test_field': '1'}))
+        should_be = (1, OrderedDict({'test_number_field': 'test1', 'test_field': '1'}))
         self.assertEquals(importer.cleaned_data[0],
                           should_be)
 
@@ -111,6 +109,6 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        should_be = (1, OrderedDict({u'test_number_field': u'test1', u'test_field': '1'}))
+        should_be = (1, OrderedDict({'test_number_field': 'test1', 'test_field': '1'}))
         self.assertEquals(importer.cleaned_data[0],
                           should_be)

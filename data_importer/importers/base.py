@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 import os
 import re
 from django.db import transaction
@@ -60,7 +58,7 @@ class BaseImporter(object):
         """
         Receive string bytestr and try to return a utf-8 string.
         """
-        if not isinstance(bytestr, str) and not isinstance(bytestr, unicode):
+        if not isinstance(bytestr, str):
             return bytestr
 
         try:
@@ -81,8 +79,6 @@ class BaseImporter(object):
         if isinstance(source, file):
             self._source = source
         elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
-            self._source = open(source, 'rb')
-        elif isinstance(source, unicode) and os.path.exists(source) and source.endswith('csv'):
             self._source = open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
@@ -177,7 +173,7 @@ class BaseImporter(object):
                 pass  # do nothing if not find this field in model
             except ValidationError as msg:
                 default_msg = msg.messages[0].replace('This field', '')
-                new_msg = u'Field (%s) %s' % (field.name, default_msg)
+                new_msg = 'Field (%s) %s' % (field.name, default_msg)
                 raise ValidationError(new_msg)
 
         clean_function = getattr(self, 'clean_%s' % field_name, False)
@@ -246,14 +242,14 @@ class BaseImporter(object):
         messages = ''
 
         if not error_type:
-            error_type = u"%s" % type(error).__name__
+            error_type = "%s" % type(error).__name__
 
         if hasattr(error, 'message') and error.message:
-            messages = u'%s' % error.message
+            messages = '%s' % error.message
 
         if hasattr(error, 'messages') and not messages:
             if error.messages:
-                messages = u','.join(error.messages)
+                messages = ','.join(error.messages)
 
         messages = re.sub('\'', '', messages)
         error_type = re.sub('\'', '', error_type)

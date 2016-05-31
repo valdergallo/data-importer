@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import os
 from django.test import TestCase
 from data_importer.tasks import DataImpoterTask
