@@ -11,7 +11,7 @@ setup:
 	pip install -r example/requirements-dev.txt
 
 test:
-	PYTHONPATH=`pwd` py.test
+	PYTHONPATH=`pwd` py.test -x
 
 coverage:
 	rm -rf htmlcov
