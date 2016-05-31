@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from io import StringIO
 from data_importer.importers import BaseImporter
 from data_importer.importers import CSVImporter
