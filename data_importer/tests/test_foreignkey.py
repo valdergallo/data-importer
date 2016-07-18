@@ -1,4 +1,4 @@
-    from __future__ import unicode_literals
+from __future__ import unicode_literals
 import os
 from django.test import TestCase
 from data_importer.importers import CSVImporter

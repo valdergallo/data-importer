@@ -62,8 +62,12 @@ class TestReadContent(TestCase):
         importer_error = TestMetaClean(source=['test1', ])
 
         self.assertFalse(importer_error.is_valid())
-        self.assertEqual(importer_error.errors, [(1, 'AttributeError',
-                         "unicode object has no attribute coisa")])
+        # test get row
+        self.assertEqual(importer_error.errors[0][0], 1)
+        # test get error type
+        self.assertEqual(importer_error.errors[0][1], 'AttributeError')
+        # test get error message
+        self.assertIn('object has no attribute coisa', importer_error.errors[0][2])
 
     def test_read_content_skip_first_line(self):
         class TestMeta(CSVImporter):
@@ -85,7 +89,7 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        should_be = (1, OrderedDict({'test_number_field': 'test1', 'test_field': '1'}))
+        should_be = (1, OrderedDict([('test_field', '1'), ('test_number_field', 'test1')]))
         self.assertEquals(importer.cleaned_data[0],
                           should_be)
 

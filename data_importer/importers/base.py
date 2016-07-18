@@ -75,12 +75,12 @@ class BaseImporter(object):
         return self._source
 
     @source.setter
-    def source(self, source):
+    def source(self, source=None, encoding="ISO-8859-1"):
         """Open source to reader"""
         if isinstance(source, IOBase):
             self._source = source
         elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
-            self._source = open(source, 'rb')
+            self._source = open(source, 'r', encoding=encoding)
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances
@@ -252,6 +252,9 @@ class BaseImporter(object):
             if error.messages:
                 messages = ','.join(error.messages)
 
+        if not messages:
+            messages = str(error)
+
         messages = re.sub('\'', '', messages)
         error_type = re.sub('\'', '', error_type)
 
@@ -333,6 +336,7 @@ class BaseImporter(object):
             reader = self._reader.read()
         else:
             reader = self._reader
+
         self.original_fields = self.fields
         if isinstance(self.fields, dict):
             self.fields = self.get_dict_fields(self.fields)
