@@ -1,17 +1,22 @@
 # Make content for developer
 help:
-	@echo "setup			Instal requirements"
+	@echo "dev			Instal requirements"
 	@echo "test			Run suit test"
 	@echo "coverage		Run Coverage"
 	@echo "clean			Remove trash files"
 	@echo "send_package		Send Package to Pypi"
+	@echo "update		Update all local packages"
 
 
-setup:
-	pip install -r example/requirements-dev.txt
+dev:
+	pip install -r requirements.txt
+
+update:
+	pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+	pip freeze > requirements.txt
 
 test:
-	PYTHONPATH=`pwd` py.test -x
+	PYTHONPATH=`pwd` py.test -x -s
 
 coverage:
 	rm -rf htmlcov
