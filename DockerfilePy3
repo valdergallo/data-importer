@@ -1,0 +1,38 @@
+# Set the base image to Ubuntu
+FROM ubuntu
+
+# File Author / Maintainer
+MAINTAINER Valder Gallo <valdergallo@gmail.com>
+
+FROM python:3.6
+
+# Update the sources list
+RUN apt-get update
+
+# Install basic applications
+RUN apt-get install -y \
+    tar \
+    build-essential \
+    python-setuptools \
+    python-dev \
+    git \
+    vim \
+    sqlite \
+    pandoc \
+    sudo \
+    curl \
+    automake \
+    bash
+
+# Expose ports
+EXPOSE 8000
+
+RUN useradd devops
+RUN mkdir /code
+RUN chown -R devops:devops /code
+WORKDIR /code
+VOLUME /code
+
+
+RUN make setup
+

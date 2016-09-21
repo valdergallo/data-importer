@@ -5,13 +5,15 @@ help:
 	@echo "coverage		Run Coverage"
 	@echo "clean			Remove trash files"
 	@echo "send_package		Send Package to Pypi"
+	@echo "p3		Create docker with py3"
+	@echo "p2		Create docker with py2"
 
 
 setup:
 	pip install -r example/requirements-dev.txt
 
 test:
-	py.test -x
+	PYTHONPATH=`pwd` py.test -x
 
 coverage:
 	rm -rf htmlcov
@@ -28,3 +30,8 @@ clean:
 	rm -rf README.rst
 	python setup.py clean --all
 
+py3:
+	docker-compose run -d --name py3 py3
+
+py2:
+	docker-compose run -d --name py2 py2

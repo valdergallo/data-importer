@@ -1,0 +1,24 @@
+py2:
+  build: .
+  dockerfile: DockerfilePy2
+  entrypoint: /bin/bash
+  command: -c "sleep infinity"
+  ports:
+    - "8000:8000"
+  volumes:
+  - .:/code
+  environment:
+    DJANGO_SETTINGS_MODULE: example.settings
+    PYTHON_PATH: /code
+py3:
+  build: .
+  dockerfile: DockerfilePy3
+  entrypoint: /bin/bash
+  command: -c "sleep infinity"
+  ports:
+    - "8000:8000"
+  volumes:
+  - .:/code
+  environment:
+    DJANGO_SETTINGS_MODULE: example.settings
+    PYTHON_PATH: /code
