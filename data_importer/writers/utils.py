@@ -5,6 +5,7 @@ import re
 from openpyxl import Workbook
 from openpyxl import styles
 from io import BytesIO
+from django.utils.encoding import force_text
 from django.core.files import File
 from django.utils.safestring import mark_safe
 import unicodedata
@@ -25,7 +26,7 @@ def slugify(value):
     aren't alphanumerics, underscores, or hyphens. Converts to lowercase.
     Also strips leading and trailing whitespace.
     """
-    value = unicodedata.normalize('NFKD', unicode(value)).encode('ascii', 'ignore').decode('ascii')
+    value = unicodedata.normalize('NFKD', force_text(value)).encode('ascii', 'ignore').decode('ascii')
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     return mark_safe(re.sub('[-\s]+', '_', value))
 

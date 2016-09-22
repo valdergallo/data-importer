@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from .base import BaseImporter
 from data_importer.readers import XLSReader
 

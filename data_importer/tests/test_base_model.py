@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.importers import CSVImporter
@@ -11,6 +9,9 @@ from example.models import PersonFile
 from example.models import Invoice
 from distutils.version import StrictVersion
 import django
+from io import IOBase
+from io import BufferedReader
+from io import TextIOWrapper
 
 
 LOCAL_DIR = os.path.dirname(__file__)
@@ -44,7 +45,7 @@ class TestBaseWithModel(TestCase):
 
     def test_source_importer_file(self):
         base = CSVImporter(source=open('test.txt', 'w'))
-        self.assertEqual(type(base._source), file, type(base._source))
+        self.assertEqual(type(base._source), TextIOWrapper, type(base._source))
 
     def test_source_importer_list(self):
         base = CSVImporter(source=['test1', 'test2'])
@@ -55,7 +56,7 @@ class TestBaseWithModel(TestCase):
         person.filefield = DjangoFile(open('test.txt', 'w'))
 
         base = CSVImporter(source=person.filefield)
-        self.assertEqual(type(base._source), file, type(base._source))
+        self.assertEqual(type(base._source), BufferedReader, type(base._source))
 
     def test_save_data_content(self):
         for row, data in self.importer.cleaned_data:
@@ -90,32 +91,32 @@ class TestPTBRCSVImporter(TestCase):
 
     def test_cleaned_data_content(self):
         content = {
-            'item': u'Caça',
-            'qtde': u'1',
+            'item': 'Caça',
+            'qtde': '1',
             }
 
         self.assertEquals(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data[0])
 
         content = {
-            'item': u'Amanhã',
-            'qtde': u'2',
+            'item': 'Amanhã',
+            'qtde': '2',
             }
 
         self.assertEquals(self.importer.cleaned_data[1], (2, content),
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Qüanto',
-            'qtde': u'3',
+            'item': 'Qüanto',
+            'qtde': '3',
             }
 
         self.assertEquals(self.importer.cleaned_data[2], (3, content),
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Será',
-            'qtde': u'4',
+            'item': 'Será',
+            'qtde': '4',
             }
 
         self.assertEquals(self.importer.cleaned_data[3], (4, content),
@@ -141,8 +142,8 @@ class TestModelValidator(TestCase):
         self.importer.is_valid()
         DJANGO_VERSION = StrictVersion(django.get_version())
         if DJANGO_VERSION < StrictVersion('1.4'):
-            error = [(1, 'ValidationError', u'Field (price) This value must be a float.')]
+            error = [(1, 'ValidationError', 'Field (price) This value must be a float.')]
         else:
-            error = [(1, 'ValidationError', u'Field (price) 23,98 value must be a float.')]
+            error = [(1, 'ValidationError', 'Field (price) 23,98 value must be a float.')]
 
         self.assertEquals(self.importer.errors, error, self.importer.cleaned_data)

@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from django.test import TestCase
 from data_importer.importers.base import DATA_IMPORTER_EXCEL_DECODER, DATA_IMPORTER_DECODER
 

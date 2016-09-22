@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from django.test import TestCase
 from data_importer.importers.xls_importer import XLSImporter
 import os
@@ -51,7 +49,7 @@ class TestXLSImportMeta(TestCase):
     def test_cleaned_data_content(self):
         content = {
             'doc_number': 10000000,
-            'business_place': u'SP',
+            'business_place': 'SP',
             'doc_data': datetime.datetime(1982, 11, 1, 0, 0)
         }
 
@@ -96,7 +94,7 @@ class TestModelXLSImporter(TestCase):
     def test_cleaned_data_content(self):
         content = {
             'doc_number': 10000000,
-            'business_place': u'SP',
+            'business_place': 'SP',
             'doc_data': datetime.datetime(1982, 11, 1, 0, 0)
         }
 
@@ -142,7 +140,7 @@ class TestPTBRXLSImporter(TestCase):
 
     def test_cleaned_data_content(self):
         content = {
-            'item': u'Caça',
+            'item': 'Caça',
             'qtde': 1,
         }
 
@@ -150,7 +148,7 @@ class TestPTBRXLSImporter(TestCase):
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Amanhã',
+            'item': 'Amanhã',
             'qtde': 2,
         }
 
@@ -158,7 +156,7 @@ class TestPTBRXLSImporter(TestCase):
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Qüanto',
+            'item': 'Qüanto',
             'qtde': 3,
         }
 
@@ -166,7 +164,7 @@ class TestPTBRXLSImporter(TestCase):
                           self.importer.cleaned_data)
 
         content = {
-            'item': u'Será',
+            'item': 'Será',
             'qtde': 4,
         }
 
