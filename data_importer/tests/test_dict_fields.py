@@ -7,24 +7,23 @@ from collections import OrderedDict
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 
-
 class TestReadContent(TestCase):
 
     def setUp(self):
         class TestMeta(CSVImporter):
-                fields = {
-                    'test_field': 1,
-                    'test2_field': 2,
-                    'test3_field': 3,
-                }
+            fields = {
+                'test_field': 1,
+                'test2_field': 2,
+                'test3_field': 3,
+            }
 
-                class Meta:
-                    exclude = ['test3_field']
-                    delimiter = ','
-                    raise_errors = True
+            class Meta:
+                exclude = ['test3_field']
+                delimiter = ','
+                raise_errors = True
 
-                def clean_test_field(self, value):
-                    return str(value).upper()
+            def clean_test_field(self, value):
+                return str(value).upper()
 
         self.source_content = source_content
         self.source_content.seek(0)

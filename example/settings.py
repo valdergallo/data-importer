@@ -142,3 +142,5 @@ SOUTH_MIGRATION_MODULES = {
 MIGRATION_MODULES = {
     'data_importer': 'data_importer.django_migrations'
 },
+
+SOUTH_TESTS_MIGRATE = False

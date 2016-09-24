@@ -17,7 +17,7 @@ except ImportError:
     from datetime import datetime as timezone
 
 # default yellow backgroung for first line
-DEFAULT_HEADER_STYLE = styles.Style(fill=styles.PatternFill(patternType='solid', fgColor=styles.colors.YELLOW))
+DEFAULT_HEADER_STYLE = styles.PatternFill(patternType='solid', fgColor=styles.colors.YELLOW)
 
 
 def slugify(value):
@@ -34,7 +34,7 @@ def slugify(value):
 class QuerysetToWorkbook(object):
 
     def __init__(self, queryset, columns, filename='report', header_style=DEFAULT_HEADER_STYLE):
-        self.workbook = Workbook(guess_types=True)
+        self.workbook = Workbook()
         self.sheet = self.workbook.active
         self.queryset = queryset
         self.columns = columns
