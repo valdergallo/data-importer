@@ -15,16 +15,12 @@ from collections import OrderedDict
 from io import IOBase
 
 
-REGEX_NUMBER = r'\d+'
-
-
 class BaseImporter(object):
     """
     Base Importer method to create simples importes CSV files.
 
     set_reader: can be override to create new importers files
     """
-
     def __new__(cls, **kargs):
         """
         Provide custom methods in subclass Meta
@@ -41,6 +37,7 @@ class BaseImporter(object):
         self._reader = None
         self._excluded = False
         self._readed = False
+
         self.start_fields()
         if source:
             self.source = source
@@ -184,17 +181,7 @@ class BaseImporter(object):
         """
         values_encoded = [self.to_unicode(i) for i in values]
         try:
-            if isinstance(self.fields, dict):
-                if values_encoded > self.fields.keys():
-                    positions = self.get_dict_fields(self.fields).values()
-                    try:
-                        values = []
-                        for position in positions:
-                            values.append(values_encoded.index(position))
-                    except IndexError:
-                        values = dict(zip(self.fields.keys(), values_encoded))
-            else:
-                values = dict(zip(self.fields, values_encoded))
+            values = dict(zip(self.fields, values_encoded))
         except TypeError:
             raise TypeError('Invalid Line: %s' % row)
 
@@ -242,9 +229,6 @@ class BaseImporter(object):
             if error.messages:
                 messages = ','.join(error.messages)
 
-        if not messages:
-            messages = str(error)
-
         messages = re.sub('\'', '', messages)
         error_type = re.sub('\'', '', error_type)
 
@@ -276,7 +260,7 @@ class BaseImporter(object):
         # create clean content
         for data in self._read_file():
             if data:
-                self._cleaned_data += (data,)
+                self._cleaned_data += (data, )
 
         try:
             self.post_clean()
