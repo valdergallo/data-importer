@@ -1,3 +1,5 @@
+# encoding: utf-8
+from __future__ import unicode_literals
 from .base import BaseImporter
 from data_importer.readers import XLSReader
 

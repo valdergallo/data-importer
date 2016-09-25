@@ -1,3 +1,4 @@
+# encoding: utf-8
 from __future__ import unicode_literals
 import os
 import re
@@ -410,7 +411,7 @@ class BaseImporter(object):
 
     @staticmethod
     def get_dict_fields(dict_fields):
-        dict_field_out = OrderedDict()
+        dict_field_out = []
         for field_name, column in OrderedDict(dict_fields).items():
             try:
                 column = int(column)
@@ -419,9 +420,11 @@ class BaseImporter(object):
                     raise ValueError(
                             'You can\'t mix letters and numbers in the same column. you pass: {}'.format(column))
             if str == type(column):
-                dict_field_out[field_name] = BaseImporter.convert_alphabetic_column_to_number(column)
+                dict_field_out.append((field_name,
+                                      BaseImporter.convert_alphabetic_column_to_number(column),))
+
             elif int == type(column):
-                dict_field_out[field_name] = column
+                dict_field_out.append((field_name, column,))
             else:
                 raise ValueError(
                         'Column must be [aA - zZ]+ or [1 - 9]+,you pass \{"{0}":{1}\}'.format(field_name, column))

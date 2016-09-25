@@ -1,3 +1,5 @@
+# encoding: utf-8
+from __future__ import unicode_literals
 from data_importer.readers.xls_reader import XLSReader
 from data_importer.readers.xlsx_reader import XLSXReader
 from data_importer.readers.csv_reader import CSVReader
