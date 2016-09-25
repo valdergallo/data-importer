@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 import csv
 
-
 class CSVReader(object):
 
     def __init__(self, instance, delimiter=';'):

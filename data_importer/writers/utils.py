@@ -17,7 +17,8 @@ except ImportError:
     from datetime import datetime as timezone
 
 # default yellow backgroung for first line
-DEFAULT_HEADER_STYLE = styles.PatternFill(patternType='solid', fgColor=styles.colors.YELLOW)
+DEFAULT_HEADER_STYLE = styles.NamedStyle(name="DEFAULT_HEADER")
+DEFAULT_HEADER_STYLE.fill=styles.PatternFill(patternType='solid', fgColor=styles.colors.YELLOW)
 
 
 def slugify(value):

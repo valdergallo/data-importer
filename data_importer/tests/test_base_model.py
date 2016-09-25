@@ -10,9 +10,7 @@ from example.models import PersonFile
 from example.models import Invoice
 from distutils.version import StrictVersion
 import django
-from io import IOBase
-from io import BufferedReader
-from io import TextIOWrapper
+import io
 
 
 LOCAL_DIR = os.path.dirname(__file__)
@@ -45,8 +43,8 @@ class TestBaseWithModel(TestCase):
         self.assertEquals(self.importer.cleaned_data[0], (1, content))
 
     def test_source_importer_file(self):
-        base = CSVImporter(source=open('test.txt', 'w'))
-        self.assertEqual(type(base._source), TextIOWrapper, type(base._source))
+        base = CSVImporter(source=io.open('test.txt', 'w'))
+        self.assertEqual(type(base._source), io.TextIOWrapper, type(base._source))
 
     def test_source_importer_list(self):
         base = CSVImporter(source=['test1', 'test2'])
@@ -54,10 +52,10 @@ class TestBaseWithModel(TestCase):
 
     def test_source_importer_django_file(self):
         person = PersonFile()
-        person.filefield = DjangoFile(open('test.txt', 'w'))
+        person.filefield = DjangoFile(io.open('test.txt', 'w'))
 
         base = CSVImporter(source=person.filefield)
-        self.assertEqual(type(base._source), BufferedReader, type(base._source))
+        self.assertEqual(type(base._source), io.BufferedReader, type(base._source))
 
     def test_save_data_content(self):
         for row, data in self.importer.cleaned_data:

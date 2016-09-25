@@ -2,6 +2,9 @@
 from __future__ import unicode_literals
 import os
 import re
+import io
+import six
+import codes
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
 from django.core.exceptions import ValidationError
@@ -12,7 +15,6 @@ from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 from collections import OrderedDict
-from io import IOBase
 
 
 class BaseImporter(object):
@@ -67,19 +69,19 @@ class BaseImporter(object):
         return self._source
 
     @source.setter
-    def source(self, source=None, encoding="ISO-8859-1"):
+    def source(self, source=None, encoding="cp1252"):
         """Open source to reader"""
-        if isinstance(source, IOBase):
+        if isinstance(source, io.IOBase):
             self._source = source
-        elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
-            self._source = open(source, 'r', encoding=encoding)
+        elif isinstance(source, six.string_types) and os.path.exists(source) and source.endswith('csv'):
+            self._source = io.open(source, 'rb', encoding=encoding)
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances
             self._source = source.file_upload
             self.file_history = source
         elif hasattr(source, 'file'):
-            self._source = open(source.file.name, 'rb')
+            self._source = io.open(source.file.name, 'rb')
         else:
             self._source = source
             # raise ValueError('Invalid Source')
@@ -305,7 +307,6 @@ class BaseImporter(object):
         """
         Create cleaned_data content
         """
-
         if hasattr(self._reader, 'read'):
             reader = self._reader.read()
         else:
