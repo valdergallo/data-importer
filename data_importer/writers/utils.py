@@ -78,7 +78,9 @@ class QuerysetToWorkbook(object):
         return line_dict
 
     def queryset_to_workbook(self):
-        if isinstance(self.columns, list) or isinstance(self.columns, tuple):
+        if isinstance(self.columns, list) or \
+             isinstance(self.columns, tuple) or \
+             isinstance(self.columns, OrderedDict):
             self.sheet.append(self.columns.values())
         for line in self.queryset:
             if hasattr(line, '__dict__'):

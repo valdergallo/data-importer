@@ -18,7 +18,7 @@ update:
 	pip freeze > requirements.txt
 
 test:
-	PYTHONPATH=`pwd` py.test -s --nomigrations
+	PYTHONPATH=`pwd` py.test -s -x --nomigrations
 
 coverage:
 	rm -rf htmlcov
