@@ -73,7 +73,7 @@ class BaseImporter(object):
         if isinstance(source, io.IOBase):
             self._source = source
         elif isinstance(source, six.string_types) and os.path.exists(source) and source.endswith('csv'):
-            self._source = io.open(source, 'r', encoding=encoding)
+            self._source = io.open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances
