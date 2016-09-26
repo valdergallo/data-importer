@@ -4,7 +4,6 @@ import os
 import re
 import io
 import six
-import codes
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
 from django.core.exceptions import ValidationError
@@ -74,7 +73,7 @@ class BaseImporter(object):
         if isinstance(source, io.IOBase):
             self._source = source
         elif isinstance(source, six.string_types) and os.path.exists(source) and source.endswith('csv'):
-            self._source = io.open(source, 'rb', encoding=encoding)
+            self._source = io.open(source, 'r', encoding=encoding)
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances

@@ -46,7 +46,7 @@ class TestQuerysetToWorkbookMethods(TestCase):
 
     def test_queryset_to_workbook(self):
         workbook = self.instance.queryset_to_workbook()
-        rows = workbook.active.rows[0]
+        rows = workbook.active.rows.next()
         self.assertEqual(len(rows), 3)
 
     def test_get_first(self):
