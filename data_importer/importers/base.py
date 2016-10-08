@@ -1,6 +1,9 @@
+# encoding: utf-8
 from __future__ import unicode_literals
 import os
 import re
+import io
+import six
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
 from django.core.exceptions import ValidationError
@@ -11,15 +14,6 @@ from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 from collections import OrderedDict
-from io import IOBase
-
-
-ALPHABETIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-FACTOR = 26
-
-DELAY = 1
-
-REGEX_NUMBER = r'\d+'
 
 
 class BaseImporter(object):
@@ -28,7 +22,6 @@ class BaseImporter(object):
 
     set_reader: can be override to create new importers files
     """
-
     def __new__(cls, **kargs):
         """
         Provide custom methods in subclass Meta
@@ -45,8 +38,8 @@ class BaseImporter(object):
         self._reader = None
         self._excluded = False
         self._readed = False
+
         self.start_fields()
-        self.original_fields = None
         if source:
             self.source = source
             self.set_reader()
@@ -75,19 +68,19 @@ class BaseImporter(object):
         return self._source
 
     @source.setter
-    def source(self, source=None, encoding="ISO-8859-1"):
+    def source(self, source=None, encoding="cp1252"):
         """Open source to reader"""
-        if isinstance(source, IOBase):
+        if isinstance(source, io.IOBase):
             self._source = source
-        elif isinstance(source, str) and os.path.exists(source) and source.endswith('csv'):
-            self._source = open(source, 'r', encoding=encoding)
+        elif isinstance(source, six.string_types) and os.path.exists(source) and source.endswith('csv'):
+            self._source = io.open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances
             self._source = source.file_upload
             self.file_history = source
         elif hasattr(source, 'file'):
-            self._source = open(source.file.name, 'rb')
+            self._source = io.open(source.file.name, 'rb')
         else:
             self._source = source
             # raise ValueError('Invalid Source')
@@ -174,10 +167,10 @@ class BaseImporter(object):
                 pass  # do nothing if not find this field in model
             except ValidationError as msg:
                 default_msg = msg.messages[0].replace('This field', '')
-                new_msg = 'Field (%s) %s' % (field.name, default_msg)
+                new_msg = 'Field ({0!s}) {1!s}'.format(field.name, default_msg)
                 raise ValidationError(new_msg)
 
-        clean_function = getattr(self, 'clean_%s' % field_name, False)
+        clean_function = getattr(self, 'clean_{0!s}'.format(field_name), False)
 
         if clean_function:
             return clean_function(value)
@@ -187,26 +180,11 @@ class BaseImporter(object):
         """
         Read clean functions from importer and return tupla with row number, field and value
         """
-
-        if isinstance(self.fields, dict):
-            values_encoded = []
-            for key, value in self.fields.items():
-                try:
-                    values_encoded.append(values[value])
-                except IndexError as e:
-                    index = self.original_fields.get(key)
-                    if isinstance(index, str):
-                        index = '"{}"'.format(index)
-                    raise IndexError(e.message + '. Index with error: [ "{0}" : {1} ]'.format(key, index))
-        else:
-            values_encoded = [self.to_unicode(i) for i in values]
+        values_encoded = [self.to_unicode(i) for i in values]
         try:
-            if isinstance(self.fields, dict):
-                values = dict(zip(self.fields.keys(), values_encoded))
-            else:
-                values = dict(zip(self.fields, values_encoded))
+            values = dict(zip(self.fields, values_encoded))
         except TypeError:
-            raise TypeError('Invalid Line: %s' % row)
+            raise TypeError('Invalid Line: {0!s}'.format(row))
 
         has_error = False
 
@@ -243,17 +221,14 @@ class BaseImporter(object):
         messages = ''
 
         if not error_type:
-            error_type = "%s" % type(error).__name__
+            error_type = "{0!s}".format(type(error).__name__)
 
         if hasattr(error, 'message') and error.message:
-            messages = '%s' % error.message
+            messages = '{0!s}'.format(error.message)
 
         if hasattr(error, 'messages') and not messages:
             if error.messages:
                 messages = ','.join(error.messages)
-
-        if not messages:
-            messages = str(error)
 
         messages = re.sub('\'', '', messages)
         error_type = re.sub('\'', '', error_type)
@@ -286,7 +261,7 @@ class BaseImporter(object):
         # create clean content
         for data in self._read_file():
             if data:
-                self._cleaned_data += (data,)
+                self._cleaned_data += (data, )
 
         try:
             self.post_clean()
@@ -331,15 +306,11 @@ class BaseImporter(object):
         """
         Create cleaned_data content
         """
-
         if hasattr(self._reader, 'read'):
             reader = self._reader.read()
         else:
             reader = self._reader
 
-        self.original_fields = self.fields
-        if isinstance(self.fields, dict):
-            self.fields = self.get_dict_fields(self.fields)
         for row, values in enumerate(reader, 1):
             if self.Meta.ignore_first_line:
                 row -= 1
@@ -389,38 +360,20 @@ class BaseImporter(object):
         return True
 
     @staticmethod
-    def convert_letter_to_number(letter):
-        try:
-            return ALPHABETIC.index(letter.upper())
-        except ValueError as ve:
-            raise ValueError(ve.message + '[{0}] on ALPHABETIC = {1}'.format(letter.upper(), ALPHABETIC))
+    def convert_alphabet_to_number(letters):
+        letters = str(letters).lower()
+        result = ''
+        for letter in letters:
+            number = (ord(letter) - 96)
+            result += str(number)
+        return int(result)
 
-    @staticmethod
-    def convert_list_number_to_decimal_integer(list_number):
-        list_number_reversed = list(reversed(list(list_number)))
-        final_number = 0
-        for number, exp in zip(list_number_reversed, range(len(list_number_reversed))):
-            final_number += (number + DELAY) * (FACTOR ** exp)
-        return final_number - DELAY
-
-    @staticmethod
-    def convert_alphabetic_column_to_number(alphabetic_column):
-        number_list = map(BaseImporter.convert_letter_to_number, list(alphabetic_column))
-        return BaseImporter.convert_list_number_to_decimal_integer(number_list)
-
-    @staticmethod
-    def get_dict_fields(dict_fields):
+    def get_dict_fields(self, dict_fields):
         dict_field_out = OrderedDict()
         for field_name, column in OrderedDict(dict_fields).items():
-            try:
-                column = int(column)
-            except ValueError:
-                if re.findall(REGEX_NUMBER, column):
-                    raise ValueError(
-                            'You can\'t mix letters and numbers in the same column. you pass: {}'.format(column))
-            if str == type(column):
-                dict_field_out[field_name] = BaseImporter.convert_alphabetic_column_to_number(column)
-            elif int == type(column):
+            if isinstance(column, str):
+                dict_field_out[field_name] = self.convert_alphabet_to_number(column)
+            elif isinstance(column, int):
                 dict_field_out[field_name] = column
             else:
                 raise ValueError(

@@ -1,6 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+# encoding: utf-8
+from __future__ import unicode_literals
 import os
 from data_importer.core.exceptions import InvalidModel, InvalidDescriptor
 try:

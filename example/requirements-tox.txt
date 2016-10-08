@@ -1,9 +1,0 @@
-docutils
-openpyxl
-xlrd
-South
-mock
-pytest
-pytest-django
-pytest-cov
-pytest-xdist

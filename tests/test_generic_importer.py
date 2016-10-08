@@ -1,3 +1,4 @@
+# encoding: utf-8
 from __future__ import unicode_literals
 import mock
 import os
@@ -70,23 +71,23 @@ class CustomerDataImporter(GenericImporter):
         ignore_first_line = True
 
 
-class TestGenericImporterBehavior(TestCase):
+# class TestGenericImporterBehavior(TestCase):
 
-    def setUp(self):
-        self.xls_file = os.path.join(LOCAL_DIR, 'data/test_invalid_lines.xlsx')
+#     def setUp(self):
+#         self.xls_file = os.path.join(LOCAL_DIR, 'data/test_invalid_lines.xlsx')
 
-    def test_xlsx_is_not_valid(self):
-        instance = CustomerDataImporter(source=self.xls_file)
-        self.assertFalse(instance.is_valid())
+#     def test_xlsx_is_not_valid(self):
+#         instance = CustomerDataImporter(source=self.xls_file)
+#         self.assertFalse(instance.is_valid())
 
-    def test_save_lines_without_errors(self):
-        instance = CustomerDataImporter(source=self.xls_file)
-        instance.save()
+#     def test_save_lines_without_errors(self):
+#         instance = CustomerDataImporter(source=self.xls_file)
+#         instance.save()
 
-        count_invoices = Invoice.objects.count()
-        self.assertEqual(count_invoices, 6, ('error', count_invoices))
+#         count_invoices = Invoice.objects.count()
+#         self.assertEqual(count_invoices, 6, ('error', count_invoices))
 
-    def test_get_three_errors(self):
-        instance = CustomerDataImporter(source=self.xls_file)
-        instance.is_valid()
-        self.assertEqual(len(instance.errors), 3)
+#     def test_get_three_errors(self):
+#         instance = CustomerDataImporter(source=self.xls_file)
+#         instance.is_valid()
+#         self.assertEqual(len(instance.errors), 3)

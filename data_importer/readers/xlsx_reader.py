@@ -1,13 +1,12 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# encoding: utf-8
+from __future__ import unicode_literals
 from openpyxl import load_workbook
 
 
 class XLSXReader(object):
 
-    def __init__(self, instance, user_iterator=True, data_only=True, sheet_index=None):
+    def __init__(self, instance, data_only=True, sheet_index=None):
         self.workbook = load_workbook(instance.source,
-                                      use_iterators=user_iterator,
                                       data_only=data_only)
         if instance.Meta.sheet_name:
             self.worksheet = self.workbook.get_sheet_by_name(instance.Meta.sheet_name)

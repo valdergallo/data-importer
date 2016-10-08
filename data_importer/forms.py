@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+# encoding: utf-8
 import os
 from django import forms
 from data_importer.models import FileHistory

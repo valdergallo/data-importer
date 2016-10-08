@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from __future__ import absolute_import, unicode_literals
 from . import default_settings
 DATA_IMPORTER_EXCEL_DECODER = default_settings.DATA_IMPORTER_EXCEL_DECODER

@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 import os
 
 try:
@@ -54,7 +53,7 @@ class DataImpoterTask(Task):
 
         self.parser = importer(source=source)
 
-        lock_id = "%s-lock" % (self.name)
+        lock_id = "{0!s}-lock".format((self.name))
 
         if acquire_lock(lock_id):
             """

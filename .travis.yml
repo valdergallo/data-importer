@@ -1,24 +1,26 @@
 language: python
+
 python:
   - 2.7
 
 before_install:
   - sudo apt-get install -y libxml2-dev libxslt-dev
 
-script: py.test -x --cov=data_importer
+script: python setup.py test
 
 env:
-  - DJANGO=1.3
   - DJANGO=1.4
   - DJANGO=1.5
   - DJANGO=1.6
   - DJANGO=1.7
   - DJANGO=1.8
   - DJANGO=1.9
+  - DJANGO=1.10
 
 install:
   - export PYTHONPATH=$PWD;
-  - pip install -q Django==$DJANGO -r example/requirements-travis.txt
+  - export DJANGO_SETTINGS_MODULE=django_test_settings;
+  - pip install -q Django==$DJANGO -r requirements.txt
 
 branches:
   only:

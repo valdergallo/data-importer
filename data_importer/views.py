@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+# encoding: utf-8
 from data_importer.forms import FileUploadForm
 from data_importer.models import FileHistory
 from django.contrib import messages
@@ -73,7 +71,7 @@ class DataImporterForm(FormView):
             if owner:
                 messages.info(
                     self.request,
-                    "When importer was finished one email will send to: %s" % owner.email
+                    "When importer was finished one email will send to: {0!s}".format(owner.email)
                 )
             else:
                 messages.info(

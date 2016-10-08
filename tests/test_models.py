@@ -1,3 +1,4 @@
+# encoding: utf-8
 from __future__ import unicode_literals
 from data_importer import models
 from django.test import TestCase
@@ -24,5 +25,5 @@ class TestDataImporterModels(TestCase):
         today = date.today().strftime("%Y/%m/%d")
         rand_filename = models.get_random_filename(instance, filename)
 
-        expected_name = 'upload_history/anonymous/%s/fake_uuid4.xls' % today
+        expected_name = 'upload_history/anonymous/{0!s}/fake_uuid4.xls'.format(today)
         self.assertEqual(rand_filename, expected_name)

@@ -1,3 +1,4 @@
+# encoding: utf-8
 from __future__ import unicode_literals
 import os
 from django.test import TestCase
@@ -10,7 +11,7 @@ from django.core import mail
 LOCAL_DIR = os.path.dirname(__file__)
 
 
-class TestMeta(CSVImporter):
+class MyCSVImporter(CSVImporter):
     class Meta:
         model = Person
         delimiter = ';'
@@ -22,7 +23,7 @@ class DataImporterTaskTest(TestCase):
     def setUp(self):
         owner, _ = User.objects.get_or_create(username='test', email='test@test.com')
         source = os.path.join(LOCAL_DIR, 'data/person_test.csv')
-        self.importer = TestMeta
+        self.importer = MyCSVImporter
 
         self.task = DataImpoterTask()
         self.task.run(importer=self.importer, source=source, owner=owner)

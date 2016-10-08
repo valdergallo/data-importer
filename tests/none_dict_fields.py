@@ -1,3 +1,4 @@
+# encoding: utf-8
 from __future__ import unicode_literals
 from io import StringIO
 from data_importer.importers import CSVImporter
@@ -5,26 +6,25 @@ from django.test import TestCase
 from collections import OrderedDict
 
 
-source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
-
+source_content = StringIO("header1,header2,header3\ntest1,1,exclude1\ntest2,2,exclude2\ntest3,3,exclude3\ntest4,4,exclude4")
 
 class TestReadContent(TestCase):
 
     def setUp(self):
         class TestMeta(CSVImporter):
-                fields = {
-                    'test_field': 1,
-                    'test2_field': 2,
-                    'test3_field': 3,
-                }
+            fields = {
+                'test_field': 0,
+                'test2_field': 1,
+                'test3_field': 2,
+            }
 
-                class Meta:
-                    exclude = ['test3_field']
-                    delimiter = ','
-                    raise_errors = True
+            class Meta:
+                exclude = ['test3_field']
+                delimiter = ','
+                raise_errors = True
 
-                def clean_test_field(self, value):
-                    return str(value).upper()
+            def clean_test_field(self, value):
+                return str(value).upper()
 
         self.source_content = source_content
         self.source_content.seek(0)
@@ -41,7 +41,7 @@ class TestReadContent(TestCase):
 
     def test_read_content_first_line(self):
         self.assertEquals(self.importer.cleaned_data[0],
-                          (1, OrderedDict({'test2_field': 'header1', 'test_field': 'HEADER2'})),
+                          (1, OrderedDict({'test_field': 'HEADER2', 'test2_field': 'header1'})),
                           self.importer.cleaned_data[0])
 
     def test_errors(self):
@@ -113,6 +113,6 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        should_be = (1, OrderedDict({'test_number_field': 'test1', 'test_field': '1'}))
+        should_be = (1, {'test_number_field': '1', 'test_field': 'TEST1'})
         self.assertEquals(importer.cleaned_data[0],
                           should_be)
