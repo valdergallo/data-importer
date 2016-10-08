@@ -5,8 +5,8 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import data_importer
 
-ALL_TEMP_FILES = []
-global ALL_TEMP_FILES
+os.environ("TMP", '/tmp/')
+os.environ("TEMP", '/tmp/')
 
 
 def readme():
