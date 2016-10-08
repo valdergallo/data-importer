@@ -44,7 +44,7 @@ tests_requires = [
     'xlrd>=1.0.0'
     'django>=1.4',
     'six==1.10.0',
-    'mock==2.0.0'
+    'mock==2.0.0',
 ]
 
 
@@ -65,7 +65,7 @@ setup(
     ],
     version=data_importer.__version__,
     install_requires=install_requires,
-    tests_require=tests_requires,
+    tests_requires=tests_requires,
     cmdclass={'test': PyTest},
     zip_safe=False,
     platforms='any',
