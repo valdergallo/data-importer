@@ -1,8 +1,12 @@
 # encoding: utf-8
 import os
+import sys
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import data_importer
+
+ALL_TEMP_FILES = []
+global ALL_TEMP_FILES
 
 
 def readme():
@@ -29,8 +33,9 @@ class PyTest(TestCommand):
 
 install_requires = [
     'django>=1.4',
-    'openpyxl>=2.1.4',
-    'xlrd>=1.0.0',
+    'openpyxl==2.4.0',
+    'xlrd==1.0.0',
+    'six==1.10.0',
 ]
 
 
@@ -41,6 +46,8 @@ tests_requires = [
     'openpyxl>=2.1.4',
     'xlrd>=1.0.0'
     'django>=1.4',
+    'six==1.10.0',
+    'mock==2.0.0'
 ]
 
 

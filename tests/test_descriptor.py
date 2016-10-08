@@ -32,7 +32,7 @@ class ReadDescriptorTestCase(TestCase):
                           model_name='TestInvalidModel'))
 
 
-class TestMeta(BaseImporter):
+class MyBaseImport(BaseImporter):
     class Meta:
         delimiter = ';'
         ignore_first_line = True
@@ -46,7 +46,7 @@ class TestMeta(BaseImporter):
 class TestDescriptionUsingBaseImporter(TestCase):
 
     def setUp(self):
-        self.importer = TestMeta(source=None)
+        self.importer = MyBaseImport(source=None)
 
     def test_get_fields(self):
         self.assertEquals(self.importer.fields, ['name', 'year', 'last'])

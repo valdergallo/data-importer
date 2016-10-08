@@ -15,7 +15,7 @@ source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 class TestBaseImportMeta(TestCase):
 
     def setUp(self):
-        class TestMeta(CSVImporter):
+        class MyCSVImporter(CSVImporter):
             fields = [
                 'test_field',
                 'test2_field',
@@ -25,7 +25,7 @@ class TestBaseImportMeta(TestCase):
             class Meta:
                 exclude = ['test2_field', 'test3_field']
 
-        self.importer = TestMeta(source=None)
+        self.importer = MyCSVImporter(source=None)
 
     def test_meta_values(self):
         self.assertEqual(self.importer.Meta.get('exclude'), ['test2_field', 'test3_field'])
@@ -87,7 +87,7 @@ class TestBaseImportMeta(TestCase):
         self.assertEquals(return_dict, {'test_1': 1, 'test_2': 2, 'test_3': 3})
 
 
-class TestImporters(TestCase):
+class ImportersTests(TestCase):
     def test_xls_importers(self):
         import data_importer
         self.assertTrue(data_importer.importers.XLSImporter)
@@ -121,7 +121,7 @@ class TestClassObjToLazyDict(TestCase):
 class TestReadContent(TestCase):
 
     def setUp(self):
-        class TestMeta(CSVImporter):
+        class MyCSVImporter(CSVImporter):
                 fields = [
                     'test_field',
                     'test2_field',
@@ -138,7 +138,7 @@ class TestReadContent(TestCase):
 
         self.source_content = source_content
         self.source_content.seek(0)
-        self.importer = TestMeta(source=self.source_content)
+        self.importer = MyCSVImporter(source=self.source_content)
 
     def test_read_content(self):
         self.assertTrue(self.importer.is_valid(), self.importer.errors)
@@ -163,13 +163,13 @@ class TestReadContent(TestCase):
         self.assertEquals(self.importer.fields, ['test_field', 'test2_field'])
 
     def test_raise_error_on_clean(self):
-        class TestMetaClean(CSVImporter):
+        class MyCSVImporterClean(CSVImporter):
             fields = ['test', ]
 
             def clean_test(self, value):
                 value.coisa = 1
 
-        importer_error = TestMetaClean(source=['test1', ])
+        importer_error = MyCSVImporterClean(source=['test1', ])
 
         self.assertFalse(importer_error.is_valid())
         # test get row
@@ -181,7 +181,7 @@ class TestReadContent(TestCase):
 
 
     def test_read_content_skip_first_line(self):
-        class TestMeta(CSVImporter):
+        class MyCSVImporter(CSVImporter):
                 fields = [
                     'test_field',
                     'test_number_field',
@@ -198,14 +198,14 @@ class TestReadContent(TestCase):
                     return str(value).upper()
 
         self.source_content.seek(0)
-        importer = TestMeta(source=self.source_content)
+        importer = MyCSVImporter(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
         self.assertEquals(importer.cleaned_data[0],
                           (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
 
     def test_exclude_with_tupla(self):
-        class TestMeta(CSVImporter):
+        class MyCSVImporter(CSVImporter):
                 fields = [
                     'test_field',
                     'test_number_field',
@@ -222,14 +222,14 @@ class TestReadContent(TestCase):
                     return str(value).upper()
 
         self.source_content.seek(0)
-        importer = TestMeta(source=self.source_content)
+        importer = MyCSVImporter(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
         self.assertEquals(importer.cleaned_data[0],
                           (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
 
 
-class TestImporter(BaseImporter):
+class MyBaseImporter(BaseImporter):
     fields = ('name', 'value')
 
     class Meta:
@@ -241,5 +241,5 @@ class BaseImporterTest(TestCase):
     @skipIf(django.VERSION < (1, 4), "not supported in this library version")
     def test_raise_not_implemented(self):
         with self.assertRaisesMessage(NotImplementedError, "No reader implemented"):
-            instance = TestImporter(source=source_content)
+            instance = MyBaseImporter(source=source_content)
             instance.set_reader()

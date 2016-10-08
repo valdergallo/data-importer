@@ -1,7 +1,11 @@
 SECRET_KEY = 1
 
 INSTALLED_APPS = (
-    'django.contrib.contenttypes.models.ContentType',
+    # default
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    # extra
     'data_importer',
     'example',
     'tests',
