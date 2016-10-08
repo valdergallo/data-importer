@@ -405,6 +405,7 @@ Acentuation with CSV    | Excel Win 2010    |   **OK**
 
 
 Python | 3.4+
+-------|-----
 Python | 2.7+
 -------|-----
 Django |  1.3+
