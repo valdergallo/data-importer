@@ -11,7 +11,9 @@ def objclass2dict(objclass):
     This method convert one objclass to one lazy dict without AttributeError
     """
     class Dict(dict):
-        def __init__(self, data={}):
+        def __init__(self, data=None):
+            if data is None:
+                data = {}
             super(Dict, self).__init__(data)
             self.__dict__ = dict(self.items())
 
