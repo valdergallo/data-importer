@@ -18,8 +18,11 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 
 # port settings.AUTH_USER_MODEL
-# from django.contrib.auth import get_user_model
-User = settings.AUTH_USER_MODEL
+try:
+    User = settings.AUTH_USER_MODEL
+except AttributeError:
+    from django.contrib.auth.models import User
+
 
 DJANGO_VERSION = StrictVersion(django.get_version())
 
