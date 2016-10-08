@@ -36,10 +36,10 @@ class TestBaseImportMeta(TestCase):
     def test_get_doc(self):
         self.assertEqual(data_importer.__doc__, 'Data Importer')
 
-    def test_get_Meta_doc(self):
+    def test_get_meta_higher_doc(self):
         self.assertEqual(BaseImporter.Meta.__doc__, 'Importer configurations')
 
-    def test_get_meta_doc(self):
+    def test_get_meta_lower_doc(self):
         self.assertEqual(BaseImporter.meta.__doc__, 'Is same to use .Meta')
 
     def test_raise_error_in_process_row(self):
