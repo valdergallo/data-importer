@@ -167,10 +167,10 @@ class BaseImporter(object):
                 pass  # do nothing if not find this field in model
             except ValidationError as msg:
                 default_msg = msg.messages[0].replace('This field', '')
-                new_msg = 'Field (%s) %s' % (field.name, default_msg)
+                new_msg = 'Field ({0!s}) {1!s}'.format(field.name, default_msg)
                 raise ValidationError(new_msg)
 
-        clean_function = getattr(self, 'clean_%s' % field_name, False)
+        clean_function = getattr(self, 'clean_{0!s}'.format(field_name), False)
 
         if clean_function:
             return clean_function(value)
@@ -184,7 +184,7 @@ class BaseImporter(object):
         try:
             values = dict(zip(self.fields, values_encoded))
         except TypeError:
-            raise TypeError('Invalid Line: %s' % row)
+            raise TypeError('Invalid Line: {0!s}'.format(row))
 
         has_error = False
 
@@ -221,10 +221,10 @@ class BaseImporter(object):
         messages = ''
 
         if not error_type:
-            error_type = "%s" % type(error).__name__
+            error_type = "{0!s}".format(type(error).__name__)
 
         if hasattr(error, 'message') and error.message:
-            messages = '%s' % error.message
+            messages = '{0!s}'.format(error.message)
 
         if hasattr(error, 'messages') and not messages:
             if error.messages:
