@@ -403,6 +403,8 @@ Acentuation with XLSX   | Excel MAC 2011    |   **OK**
 Acentuation with XLSX   | Excel WIN 2010    |   **OK**
 Acentuation with CSV    | Excel Win 2010    |   **OK**
 
+
+Python | 3.4+
 Python | 2.7+
 -------|-----
 Django |  1.3+
