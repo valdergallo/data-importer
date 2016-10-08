@@ -54,7 +54,7 @@ class DataImpoterTask(Task):
 
         self.parser = importer(source=source)
 
-        lock_id = "%s-lock" % (self.name)
+        lock_id = "{0!s}-lock".format((self.name))
 
         if acquire_lock(lock_id):
             """

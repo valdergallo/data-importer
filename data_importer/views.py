@@ -73,7 +73,7 @@ class DataImporterForm(FormView):
             if owner:
                 messages.info(
                     self.request,
-                    "When importer was finished one email will send to: %s" % owner.email
+                    "When importer was finished one email will send to: {0!s}".format(owner.email)
                 )
             else:
                 messages.info(
