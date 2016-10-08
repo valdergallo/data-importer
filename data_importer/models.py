@@ -40,7 +40,7 @@ CELERY_STATUS = ((1, 'Imported'),
 
 def get_random_filename(instance, filename):
     _, ext = os.path.splitext(filename)
-    filename = "%s%s" % (str(uuid.uuid4()), ext)
+    filename = "{0!s}{1!s}".format(str(uuid.uuid4()), ext)
     user_dir = "anonymous"
     if instance.owner:
         user_dir = instance.owner.get_username()
@@ -68,7 +68,7 @@ class FileHistory(models.Model):
 
     def file_link(self):
         _url = self.file_upload.url
-        return "<a href='%s' tartget='_blank'>Download</a>" % _url
+        return "<a href='{0!s}' tartget='_blank'>Download</a>".format(_url)
 
     file_link.allow_tags = True
 
@@ -94,11 +94,11 @@ class FileHistory(models.Model):
         archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
         for index in range(10):
             filename = self.filename.path
-            archive.write(filename, 'file%d.txt' % index)
+            archive.write(filename, 'file{0:d}.txt'.format(index))
         archive.close()
         wrapper = FileWrapper(temp)
         response = HttpResponse(wrapper, content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=%s.zip' % self.filename
+        response['Content-Disposition'] = 'attachment; filename={0!s}.zip'.format(self.filename)
         response['Content-Length'] = temp.tell()
         temp.seek(0)
         return response
@@ -106,4 +106,4 @@ class FileHistory(models.Model):
     @property
     def compose_file_name(self):
         basename = os.path.basename(self.file_upload.file.name)
-        return "%s (%s)" % (basename, self.owner)
+        return "{0!s} ({1!s})".format(basename, self.owner)
