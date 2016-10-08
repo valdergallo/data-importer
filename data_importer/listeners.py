@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 from django.db.models.signals import post_delete
 from data_importer.models import FileHistory
 import os

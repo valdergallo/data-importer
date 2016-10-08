@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 #
 # Django Data Importer documentation build configuration file, created by
 # sphinx-quickstart on Sun Mar 31 13:42:50 2013.
