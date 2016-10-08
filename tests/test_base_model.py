@@ -66,7 +66,7 @@ class TestBaseWithModel(TestCase):
     def tearDown(self):
         try:
             os.remove('test.txt')
-        except:
+        except Exception:
             pass
 
 
