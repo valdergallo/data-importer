@@ -33,7 +33,7 @@ tests_require = [
 setup(
     name='data-importer',
     url='https://github.com/valdergallo/data-importer',
-    download_url='https://github.com/valdergallo/data-importer/tarball/%s/' % data_importer.__version__,
+    download_url='https://github.com/valdergallo/data-importer/tarball/{0!s}/'.format(data_importer.__version__),
     author="valdergallo",
     author_email='valdergallo@gmail.com',
     keywords='Django Data Importer XLS XLSX CSV XML',

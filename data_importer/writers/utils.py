@@ -58,7 +58,7 @@ class QuerysetToWorkbook(object):
         letters = re.findall('[A-Z]', dimensions)
         first = letters.pop(0)
         second = ''.join(letters)
-        return '%s1:%s1' % (first, second)
+        return '{0!s}1:{1!s}1'.format(first, second)
 
     def set_header_style(self, row=1):
         try:
@@ -139,6 +139,6 @@ class QuerysetToWorkbook(object):
         if not filename:
             filename = _filename
 
-        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        response['Content-Disposition'] = 'attachment; filename={0!s}'.format(filename)
         response['content_type'] = 'application/force-download'
         return response
