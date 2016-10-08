@@ -5,9 +5,6 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import data_importer
 
-os.environ("TMP", '/tmp/')
-os.environ("TEMP", '/tmp/')
-
 
 def readme():
     try:
@@ -21,7 +18,7 @@ def readme():
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = ['data_importer', 'tests', '--cov=data_importer', '-vrsx']
+        self.test_args = ['data_importer', 'tests', '--cov=data_importer', '-vrsx', '-x']
         self.test_suite = True
 
     def run_tests(self):

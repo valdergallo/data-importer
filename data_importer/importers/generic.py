@@ -20,11 +20,11 @@ class GenericImporter(BaseImporter):
         # default importers configurations
         extra_values = {
             'xlsx': {'data_only': True},
-            'xls': {'sheet_name': self.Meta.sheet_name or None, 'sheet_index': self.Meta.sheet_index or 0},
+            'xls': {'sheet_name': self.Meta.sheet_name or None,
+                    'sheet_index': self.Meta.sheet_index or 0},
             'csv': {'delimiter': self.Meta.delimiter or ';'},
             'xml': {},
         }
-
         selected_extra_values = extra_values[self.get_source_file_extension()]
         self._reader = reader(self, **selected_extra_values)
 
