@@ -1,9 +1,11 @@
 # encoding: utf-8
 from __future__ import unicode_literals
 import os
+import sys
 import re
 import io
 import six
+import codecs
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
 from django.core.exceptions import ValidationError
@@ -79,7 +81,10 @@ class BaseImporter(object):
         if isinstance(source, io.IOBase):
             self._source = source
         elif isinstance(source, six.string_types) and os.path.exists(source) and source.endswith('csv'):
-            self._source = io.open(source, 'rb')
+            if sys.version_info >= (3,0):
+                self._source = codecs.open(source, 'rb', encoding=encoding)
+            else:
+                self._source = codecs.open(source, 'rb')
         elif isinstance(source, list):
             self._source = source
         elif hasattr(source, 'file_upload'):  # for FileHistory instances
@@ -177,7 +182,7 @@ class BaseImporter(object):
                 field.clean(value, field)
             except FieldDoesNotExist:
                 pass  # do nothing if not find this field in model
-            except ValidationError as msg:
+            except Exception as msg:
                 default_msg = msg.messages[0].replace('This field', '')
                 new_msg = 'Field ({0!s}) {1!s}'.format(field.name, default_msg)
                 raise ValidationError(new_msg)
@@ -185,7 +190,12 @@ class BaseImporter(object):
         clean_function = getattr(self, 'clean_{0!s}'.format(field_name), False)
 
         if clean_function:
-            return clean_function(value)
+            try:
+                return clean_function(value)
+            except Exception as msg:
+                default_msg = str(msg).replace('This field', '')
+                new_msg = 'Field ({0!s}) {1!s}'.format(field_name, default_msg)
+                raise ValidationError(new_msg)
         return value
 
     def process_row(self, row, values):

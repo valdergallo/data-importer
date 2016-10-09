@@ -18,7 +18,7 @@ def readme():
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = ['data_importer', 'tests', '--cov=data_importer', '-vrsx', '-x']
+        self.test_args = ['data_importer', 'tests', '--cov=data_importer', '-vrsx']
         self.test_suite = True
 
     def run_tests(self):
@@ -65,7 +65,7 @@ setup(
     ],
     version=data_importer.__version__,
     install_requires=install_requires,
-    tests_requires=tests_requires,
+    tests_require=tests_requires,
     cmdclass={'test': PyTest},
     zip_safe=False,
     platforms='any',

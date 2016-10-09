@@ -20,7 +20,7 @@ env:
 install:
   - export PYTHONPATH=$PWD;
   - export DJANGO_SETTINGS_MODULE=django_test_settings;
-  - pip install -q Django==$DJANGO -r requirements.txt
+  - pip install -q Django==$DJANGO
 
 branches:
   only:

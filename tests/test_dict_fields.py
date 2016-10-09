@@ -64,7 +64,7 @@ class TestReadContent(TestCase):
         # test get row
         self.assertEqual(importer_error.errors[0][0], 1)
         # test get error type
-        self.assertEqual(importer_error.errors[0][1], 'AttributeError')
+        self.assertEqual(importer_error.errors[0][1], 'ValidationError')
         # test get error message
         self.assertIn('object has no attribute coisa', importer_error.errors[0][2])
 
