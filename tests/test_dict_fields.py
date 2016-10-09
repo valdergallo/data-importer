@@ -12,11 +12,11 @@ class TestReadContent(TestCase):
 
     def setUp(self):
         class TestMeta(CSVImporter):
-            fields = {
-                'test_field': 0,
-                'test2_field': 1,
-                'test3_field': 2,
-            }
+            fields = OrderedDict((
+                ('test_field', 0),
+                ('test2_field', 1),
+                ('test3_field', 2),
+            ))
 
             class Meta:
                 exclude = ['test3_field']
@@ -41,8 +41,7 @@ class TestReadContent(TestCase):
 
     def test_read_content_first_line(self):
         self.assertEquals(self.importer.cleaned_data[0],
-                          (1, OrderedDict({'test_field': 'HEADER2', 'test2_field': 'header1'})),
-                          self.importer.cleaned_data[0])
+                          (1, OrderedDict({'test_field': 'HEADER1', 'test2_field': 'header2'})))
 
     def test_errors(self):
         self.assertFalse(self.importer.errors)
@@ -50,7 +49,7 @@ class TestReadContent(TestCase):
 
     def test_start_fields(self):
         self.importer.start_fields()
-        self.assertEquals(self.importer.fields, ['test2_field', 'test_field'])
+        self.assertEquals(self.importer.fields, ['test_field', 'test2_field'])
 
     def test_raise_error_on_clean(self):
         class TestMetaClean(CSVImporter):
@@ -71,11 +70,11 @@ class TestReadContent(TestCase):
 
     def test_read_content_skip_first_line(self):
         class TestMeta(CSVImporter):
-                fields = {
-                    'test_field': 'A',
-                    'test_number_field': 'B',
-                    'test3_field': 'c',
-                }
+                fields = OrderedDict((
+                    ('test_field', 'A'),
+                    ('test_number_field', 'B'),
+                    ('test3_field', 'c'),
+                ))
 
                 class Meta:
                     exclude = ['test3_field']
@@ -89,17 +88,17 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        should_be = (1, OrderedDict([('test_field', '1'), ('test_number_field', 'test1')]))
+        should_be = (1, OrderedDict([('test_field', 'TEST1'), ('test_number_field', '1')]))
         self.assertEquals(importer.cleaned_data[0],
                           should_be)
 
     def test_exclude_with_tupla(self):
         class TestMeta(CSVImporter):
-                fields = OrderedDict({
-                    'test_field': 0,
-                    'test_number_field': 'A',
-                    'test3_field': 'b',
-                })
+                fields = OrderedDict((
+                    ('test_field', 0),
+                    ('test_number_field', 'b'),
+                    ('test3_field', 'c'),
+                ))
 
                 class Meta:
                     exclude = ('test3_field',)
@@ -113,6 +112,6 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        should_be = (1, {'test_number_field': '1', 'test_field': 'TEST1'})
+        should_be = (1, OrderedDict([('test_field', 'TEST1'), ('test_number_field', '1')]))
         self.assertEquals(importer.cleaned_data[0],
                           should_be)

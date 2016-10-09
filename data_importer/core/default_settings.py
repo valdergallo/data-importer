@@ -1,6 +1,9 @@
 # encoding: utf-8
 from __future__ import unicode_literals
-from django.conf import settings
+try:
+    from django.conf import settings
+except ImportError:
+    settings = {}
 
 DATA_IMPORTER_TASK = False  # If you need use task data_importer will need install celery
 DATA_IMPORTER_QUEUE = "DataImporter"  # Celery Default Queue

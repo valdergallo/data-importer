@@ -12,6 +12,8 @@ from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
+from data_importer.core.base import convert_alphabet_to_number
+from data_importer.core.base import reduce_list
 from collections import OrderedDict
 try:
     from django.utils.encoding import force_text
@@ -35,12 +37,13 @@ class BaseImporter(object):
 
     def __init__(self, source=None, *args, **kwargs):
         self.file_history = None
-        self._fields = []
         self._error = []
+        self._fields = []
         self._cleaned_data = ()
         self._reader = None
         self._excluded = False
         self._readed = False
+        self._reduce_list = []
 
         self.start_fields()
         if source:
@@ -114,6 +117,12 @@ class BaseImporter(object):
         """
         Exclude fields from Meta.exclude
         """
+        # convert dict to fields and filter content
+        if hasattr(self, 'fields') and isinstance(self.fields, dict):
+            order_dict = OrderedDict(self.fields)
+            self.fields = list(self.fields)
+            self._reduce_list = map(convert_alphabet_to_number, order_dict.values())
+
         if self.Meta.exclude and not self._excluded:
             self._excluded = True
             for exclude in self.Meta.exclude:
@@ -185,6 +194,9 @@ class BaseImporter(object):
         """
         values_encoded = [self.to_unicode(i) for i in values]
         try:
+            # reduce list
+            if self._reduce_list:
+                values_encoded = reduce_list(self._reduce_list, values_encoded)
             values = dict(zip(self.fields, values_encoded))
         except TypeError:
             raise TypeError('Invalid Line: {0!s}'.format(row))
@@ -361,24 +373,3 @@ class BaseImporter(object):
         self.post_save_all_lines()
 
         return True
-
-    @staticmethod
-    def convert_alphabet_to_number(letters):
-        letters = str(letters).lower()
-        result = ''
-        for letter in letters:
-            number = (ord(letter) - 96)
-            result += str(number)
-        return int(result)
-
-    def get_dict_fields(self, dict_fields):
-        dict_field_out = OrderedDict()
-        for field_name, column in OrderedDict(dict_fields).items():
-            if isinstance(column, str):
-                dict_field_out[field_name] = self.convert_alphabet_to_number(column)
-            elif isinstance(column, int):
-                dict_field_out[field_name] = column
-            else:
-                raise ValueError(
-                        'Column must be [aA - zZ]+ or [1 - 9]+,you pass \{"{0}":{1}\}'.format(field_name, column))
-        return dict_field_out

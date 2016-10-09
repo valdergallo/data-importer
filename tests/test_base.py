@@ -4,6 +4,8 @@ from io import StringIO
 from data_importer.importers import BaseImporter
 from data_importer.importers import CSVImporter
 from data_importer.importers.base import objclass2dict
+from data_importer.importers.base import convert_alphabet_to_number
+from data_importer.importers.base import reduce_list
 from django.test import TestCase
 from unittest import skipIf
 import data_importer
@@ -243,3 +245,33 @@ class BaseImporterTest(TestCase):
         with self.assertRaisesMessage(NotImplementedError, "No reader implemented"):
             instance = MyBaseImporter(source=source_content)
             instance.set_reader()
+
+
+class TestConvertLetterToNumber(TestCase):
+
+    def test_convert_text_lower_to_number(self):
+        r = convert_alphabet_to_number("a")
+        self.assertEquals(r, 0)
+
+    def test_convert_text_upper_to_number(self):
+        r = convert_alphabet_to_number("C")
+        self.assertEquals(r, 2)
+
+    def test_convert_worlds_to_number(self):
+        r = convert_alphabet_to_number("ACDC")
+        self.assertEquals(r, 1342)
+
+
+class TestReduceList(TestCase):
+
+    def test_reduce_list(self):
+        list_values = [1,2,3,4,5,6]
+        list_key = [1,3,6]
+        reduced = reduce_list(list_key, list_values)
+        self.assertEquals(reduced, [2, 4])
+
+    def test_reduce_list_two(self):
+        list_values = [1,2,3,4,5,6]
+        list_key = [0,2,3]
+        reduced = reduce_list(list_key, list_values)
+        self.assertEquals(reduced, [1, 3, 4])

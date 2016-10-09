@@ -28,3 +28,26 @@ def objclass2dict(objclass):
     for objitem in obj_list:
         obj_values.append(getattr(objclass, objitem))
     return Dict(zip(obj_list, obj_values))
+
+
+def convert_alphabet_to_number(letters):
+    letters = str(letters).lower()
+    if letters.isdigit():
+        return int(letters)
+    result = ''
+    for letter in letters:
+        number = (ord(letter) - 96)
+        result += str(number)
+    # -1 to get zero in list items
+    return int(result) - 1
+
+
+def reduce_list(key_list, values_list):
+    new_list = []
+    for key in key_list:
+        try:
+            v = values_list[key]
+        except IndexError:
+            continue
+        new_list.append(v)
+    return new_list

@@ -48,7 +48,7 @@ Features
 * Set XLS/XLSX importer by sheet_index
 * Set XLS/XLSX importer by sheet_name
 * Support to user a JSON descriptor with Fields
-* Fields as Dict (2.3.5+)
+* Fields as OrderedDict with text position
 
 
 Installation
@@ -131,33 +131,33 @@ You can use diferents ways to define the fields as dicts
 
 ```
 >>> class TestMetaDict(XLSImporter):
-...     fields = {
-...         'business_place': 'A',
-...         'doc_number': 'b',
-...         'doc_data': 'C',
-...     }
+...     fields = OrderedDict((
+...         ('business_place', 'A'),
+...         ('doc_number', 'b'),
+...         ('doc_data', 'C'),
+...     ))
 ```
 
 or
 
 ```
 >>> class TestMetaDict(XLSImporter):
-...     fields = {
-...         'business_place': 0,
-...         'doc_number': 1,
-...         'doc_data': 2,
-...     }
+...     fields = OrderedDict((
+...         ('business_place', 0),
+...         ('doc_number', 1),
+...         ('doc_data', 2),
+...     ))
 ```
 
 or
 
 ```
 >>> class TestMetaDict(XLSImporter):
-...     fields = {
-...         'business_place': '0',
-...         'doc_number': 1,
-...         'doc_data': 'C',
-...     }
+...     fields = OrderedDict((
+...         ('business_place', '0'),
+...         ('doc_number', 1,)
+...         ('doc_data', 'C'),
+...     ))
 ```
 
 Using declaration, data and columns are matched in the same
@@ -404,8 +404,7 @@ Acentuation with XLSX   | Excel WIN 2010    |   **OK**
 Acentuation with CSV    | Excel Win 2010    |   **OK**
 
 
-Python | 3.4+
--------|-----
-Python | 2.7+
--------|-----
+Python |  3.4+
+-------|------
+Python |  2.7+
 Django |  1.3+
