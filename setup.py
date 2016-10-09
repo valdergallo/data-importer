@@ -28,26 +28,6 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-install_requires = [
-    'django>=1.4',
-    'openpyxl==2.4.0',
-    'xlrd==1.0.0',
-    'six==1.10.0',
-]
-
-
-tests_requires = [
-    'pytest==3.0.2',
-    'pytest-django==2.9.1',
-    'pytest-cov==2.3.1',
-    'openpyxl>=2.1.4',
-    'xlrd>=1.0.0'
-    'django>=1.4',
-    'six==1.10.0',
-    'mock==2.0.0',
-]
-
-
 setup(
     name='data-importer',
     url='https://github.com/valdergallo/data-importer',
@@ -64,8 +44,22 @@ setup(
       'Topic :: Utilities'
     ],
     version=data_importer.__version__,
-    install_requires=install_requires,
-    tests_require=tests_requires,
+    install_requires=[
+        'django>=1.4',
+        'openpyxl==2.4.0',
+        'xlrd==1.0.0',
+        'six==1.10.0',
+    ],
+    tests_require=[
+        'pytest==3.0.2',
+        'pytest-django==2.9.1',
+        'pytest-cov==2.3.1',
+        'openpyxl>=2.1.4',
+        'xlrd>=1.0.0'
+        'django>=1.4',
+        'six==1.10.0',
+        'mock==2.0.0',
+    ],
     cmdclass={'test': PyTest},
     zip_safe=False,
     platforms='any',
