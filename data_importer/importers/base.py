@@ -7,13 +7,16 @@ import six
 from django.db import transaction
 from django.db.models.fields import FieldDoesNotExist
 from django.core.exceptions import ValidationError
-from django.utils.encoding import force_text
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
 from data_importer.core.base import DATA_IMPORTER_EXCEL_DECODER
 from data_importer.core.base import DATA_IMPORTER_DECODER
 from collections import OrderedDict
+try:
+    from django.utils.encoding import force_text
+except ImportError:
+    from django.utils.encoding import force_unicode as force_text
 
 
 class BaseImporter(object):
