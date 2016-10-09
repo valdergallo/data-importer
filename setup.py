@@ -54,7 +54,7 @@ setup(
         'pytest==3.0.2',
         'pytest-django==2.9.1',
         'pytest-cov==2.3.1',
-        'openpyxl==2.1.4',
+        'openpyxl==2.4.0',
         'xlrd>=1.0.0',
         'django>=1.4',
         'six==1.10.0',
