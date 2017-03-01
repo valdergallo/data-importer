@@ -235,7 +235,9 @@ class BaseImporter(object):
 
         # validate full row data
         try:
-            values = self.clean_row(values)
+            clean_row_values = self.clean_row(values)
+            if clean_row_values is not None:
+                values = clean_row_values
         except Exception as e:
             self._error.append(self.get_error_message(e, row))
             return None
