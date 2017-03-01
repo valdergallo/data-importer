@@ -45,6 +45,12 @@ Customize data_importer decoders
 **DATA_IMPORTER_DECODER**
  Default value is UTF-8
 
+Migrations
+----------
+
+**Django 1.7+**
+ MIGRATION_MODULES = {'data_importer': 'data_importer.django_migrations'}
+
 
 Basic example
 -------------
