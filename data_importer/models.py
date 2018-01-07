@@ -58,11 +58,11 @@ class FileHistory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True, db_index=True)
     file_upload = models.FileField(upload_to=get_random_filename)
-    owner = models.ForeignKey(User, null=True)
+    owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
 
-    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
