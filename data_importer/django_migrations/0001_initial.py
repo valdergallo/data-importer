@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('is_task', models.BooleanField(default=0)),
                 ('status', models.IntegerField(default=1, choices=[(1, b'Imported'), (2, b'Waiting'), (3, b'Cancelled'), (-1, b'Error')])),
                 ('object_id', models.PositiveIntegerField(null=True, blank=True)),
-                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True, on_delete=models.CASCADE))),
+                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True, on_delete=models.CASCADE)),
                 ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
