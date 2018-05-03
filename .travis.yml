@@ -16,6 +16,7 @@ env:
   - DJANGO=1.8
   - DJANGO=1.9
   - DJANGO=1.10
+  - DJANGO=2.0
 
 install:
   - export PYTHONPATH=$PWD;
