@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from io import StringIO
 from data_importer.importers import CSVImporter
-from django.test import TestCase
+from unittest import TestCase
 from collections import OrderedDict
 
 

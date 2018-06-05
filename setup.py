@@ -29,34 +29,31 @@ class PyTest(TestCommand):
 
 
 setup(
-    name='data-importer',
+    name='data-importer-sqlalchemy',
     url='https://github.com/valdergallo/data-importer',
     download_url='https://github.com/valdergallo/data-importer/tarball/{0!s}/'.format(data_importer.__version__),
     author="valdergallo",
     author_email='valdergallo@gmail.com',
-    keywords='Django Data Importer XLS XLSX CSV XML',
+    keywords='Data Importer XLS XLSX CSV XML',
     description='Simple library to easily import data with Django',
     license='BSD',
     long_description=readme(),
     classifiers=[
       'Framework :: Django',
+      'Framework :: SqlAlchemy',
       'Operating System :: OS Independent',
       'Topic :: Utilities'
     ],
     version=data_importer.__version__,
     install_requires=[
-        'django>=1.4',
         'openpyxl==2.4.0',
-        'xlrd==1.0.0',
-        'six==1.10.0',
+        'xlrd==1.1.0',
     ],
     tests_require=[
         'pytest>=3.0.0',
-        'pytest-django==2.9.1',
+        'xlrd==1.1.0',
         'pytest-cov==2.3.1',
         'openpyxl==2.4.0',
-        'xlrd>=1.0.0',
-        'django>=1.4',
         'six==1.10.0',
         'mock==2.0.0',
     ],
@@ -65,7 +62,4 @@ setup(
     platforms='any',
     package_dir={'': '.'},
     packages=find_packages('.', exclude=['tests', '*.tests', 'docs', 'example', 'media']),
-    package_data={
-        '': ['templates/data_importer.html', 'templates/my_upload.html']
-    }
 )

@@ -1,10 +1,9 @@
 # encoding: utf-8
 from __future__ import unicode_literals
-from django.test import TestCase
+from unittest import TestCase
 from data_importer.importers.xlsx_importer import XLSXImporter
 import os
 import datetime
-from django.db import models
 
 LOCAL_DIR = os.path.dirname(__file__)
 
@@ -42,64 +41,13 @@ class TestXLSImportMeta(TestCase):
                           self.importer.cleaned_data)
 
 
-
-class InvoiceXLSX(models.Model):
-    business_place = models.CharField(max_length=2)
-    doc_number = models.IntegerField()
-    doc_data = models.DateTimeField(max_length=10)
-
-    def save(self, *args, **kwargs):
-        return self.full_clean() == None
-
-
-class TestModelXLSImporter(TestCase):
-
-    def setUp(self):
-        class TestMeta(XLSXImporter):
-            class Meta:
-                ignore_first_line = True
-                model = InvoiceXLSX
-
-        self.xls_file = os.path.join(LOCAL_DIR, 'data/test.xlsx')
-        self.importer = TestMeta(source=self.xls_file)
-
-    def test_values_is_valid(self):
-        self.assertTrue(self.importer.is_valid())
-
-    def test_count_rows(self):
-        self.assertEqual(len(self.importer.cleaned_data), 9)
-
-    def test_cleaned_data_content(self):
-        content = {'doc_number': 1000000, 'business_place': 'SP',
-        'doc_data': datetime.datetime(1982, 11, 1, 0, 0)}
-
-        self.assertEquals(self.importer.cleaned_data[0], (1, content),
-                          self.importer.cleaned_data)
-
-    def test_save_data(self):
-        for row, data in self.importer.cleaned_data:
-            instace = InvoiceXLSX(**data)
-            self.assertTrue(instace.save())
-
-    def test_save_importer(self):
-        self.assertTrue(self.importer.save())
-
-
-class MercadoXLSX(models.Model):
-    item = models.CharField(max_length=50)
-    qtde = models.IntegerField(default=0)
-
-    def save(self, *args, **kwargs):
-        return self.full_clean() == None
-
-
 class TestPTBRXLSImporter(TestCase):
 
     def setUp(self):
         class TestMeta(XLSXImporter):
+            fields = ["item", "qtde"]
             class Meta:
                 ignore_first_line = True
-                model = MercadoXLSX
 
         self.xls_file = os.path.join(LOCAL_DIR, 'data/ptbr_test.xlsx')
         self.importer = TestMeta(source=self.xls_file)

@@ -1,6 +1,6 @@
 # encoding: utf-8
 from __future__ import unicode_literals
-from django.test import TestCase
+from unittest import TestCase
 from data_importer.importers.base import objclass2dict
 from data_importer.importers import CSVImporter
 from io import StringIO

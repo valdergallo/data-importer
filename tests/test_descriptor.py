@@ -1,7 +1,7 @@
 # encoding: utf-8
 from __future__ import unicode_literals
 import os
-from django.test import TestCase
+from unittest import TestCase
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.descriptor import InvalidDescriptor
 from data_importer.core.descriptor import InvalidModel

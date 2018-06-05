@@ -6,9 +6,6 @@ import re
 import io
 import six
 import codecs
-from django.db import transaction
-from django.db.models.fields import FieldDoesNotExist
-from django.core.exceptions import ValidationError
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
 from data_importer.core.base import objclass2dict
@@ -17,10 +14,46 @@ from data_importer.core.base import DATA_IMPORTER_DECODER
 from data_importer.core.base import convert_alphabet_to_number
 from data_importer.core.base import reduce_list
 from collections import OrderedDict
-try:
-    from django.utils.encoding import force_text
-except ImportError:
-    from django.utils.encoding import force_unicode as force_text
+import datetime
+from decimal import Decimal
+
+
+_PROTECTED_TYPES = (
+    type(None), int, float, Decimal, datetime.datetime, datetime.date, datetime.time,
+)
+
+
+def is_protected_type(obj):
+    """Determine if the object instance is of a protected type.
+
+    Objects of protected types are preserved as-is when passed to
+    force_text(strings_only=True).
+    """
+    return isinstance(obj, _PROTECTED_TYPES)
+
+
+def force_text(s, encoding='utf-8', strings_only=False, errors='strict'):
+    """
+    Similar to smart_text, except that lazy instances are resolved to
+    strings, rather than kept as lazy objects.
+
+    If strings_only is True, don't convert (some) non-string-like objects.
+    """
+    # Handle the common case first for performance reasons.
+    if issubclass(type(s), str):
+        return s
+    if strings_only and is_protected_type(s):
+        return s
+    if isinstance(s, bytes):
+        s = str(s, encoding, errors)
+    else:
+        s = str(s)
+    return s
+
+
+class ValidationError(Exception):
+    pass
+
 
 
 class BaseImporter(object):
@@ -178,9 +211,9 @@ class BaseImporter(object):
         if self.Meta.model:
             # default django validate field
             try:
-                field = self.Meta.model._meta.get_field(field_name)
+                field = self.Meta.model.fields[field_name]
                 field.clean(value, field)
-            except FieldDoesNotExist:
+            except IndexError:
                 pass  # do nothing if not find this field in model
             except Exception as msg:
                 default_msg = msg.messages[0].replace('This field', '')
@@ -252,10 +285,11 @@ class BaseImporter(object):
 
         if hasattr(error, 'message') and error.message:
             messages = '{0!s}'.format(error.message)
-
-        if hasattr(error, 'messages') and not messages:
+        elif hasattr(error, 'messages'):
             if error.messages:
                 messages = ','.join(error.messages)
+        else:
+            messages = str(error)
 
         messages = re.sub('\'', '', messages)
         error_type = re.sub('\'', '', error_type)
@@ -355,33 +389,12 @@ class BaseImporter(object):
         """
         if not instance:
             instance = self.Meta.model
-
         if not instance:
             raise AttributeError('Invalid instance model')
-
-        if self.Meta.transaction:
-            with transaction.atomic():
-                for row, data in self.cleaned_data:
-                    record = instance(**data)
-                    record.save()
-
-                try:
-                    self.pre_commit()
-                except Exception as e:
-                    self._error.append(self.get_error_message(e, error_type='__pre_commit__'))
-                    transaction.rollback()
-
-                try:
-                    transaction.commit()
-                except Exception as e:
-                    self._error.append(self.get_error_message(e, error_type='__trasaction__'))
-                    transaction.rollback()
-
-        else:
+            rows = []
             for row, data in self.cleaned_data:
-                record = instance(**data)
-                record.save(force_update=False)
+                rows.append([row, instance(**data)])
 
         self.post_save_all_lines()
 
-        return True
+        return True, rows

@@ -6,10 +6,9 @@ from data_importer.importers import CSVImporter
 from data_importer.importers.base import objclass2dict
 from data_importer.importers.base import convert_alphabet_to_number
 from data_importer.importers.base import reduce_list
-from django.test import TestCase
+from unittest import TestCase
 from unittest import skipIf
 import data_importer
-import django
 
 source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 
@@ -236,15 +235,6 @@ class MyBaseImporter(BaseImporter):
 
     class Meta:
         delimiter = ','
-
-
-class BaseImporterTest(TestCase):
-
-    @skipIf(django.VERSION < (1, 4), "not supported in this library version")
-    def test_raise_not_implemented(self):
-        with self.assertRaisesMessage(NotImplementedError, "No reader implemented"):
-            instance = MyBaseImporter(source=source_content)
-            instance.set_reader()
 
 
 class TestConvertLetterToNumber(TestCase):

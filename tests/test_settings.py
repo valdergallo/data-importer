@@ -1,6 +1,6 @@
 # encoding: utf-8
 from __future__ import unicode_literals
-from django.test import TestCase
+from unittest import TestCase
 from data_importer.importers.base import DATA_IMPORTER_EXCEL_DECODER, DATA_IMPORTER_DECODER
 
 
