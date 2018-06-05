@@ -3,7 +3,10 @@
 *.pyo
 dist/*
 example/media/*
+.venv/
+.vscode/
 .eggs/
+.pytest_cache/
 .vagrant
 *.pyc
 .coverage
