@@ -142,8 +142,9 @@ class BaseImporter(object):
         If this method not have fields and have Meta.model this method
         will use model fields to populate content without id
         """
-        if self.Meta.model and not hasattr(self, 'fields'):
-            all_models_fields = [i.name for i in self.Meta.model._meta.fields if i.name != 'id']
+        if self.Meta.model and not hasattr(self, '_fields'):
+            all_models_fields = [
+                name for name in self.Meta.model._fields.keys() if name != 'id']
             self.fields = all_models_fields
 
         self.exclude_fields()
@@ -211,7 +212,7 @@ class BaseImporter(object):
         if self.Meta.model:
             # default django validate field
             try:
-                field = self.Meta.model.fields[field_name]
+                field = self.Meta.model._fields[field_name]
                 field.clean(value, field)
             except IndexError:
                 pass  # do nothing if not find this field in model
@@ -382,18 +383,22 @@ class BaseImporter(object):
             else:
                 yield self.process_row(row, values)
 
-    def save(self, instance=None):
+    def save(self, instance=None, session=None):
         """
         Save all contents
         DONT override this method
         """
         if not instance:
             instance = self.Meta.model
+
         if not instance:
             raise AttributeError('Invalid instance model')
             rows = []
             for row, data in self.cleaned_data:
                 rows.append([row, instance(**data)])
+
+        if session:
+            session.commit()
 
         self.post_save_all_lines()
 
