@@ -46,6 +46,7 @@ setup(
     ],
     version=data_importer.__version__,
     install_requires=[
+        'SQLAlchemy == 1.2.8'
         'openpyxl==2.4.0',
         'xlrd==1.1.0',
     ],
