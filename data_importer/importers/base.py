@@ -209,18 +209,6 @@ class BaseImporter(object):
         User default django field validators to clean content
         and run custom validates
         """
-        if self.Meta.model:
-            # default django validate field
-            try:
-                field = self.Meta.model._fields[field_name]
-                field.clean(value, field)
-            except IndexError:
-                pass  # do nothing if not find this field in model
-            except Exception as msg:
-                default_msg = msg.messages[0].replace('This field', '')
-                new_msg = 'Field ({0!s}) {1!s}'.format(field.name, default_msg)
-                raise ValidationError(new_msg)
-
         clean_function = getattr(self, 'clean_{0!s}'.format(field_name), False)
 
         if clean_function:
