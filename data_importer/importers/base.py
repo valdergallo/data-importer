@@ -55,7 +55,6 @@ class ValidationError(Exception):
     pass
 
 
-
 class BaseImporter(object):
     """
     Base Importer method to create simples importes CSV files.
