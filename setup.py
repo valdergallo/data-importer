@@ -30,8 +30,8 @@ class PyTest(TestCommand):
 
 setup(
     name='data-importer-sqlalchemy',
-    url='https://github.com/valdergallo/data-importer-sqlalchemy',
-    download_url='https://github.com/valdergallo/data-importer-sqlalchemy/tarball/{0!s}/'.format(data_importer.__version__),
+    url='https://github.com/valdergallo/data-importer',
+    download_url='https://github.com/valdergallo/data-importer/tarball/sqlalchemy-1.0/',
     author="valdergallo",
     author_email='valdergallo@gmail.com',
     keywords='Data Importer XLS XLSX CSV XML',
