@@ -258,7 +258,9 @@ class BaseImporter(object):
                 messages = ','.join(error.messages)
 
         messages = re.sub('\'', '', messages)
+        messages = re.sub('\"', '', messages)
         error_type = re.sub('\'', '', error_type)
+        error_type = re.sub('\"', '', error_type)
 
         if row:
             return row, error_type, messages
