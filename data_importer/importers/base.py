@@ -126,7 +126,7 @@ class BaseImporter(object):
         if hasattr(self, 'fields') and isinstance(self.fields, dict):
             order_dict = OrderedDict(self.fields)
             self.fields = list(self.fields)
-            self._reduce_list = map(convert_alphabet_to_number, order_dict.values())
+            self._reduce_list = list(map(convert_alphabet_to_number, order_dict.values()))
 
         if self.Meta.exclude and not self._excluded:
             self._excluded = True
