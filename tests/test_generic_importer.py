@@ -29,23 +29,23 @@ class TestGenericImporterSetup(TestCase):
 
     def test_xls_reader_set(self):
         importer = GenericImporter(source=self.xls_file)
-        self.assertEquals(importer.get_reader_class(), XLSReader)
+        self.assertEqual(importer.get_reader_class(), XLSReader)
 
     def test_xlsx_reader_set(self):
         importer = GenericImporter(source=self.xlsx_file)
-        self.assertEquals(importer.get_reader_class(), XLSXReader)
+        self.assertEqual(importer.get_reader_class(), XLSXReader)
 
     def test_csv_reader_set(self):
         importer = GenericImporter(source=self.csv_file)
-        self.assertEquals(importer.get_reader_class(), CSVReader)
+        self.assertEqual(importer.get_reader_class(), CSVReader)
 
     def test_xml_reader_set(self):
         importer = GenericImporter(source=self.xml_file)
-        self.assertEquals(importer.get_reader_class(), XMLReader)
+        self.assertEqual(importer.get_reader_class(), XMLReader)
 
     def test_getting_source_file_extension(self):
         importer = GenericImporter(source=self.csv_file)
-        self.assertEquals(importer.get_source_file_extension(), 'csv')
+        self.assertEqual(importer.get_source_file_extension(), 'csv')
 
     @skipIf(django.VERSION < (1, 4), "not supported in this library version")
     def test_unsuported_raise_error_message(self):
@@ -55,14 +55,14 @@ class TestGenericImporterSetup(TestCase):
     def test_import_with_file_instance(self):
         file_instance = open(self.csv_file)
         importer = GenericImporter(source=file_instance)
-        self.assertEquals(importer.get_source_file_extension(), 'csv')
+        self.assertEqual(importer.get_source_file_extension(), 'csv')
 
     def test_import_with_model_instance(self):
         file_mock = mock.MagicMock(spec=FileHistory, name='FileHistoryMock')
         file_mock.file_upload = '/media/test.csv'
 
         importer = GenericImporter(source=file_mock)
-        self.assertEquals(importer.get_source_file_extension(), 'csv')
+        self.assertEqual(importer.get_source_file_extension(), 'csv')
 
 
 class CustomerDataImporter(GenericImporter):

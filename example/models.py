@@ -36,7 +36,7 @@ class Invoice(models.Model):
 
 
 class ItemInvoice(models.Model):
-    invoice = models.ForeignKey(Invoice)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
     def __unicode__(self):

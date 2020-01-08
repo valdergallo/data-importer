@@ -50,7 +50,7 @@ class TestBaseImportMeta(TestCase):
         self.assertFalse(self.importer.Meta.test)
 
     def test_fields(self):
-        self.assertEquals(list(self.importer.fields), ['test_field', ])
+        self.assertEqual(list(self.importer.fields), ['test_field', ])
 
     def test_objclass2dict(self):
         class Meta:
@@ -59,7 +59,7 @@ class TestBaseImportMeta(TestCase):
             test_3 = 3
 
         return_dict = objclass2dict(Meta)
-        self.assertEquals(return_dict, {'test_1': 1, 'test_2': 2, 'test_3': 3})
+        self.assertEqual(return_dict, {'test_1': 1, 'test_2': 2, 'test_3': 3})
 
 
 class TestImporters(TestCase):
@@ -125,7 +125,7 @@ class TestReadContent(TestCase):
         self.assertTrue(self.importer.is_valid())
 
     def test_read_content_first_line(self):
-        self.assertEquals(self.importer.cleaned_data[0],
+        self.assertEqual(self.importer.cleaned_data[0],
                           (1, {'test2_field': 'header2', 'test_field': 'HEADER1'}),
                           self.importer.cleaned_data[0])
 
@@ -135,7 +135,7 @@ class TestReadContent(TestCase):
 
     def test_start_fields(self):
         self.importer.start_fields()
-        self.assertEquals(self.importer.fields, ['test_field', 'test2_field'])
+        self.assertEqual(self.importer.fields, ['test_field', 'test2_field'])
 
     def test_raise_error_on_clean(self):
         class TestMetaClean(CSVImporter):
@@ -174,7 +174,7 @@ class TestReadContent(TestCase):
         self.source_content.seek(0)
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        self.assertEquals(importer.cleaned_data[0],
+        self.assertEqual(importer.cleaned_data[0],
                           (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
                           importer.cleaned_data[0])
 

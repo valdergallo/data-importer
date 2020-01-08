@@ -38,7 +38,7 @@ class TestXLSImportMeta(TestCase):
         content = {'doc_number': 1000000, 'business_place': 'SP',
         'doc_data': datetime.datetime(1982, 11, 1, 0, 0)}
 
-        self.assertEquals(self.importer.cleaned_data[0], (1, content),
+        self.assertEqual(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data)
 
 
@@ -73,7 +73,7 @@ class TestModelXLSImporter(TestCase):
         content = {'doc_number': 1000000, 'business_place': 'SP',
         'doc_data': datetime.datetime(1982, 11, 1, 0, 0)}
 
-        self.assertEquals(self.importer.cleaned_data[0], (1, content),
+        self.assertEqual(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data)
 
     def test_save_data(self):
@@ -116,7 +116,7 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 1,
             }
 
-        self.assertEquals(self.importer.cleaned_data[0], (1, content),
+        self.assertEqual(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -124,7 +124,7 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 2,
             }
 
-        self.assertEquals(self.importer.cleaned_data[1], (2, content),
+        self.assertEqual(self.importer.cleaned_data[1], (2, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -132,7 +132,7 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 3,
             }
 
-        self.assertEquals(self.importer.cleaned_data[2], (3, content),
+        self.assertEqual(self.importer.cleaned_data[2], (3, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -140,6 +140,6 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 4,
             }
 
-        self.assertEquals(self.importer.cleaned_data[3], (4, content),
+        self.assertEqual(self.importer.cleaned_data[3], (4, content),
                           self.importer.cleaned_data)
 

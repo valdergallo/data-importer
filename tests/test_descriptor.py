@@ -21,7 +21,7 @@ class ReadDescriptorTestCase(TestCase):
         self.assertTrue(self.descriptor.source)
 
     def test_get_fields(self):
-        self.assertEquals(self.descriptor.get_fields(), ["name", "year", "last"])
+        self.assertEqual(self.descriptor.get_fields(), ["name", "year", "last"])
 
     def test_invalid_model(self):
         descriptor = ReadDescriptor(file_name=JSON_FILE, model_name='TestInvalidModel')
@@ -49,4 +49,4 @@ class TestDescriptionUsingBaseImporter(TestCase):
         self.importer = MyBaseImport(source=None)
 
     def test_get_fields(self):
-        self.assertEquals(self.importer.fields, ['name', 'year', 'last'])
+        self.assertEqual(self.importer.fields, ['name', 'year', 'last'])

@@ -54,8 +54,8 @@ LOCAL_DIR = os.path.dirname(__file__)
 #             'doc_data': datetime.datetime(1982, 11, 1, 0, 0)
 #         }
 
-#         self.assertEquals(self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data)
-#         self.assertEquals(self.importer_dict.cleaned_data[0], (1, content), self.importer_dict.cleaned_data)
+#         self.assertEqual(self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data)
+#         self.assertEqual(self.importer_dict.cleaned_data[0], (1, content), self.importer_dict.cleaned_data)
 
 
 class InvoiceXLS(models.Model):
@@ -99,8 +99,8 @@ class TestModelXLSImporter(TestCase):
             'doc_data': datetime.datetime(1982, 11, 1, 0, 0)
         }
 
-        self.assertEquals(self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data)
-        self.assertEquals(self.importer_dict.cleaned_data[0], (1, content), self.importer_dict.cleaned_data)
+        self.assertEqual(self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data)
+        self.assertEqual(self.importer_dict.cleaned_data[0], (1, content), self.importer_dict.cleaned_data)
 
     def test_save_data(self):
         for row, data in self.importer.cleaned_data:
@@ -145,7 +145,7 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 1,
         }
 
-        self.assertEquals(self.importer.cleaned_data[0], (1, content),
+        self.assertEqual(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -153,7 +153,7 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 2,
         }
 
-        self.assertEquals(self.importer.cleaned_data[1], (2, content),
+        self.assertEqual(self.importer.cleaned_data[1], (2, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -161,7 +161,7 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 3,
         }
 
-        self.assertEquals(self.importer.cleaned_data[2], (3, content),
+        self.assertEqual(self.importer.cleaned_data[2], (3, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -169,5 +169,5 @@ class TestPTBRXLSImporter(TestCase):
             'qtde': 4,
         }
 
-        self.assertEquals(self.importer.cleaned_data[3], (4, content),
+        self.assertEqual(self.importer.cleaned_data[3], (4, content),
                           self.importer.cleaned_data)

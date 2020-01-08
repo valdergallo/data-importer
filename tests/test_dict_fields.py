@@ -40,7 +40,7 @@ class TestReadContent(TestCase):
         self.assertTrue(self.importer.is_valid())
 
     def test_read_content_first_line(self):
-        self.assertEquals(self.importer.cleaned_data[0],
+        self.assertEqual(self.importer.cleaned_data[0],
                           (1, OrderedDict({'test_field': 'HEADER1', 'test2_field': 'header2'})))
 
     def test_errors(self):
@@ -49,7 +49,7 @@ class TestReadContent(TestCase):
 
     def test_start_fields(self):
         self.importer.start_fields()
-        self.assertEquals(self.importer.fields, ['test_field', 'test2_field'])
+        self.assertEqual(self.importer.fields, ['test_field', 'test2_field'])
 
     def test_raise_error_on_clean(self):
         class TestMetaClean(CSVImporter):
@@ -89,7 +89,7 @@ class TestReadContent(TestCase):
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
         should_be = (1, OrderedDict([('test_field', 'TEST1'), ('test_number_field', '1')]))
-        self.assertEquals(importer.cleaned_data[0],
+        self.assertEqual(importer.cleaned_data[0],
                           should_be)
 
     def test_exclude_with_tupla(self):
@@ -113,5 +113,5 @@ class TestReadContent(TestCase):
         importer = TestMeta(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
         should_be = (1, OrderedDict([('test_field', 'TEST1'), ('test_number_field', '1')]))
-        self.assertEquals(importer.cleaned_data[0],
+        self.assertEqual(importer.cleaned_data[0],
                           should_be)

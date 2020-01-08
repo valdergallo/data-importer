@@ -31,7 +31,7 @@ class TestBaseWithModel(TestCase):
         self.importer = TestMeta(source=person_content.split('\n'))
 
     def test_get_fields_from_model(self):
-        self.assertEquals(self.importer.fields, ['first_name', 'last_name', 'age'])
+        self.assertEqual(self.importer.fields, ['first_name', 'last_name', 'age'])
 
     def test_values_is_valid(self):
         self.assertTrue(self.importer.is_valid())
@@ -40,7 +40,7 @@ class TestBaseWithModel(TestCase):
         content = {'first_name': 'test_first_name_1',
                    'last_name': 'test_last_name_1',
                    'age': 'age1'}
-        self.assertEquals(self.importer.cleaned_data[0], (1, content))
+        self.assertEqual(self.importer.cleaned_data[0], (1, content))
 
     def test_source_importer_file(self):
         base = CSVImporter(source=io.open('test.txt', 'w'))
@@ -94,7 +94,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': '1',
             }
 
-        self.assertEquals(self.importer.cleaned_data[0], (1, content),
+        self.assertEqual(self.importer.cleaned_data[0], (1, content),
                           self.importer.cleaned_data[0])
 
         content = {
@@ -102,7 +102,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': '2',
             }
 
-        self.assertEquals(self.importer.cleaned_data[1], (2, content),
+        self.assertEqual(self.importer.cleaned_data[1], (2, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -110,7 +110,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': '3',
             }
 
-        self.assertEquals(self.importer.cleaned_data[2], (3, content),
+        self.assertEqual(self.importer.cleaned_data[2], (3, content),
                           self.importer.cleaned_data)
 
         content = {
@@ -118,7 +118,7 @@ class TestPTBRCSVImporter(TestCase):
             'qtde': '4',
             }
 
-        self.assertEquals(self.importer.cleaned_data[3], (4, content),
+        self.assertEqual(self.importer.cleaned_data[3], (4, content),
                           self.importer.cleaned_data)
 
 
@@ -139,10 +139,6 @@ class TestModelValidator(TestCase):
 
     def test_errors_values(self):
         self.importer.is_valid()
-        DJANGO_VERSION = StrictVersion(django.get_version())
-        if DJANGO_VERSION < StrictVersion('1.4'):
-            error = [(1, 'ValidationError', 'Field (price) This value must be a float.')]
-        else:
-            error = [(1, 'ValidationError', 'Field (price) 23,98 value must be a float.')]
-
-        self.assertEquals(self.importer.errors, error, self.importer.cleaned_data)
+        error = [
+            (1, 'ValidationError', 'Field (price) “23,98” value must be a float.')]
+        self.assertEqual(self.importer.errors, error, self.importer.cleaned_data)

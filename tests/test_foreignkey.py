@@ -24,7 +24,7 @@ class TestForeignKeyWithModel(TestCase):
         self.importer = TestMeta(source=person_content.split('\n'))
 
     def test_get_fields_from_model(self):
-        self.assertEquals(self.importer.fields, ['invoice', 'name'])
+        self.assertEqual(self.importer.fields, ['invoice', 'name'])
 
     def test_values_is_valid(self):
         self.assertFalse(self.importer.is_valid())
