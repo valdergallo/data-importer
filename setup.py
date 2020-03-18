@@ -48,7 +48,7 @@ setup(
         'django>=1.4',
         'openpyxl==2.4.0',
         'xlrd==1.0.0',
-        'six==1.10.0',
+        'six>=1.10.0',
     ],
     tests_require=[
         'pytest>=3.0.0',
@@ -57,7 +57,7 @@ setup(
         'openpyxl==2.4.0',
         'xlrd>=1.0.0',
         'django>=1.4',
-        'six==1.10.0',
+        'six>=1.10.0',
         'mock==2.0.0',
     ],
     cmdclass={'test': PyTest},
