@@ -20,7 +20,7 @@ from collections import OrderedDict
 try:
     from django.utils.encoding import force_str
 except ImportError:
-    from django.utils.encoding import force_unicode as force_text
+    from django.utils.encoding import force_unicode as force_str
 
 
 class BaseImporter(object):
@@ -66,7 +66,7 @@ class BaseImporter(object):
         try:
             decoded = bytestr.decode(DATA_IMPORTER_EXCEL_DECODER)  # default by excel csv
         except (UnicodeEncodeError, AttributeError):
-            decoded = force_text(bytestr, DATA_IMPORTER_DECODER)
+            decoded = force_str(bytestr, DATA_IMPORTER_DECODER)
 
         return decoded
 
