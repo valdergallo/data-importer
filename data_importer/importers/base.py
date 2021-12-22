@@ -7,7 +7,7 @@ import io
 import six
 import codecs
 from django.db import transaction
-from django.db.models.fields import FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 from django.core.exceptions import ValidationError
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
