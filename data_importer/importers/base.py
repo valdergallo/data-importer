@@ -18,7 +18,7 @@ from data_importer.core.base import convert_alphabet_to_number
 from data_importer.core.base import reduce_list
 from collections import OrderedDict
 try:
-    from django.utils.encoding import force_text
+    from django.utils.encoding import force_str
 except ImportError:
     from django.utils.encoding import force_unicode as force_text
 
