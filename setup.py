@@ -46,6 +46,7 @@ setup(
     version=data_importer.__version__,
     install_requires=[
         'django>=1.4',
+        'six>=1.10.0',
         'openpyxl>=2.4.0',
         'xlrd>=1.0.0',
     ],
@@ -55,6 +56,7 @@ setup(
         'pytest-django>=2.9.1',
         'mock>=2.0.0',
         'django>=1.4',
+        'six>=1.10.0',
         'openpyxl>=2.4.0',
         'xlrd>=1.0.0',
     ],
