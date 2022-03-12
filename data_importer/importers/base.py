@@ -7,7 +7,7 @@ import io
 import six
 import codecs
 from django.db import transaction
-from django.db.models.fields import FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 from django.core.exceptions import ValidationError
 from data_importer.core.descriptor import ReadDescriptor
 from data_importer.core.exceptions import StopImporter
@@ -18,9 +18,9 @@ from data_importer.core.base import convert_alphabet_to_number
 from data_importer.core.base import reduce_list
 from collections import OrderedDict
 try:
-    from django.utils.encoding import force_text
+    from django.utils.encoding import force_str
 except ImportError:
-    from django.utils.encoding import force_unicode as force_text
+    from django.utils.encoding import force_unicode as force_str
 
 
 class BaseImporter(object):
@@ -66,7 +66,7 @@ class BaseImporter(object):
         try:
             decoded = bytestr.decode(DATA_IMPORTER_EXCEL_DECODER)  # default by excel csv
         except (UnicodeEncodeError, AttributeError):
-            decoded = force_text(bytestr, DATA_IMPORTER_DECODER)
+            decoded = force_str(bytestr, DATA_IMPORTER_DECODER)
 
         return decoded
 

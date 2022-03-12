@@ -84,7 +84,7 @@ Add support to South Migrations and Django Migrations
 
     MIGRATION_MODULES = {
         'data_importer': 'data_importer.django_migrations'
-    },
+    }
 ```
 
 
