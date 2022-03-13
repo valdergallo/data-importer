@@ -25,7 +25,8 @@ coverage:
 	PYTHONPATH=`pwd` py.test --cov=data_importer --cov-report html
 
 send_package:
-	python setup.py build bdist_wheel bdist upload register
+	python setup.py build bdist_wheel bdist sdist
+	twine upload dist/
 
 clean:
 	find . -name '*.pyc' -delete
