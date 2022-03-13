@@ -17,6 +17,7 @@ from data_importer.core.base import DATA_IMPORTER_DECODER
 from data_importer.core.base import convert_alphabet_to_number
 from data_importer.core.base import reduce_list
 from collections import OrderedDict
+
 try:
     from django.utils.encoding import force_str
 except ImportError:
@@ -29,6 +30,7 @@ class BaseImporter(object):
 
     set_reader: can be override to create new importers files
     """
+
     def __new__(cls, **kargs):
         """
         Provide custom methods in subclass Meta
@@ -64,7 +66,9 @@ class BaseImporter(object):
             return bytestr
 
         try:
-            decoded = bytestr.decode(DATA_IMPORTER_EXCEL_DECODER)  # default by excel csv
+            decoded = bytestr.decode(
+                DATA_IMPORTER_EXCEL_DECODER
+            )  # default by excel csv
         except (UnicodeEncodeError, AttributeError):
             decoded = force_str(bytestr, DATA_IMPORTER_DECODER)
 
@@ -80,18 +84,22 @@ class BaseImporter(object):
         """Open source to reader"""
         if isinstance(source, io.IOBase):
             self._source = source
-        elif isinstance(source, six.string_types) and os.path.exists(source) and source.endswith('csv'):
-            if sys.version_info >= (3,0):
-                self._source = codecs.open(source, 'rb', encoding=encoding)
+        elif (
+            isinstance(source, six.string_types)
+            and os.path.exists(source)
+            and source.endswith("csv")
+        ):
+            if sys.version_info >= (3, 0):
+                self._source = codecs.open(source, "rb", encoding=encoding)
             else:
-                self._source = codecs.open(source, 'rb')
+                self._source = codecs.open(source, "rb")
         elif isinstance(source, list):
             self._source = source
-        elif hasattr(source, 'file_upload'):  # for FileHistory instances
+        elif hasattr(source, "file_upload"):  # for FileHistory instances
             self._source = source.file_upload
             self.file_history = source
-        elif hasattr(source, 'file'):
-            self._source = io.open(source.file.name, 'rb')
+        elif hasattr(source, "file"):
+            self._source = io.open(source.file.name, "rb")
         else:
             self._source = source
             # raise ValueError('Invalid Source')
@@ -99,7 +107,7 @@ class BaseImporter(object):
     @property
     def meta(self):
         """Is same to use .Meta"""
-        if hasattr(self, 'Meta'):
+        if hasattr(self, "Meta"):
             return self.Meta
 
     def start_fields(self):
@@ -109,8 +117,10 @@ class BaseImporter(object):
         If this method not have fields and have Meta.model this method
         will use model fields to populate content without id
         """
-        if self.Meta.model and not hasattr(self, 'fields'):
-            all_models_fields = [i.name for i in self.Meta.model._meta.fields if i.name != 'id']
+        if self.Meta.model and not hasattr(self, "fields"):
+            all_models_fields = [
+                i.name for i in self.Meta.model._meta.fields if i.name != "id"
+            ]
             self.fields = all_models_fields
 
         self.exclude_fields()
@@ -123,10 +133,12 @@ class BaseImporter(object):
         Exclude fields from Meta.exclude
         """
         # convert dict to fields and filter content
-        if hasattr(self, 'fields') and isinstance(self.fields, dict):
+        if hasattr(self, "fields") and isinstance(self.fields, dict):
             order_dict = OrderedDict(self.fields)
             self.fields = list(self.fields)
-            self._reduce_list = list(map(convert_alphabet_to_number, order_dict.values()))
+            self._reduce_list = list(
+                map(convert_alphabet_to_number, order_dict.values())
+            )
 
         if self.Meta.exclude and not self._excluded:
             self._excluded = True
@@ -168,7 +180,7 @@ class BaseImporter(object):
             response: [['value_myfield1', 'value_myfield2'],
                         ['value2_myfield1', 'value2_myfield2']]
         """
-        raise NotImplementedError('No reader implemented')
+        raise NotImplementedError("No reader implemented")
 
     def clean_field(self, field_name, value):
         """
@@ -183,18 +195,18 @@ class BaseImporter(object):
             except FieldDoesNotExist:
                 pass  # do nothing if not find this field in model
             except Exception as msg:
-                default_msg = msg.messages[0].replace('This field', '')
-                new_msg = 'Field ({0!s}) {1!s}'.format(field.name, default_msg)
+                default_msg = msg.messages[0].replace("This field", "")
+                new_msg = "Field ({0!s}) {1!s}".format(field.name, default_msg)
                 raise ValidationError(new_msg)
 
-        clean_function = getattr(self, 'clean_{0!s}'.format(field_name), False)
+        clean_function = getattr(self, "clean_{0!s}".format(field_name), False)
 
         if clean_function:
             try:
                 return clean_function(value)
             except Exception as msg:
-                default_msg = str(msg).replace('This field', '')
-                new_msg = 'Field ({0!s}) {1!s}'.format(field_name, default_msg)
+                default_msg = str(msg).replace("This field", "")
+                new_msg = "Field ({0!s}) {1!s}".format(field_name, default_msg)
                 raise ValidationError(new_msg)
         return value
 
@@ -209,7 +221,7 @@ class BaseImporter(object):
                 values_encoded = reduce_list(self._reduce_list, values_encoded)
             values = dict(zip(self.fields, values_encoded))
         except TypeError:
-            raise TypeError('Invalid Line: {0!s}'.format(row))
+            raise TypeError("Invalid Line: {0!s}".format(row))
 
         has_error = False
 
@@ -245,22 +257,22 @@ class BaseImporter(object):
         return (row, values)
 
     def get_error_message(self, error, row=None, error_type=None):
-        messages = ''
+        messages = ""
 
         if not error_type:
             error_type = "{0!s}".format(type(error).__name__)
 
-        if hasattr(error, 'message') and error.message:
-            messages = '{0!s}'.format(error.message)
+        if hasattr(error, "message") and error.message:
+            messages = "{0!s}".format(error.message)
 
-        if hasattr(error, 'messages') and not messages:
+        if hasattr(error, "messages") and not messages:
             if error.messages:
-                messages = ','.join(error.messages)
+                messages = ",".join(error.messages)
 
-        messages = re.sub('\'', '', messages)
-        messages = re.sub('\"', '', messages)
-        error_type = re.sub('\'', '', error_type)
-        error_type = re.sub('\"', '', error_type)
+        messages = re.sub("'", "", messages)
+        messages = re.sub('"', "", messages)
+        error_type = re.sub("'", "", error_type)
+        error_type = re.sub('"', "", error_type)
 
         if row:
             return row, error_type, messages
@@ -280,22 +292,22 @@ class BaseImporter(object):
         try:
             self.pre_clean()
         except Exception as e:
-            self._error.append(self.get_error_message(e, error_type='__pre_clean__'))
+            self._error.append(self.get_error_message(e, error_type="__pre_clean__"))
 
         try:
             self.clean()
         except Exception as e:
-            self._error.append(self.get_error_message(e, error_type='__clean_all__'))
+            self._error.append(self.get_error_message(e, error_type="__clean_all__"))
 
         # create clean content
         for data in self._read_file():
             if data:
-                self._cleaned_data += (data, )
+                self._cleaned_data += (data,)
 
         try:
             self.post_clean()
         except Exception as e:
-            self._error.append(self.get_error_message(e, error_type='__post_clean__'))
+            self._error.append(self.get_error_message(e, error_type="__post_clean__"))
 
         return self._cleaned_data
 
@@ -335,7 +347,7 @@ class BaseImporter(object):
         """
         Create cleaned_data content
         """
-        if hasattr(self._reader, 'read'):
+        if hasattr(self._reader, "read"):
             reader = self._reader.read()
         else:
             reader = self._reader
@@ -359,7 +371,7 @@ class BaseImporter(object):
             instance = self.Meta.model
 
         if not instance:
-            raise AttributeError('Invalid instance model')
+            raise AttributeError("Invalid instance model")
 
         if self.Meta.transaction:
             with transaction.atomic():
@@ -370,13 +382,17 @@ class BaseImporter(object):
                 try:
                     self.pre_commit()
                 except Exception as e:
-                    self._error.append(self.get_error_message(e, error_type='__pre_commit__'))
+                    self._error.append(
+                        self.get_error_message(e, error_type="__pre_commit__")
+                    )
                     transaction.rollback()
 
                 try:
                     transaction.commit()
                 except Exception as e:
-                    self._error.append(self.get_error_message(e, error_type='__trasaction__'))
+                    self._error.append(
+                        self.get_error_message(e, error_type="__trasaction__")
+                    )
                     transaction.rollback()
 
         else:

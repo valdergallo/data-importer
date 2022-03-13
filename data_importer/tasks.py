@@ -34,20 +34,30 @@ class DataImpoterTask(Task):
     """
     This tasks is executed by Celery.
     """
-    name = 'data_importer_task'
+
+    name = "data_importer_task"
     queue = DATA_IMPORTER_QUEUE
     time_limit = 60 * 15
 
     @staticmethod
-    def send_email(subject='[Data Importer] was processed', body="", owner=None):
-        email = EmailMessage(subject=subject,
-                             body=body,
-                             to=[owner.email],
-                             headers={'Content-Type': 'text/plain'})
+    def send_email(subject="[Data Importer] was processed", body="", owner=None):
+        email = EmailMessage(
+            subject=subject,
+            body=body,
+            to=[owner.email],
+            headers={"Content-Type": "text/plain"},
+        )
         email.send()
 
-    def run(self, importer=None, source="", owner=None, message="",
-            send_email=True, **kwargs):
+    def run(
+        self,
+        importer=None,
+        source="",
+        owner=None,
+        message="",
+        send_email=True,
+        **kwargs
+    ):
         if not importer:
             return
 
@@ -72,7 +82,7 @@ class DataImpoterTask(Task):
             elif owner and owner.email and not self.parser.errors:
                 message = "Your file was imported with sucess"
 
-            if hasattr(owner, 'email') and send_email:
+            if hasattr(owner, "email") and send_email:
                 self.send_email(body=message, owner=owner)
 
             release_lock(lock_id)

@@ -5,8 +5,8 @@ from data_importer.readers.xlsx_reader import XLSXReader
 from data_importer.readers.xml_reader import XMLReader
 
 __all__ = (
-    'CSVReader',
-    'XLSReader',
-    'XLSXReader',
-    'XMLReader',
+    "CSVReader",
+    "XLSReader",
+    "XLSXReader",
+    "XMLReader",
 )

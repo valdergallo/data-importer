@@ -11,14 +11,14 @@ from data_importer.core.exceptions import InvalidModel
 from data_importer.core.exceptions import InvalidDescriptor
 
 __all__ = (
-    'BaseImporter',
-    'CSVImporter',
-    'XLSImporter',
-    'XLSXImporter',
-    'XMLImporter',
-    'GenericImporter',
-    'StopImporter',
-    'UnsuportedFile',
-    'InvalidModel',
-    'InvalidDescriptor',
+    "BaseImporter",
+    "CSVImporter",
+    "XLSImporter",
+    "XLSXImporter",
+    "XMLImporter",
+    "GenericImporter",
+    "StopImporter",
+    "UnsuportedFile",
+    "InvalidModel",
+    "InvalidDescriptor",
 )

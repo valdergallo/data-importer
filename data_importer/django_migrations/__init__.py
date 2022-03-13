@@ -18,4 +18,5 @@ try:
     from django.db import migrations
 except ImportError:
     from django.core.exceptions import ImproperlyConfigured
+
     raise ImproperlyConfigured(SOUTH_ERROR_MESSAGE)

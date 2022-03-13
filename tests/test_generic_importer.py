@@ -19,13 +19,12 @@ LOCAL_DIR = os.path.dirname(__file__)
 
 
 class TestGenericImporterSetup(TestCase):
-
     def setUp(self):
-        self.xls_file = os.path.join(LOCAL_DIR, 'data/test.xls')
-        self.xlsx_file = os.path.join(LOCAL_DIR, 'data/test.xlsx')
-        self.csv_file = os.path.join(LOCAL_DIR, 'data/test.csv')
-        self.xml_file = os.path.join(LOCAL_DIR, 'data/test.xml')
-        self.unsuported_file = os.path.join(LOCAL_DIR, 'data/test_json_descriptor.json')
+        self.xls_file = os.path.join(LOCAL_DIR, "data/test.xls")
+        self.xlsx_file = os.path.join(LOCAL_DIR, "data/test.xlsx")
+        self.csv_file = os.path.join(LOCAL_DIR, "data/test.csv")
+        self.xml_file = os.path.join(LOCAL_DIR, "data/test.xml")
+        self.unsuported_file = os.path.join(LOCAL_DIR, "data/test_json_descriptor.json")
 
     def test_xls_reader_set(self):
         importer = GenericImporter(source=self.xls_file)
@@ -45,24 +44,24 @@ class TestGenericImporterSetup(TestCase):
 
     def test_getting_source_file_extension(self):
         importer = GenericImporter(source=self.csv_file)
-        self.assertEqual(importer.get_source_file_extension(), 'csv')
+        self.assertEqual(importer.get_source_file_extension(), "csv")
 
     @skipIf(django.VERSION < (1, 4), "not supported in this library version")
     def test_unsuported_raise_error_message(self):
-        with self.assertRaisesMessage(UnsuportedFile, 'Unsuported File'):
+        with self.assertRaisesMessage(UnsuportedFile, "Unsuported File"):
             GenericImporter(source=self.unsuported_file)
 
     def test_import_with_file_instance(self):
         file_instance = open(self.csv_file)
         importer = GenericImporter(source=file_instance)
-        self.assertEqual(importer.get_source_file_extension(), 'csv')
+        self.assertEqual(importer.get_source_file_extension(), "csv")
 
     def test_import_with_model_instance(self):
-        file_mock = mock.MagicMock(spec=FileHistory, name='FileHistoryMock')
-        file_mock.file_upload = '/media/test.csv'
+        file_mock = mock.MagicMock(spec=FileHistory, name="FileHistoryMock")
+        file_mock.file_upload = "/media/test.csv"
 
         importer = GenericImporter(source=file_mock)
-        self.assertEqual(importer.get_source_file_extension(), 'csv')
+        self.assertEqual(importer.get_source_file_extension(), "csv")
 
 
 class CustomerDataImporter(GenericImporter):

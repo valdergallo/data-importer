@@ -8,7 +8,6 @@ from imp import reload
 
 
 class TestFileUploadForm(TestCase):
-
     def setUp(self):
         self.form = forms.FileUploadForm()
 
@@ -23,8 +22,7 @@ class TestFileUploadForm(TestCase):
 
 
 class TestTaskImporter(TestCase):
-
     def test_celery_importer(self):
-        sys.modules['celery'] = Mock()
+        sys.modules["celery"] = Mock()
         reload(forms)
         self.assertEqual(forms.HAS_CELERY, True)

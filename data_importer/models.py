@@ -26,19 +26,24 @@ except AttributeError:
 
 DJANGO_VERSION = StrictVersion(django.get_version())
 
-if DJANGO_VERSION > StrictVersion('1.7'):
+if DJANGO_VERSION > StrictVersion("1.7"):
     from django.contrib.contenttypes.fields import GenericForeignKey  # for Django > 1.7
 else:
-    from django.contrib.contenttypes.generic import GenericForeignKey  # for Django < 1.9
+    from django.contrib.contenttypes.generic import (
+        GenericForeignKey,
+    )  # for Django < 1.9
 
 
-DATA_IMPORTER_TASK = hasattr(settings, 'DATA_IMPORTER_TASK') and settings.DATA_IMPORTER_TASK or 0
+DATA_IMPORTER_TASK = (
+    hasattr(settings, "DATA_IMPORTER_TASK") and settings.DATA_IMPORTER_TASK or 0
+)
 
-CELERY_STATUS = ((1, 'Imported'),
-                 (2, 'Waiting'),
-                 (3, 'Cancelled'),
-                 (-1, 'Error'),
-                 )
+CELERY_STATUS = (
+    (1, "Imported"),
+    (2, "Waiting"),
+    (3, "Cancelled"),
+    (-1, "Error"),
+)
 
 
 def get_random_filename(instance, filename):
@@ -47,10 +52,9 @@ def get_random_filename(instance, filename):
     user_dir = "anonymous"
     if instance.owner:
         user_dir = instance.owner.get_username()
-    return os.path.join('upload_history',
-                        user_dir,
-                        date.today().strftime("%Y/%m/%d"),
-                        filename)
+    return os.path.join(
+        "upload_history", user_dir, date.today().strftime("%Y/%m/%d"), filename
+    )
 
 
 class FileHistory(models.Model):
@@ -62,12 +66,14 @@ class FileHistory(models.Model):
     is_task = models.BooleanField(default=DATA_IMPORTER_TASK)
     status = models.IntegerField(choices=CELERY_STATUS, default=1)
 
-    content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(
+        ContentType, null=True, blank=True, on_delete=models.CASCADE
+    )
     object_id = models.PositiveIntegerField(null=True, blank=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey("content_type", "object_id")
 
     class Meta:
-        verbose_name_plural = 'File Histories'
+        verbose_name_plural = "File Histories"
 
     def file_link(self):
         _url = self.file_upload.url
@@ -83,8 +89,8 @@ class FileHistory(models.Model):
         """
         filename = self.file_upload.path
         wrapper = FileWrapper(open(filename, "rb"))
-        response = HttpResponse(wrapper, content_type='application/force-download')
-        response['Content-Length'] = os.path.getsize(filename)
+        response = HttpResponse(wrapper, content_type="application/force-download")
+        response["Content-Length"] = os.path.getsize(filename)
         return response
 
     def download_zipfile(self, request):
@@ -94,15 +100,17 @@ class FileHistory(models.Model):
         be used for large dynamic PDF files.
         """
         temp = tempfile.TemporaryFile()
-        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
+        archive = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
         for index in range(10):
             filename = self.filename.path
-            archive.write(filename, 'file{0:d}.txt'.format(index))
+            archive.write(filename, "file{0:d}.txt".format(index))
         archive.close()
         wrapper = FileWrapper(temp)
-        response = HttpResponse(wrapper, content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename={0!s}.zip'.format(self.filename)
-        response['Content-Length'] = temp.tell()
+        response = HttpResponse(wrapper, content_type="application/zip")
+        response["Content-Disposition"] = "attachment; filename={0!s}.zip".format(
+            self.filename
+        )
+        response["Content-Length"] = temp.tell()
         temp.seek(0)
         return response
 

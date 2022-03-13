@@ -20,3 +20,4 @@ htmlcov/*
 test.txt
 pytestdebug.log
 build/*
+.venv/

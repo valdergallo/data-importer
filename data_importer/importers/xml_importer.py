@@ -8,7 +8,8 @@ class XMLImporter(BaseImporter):
     """
     Import XML files
     """
-    root = 'root'
+
+    root = "root"
 
     def set_reader(self):
         self._reader = XMLReader(self)
