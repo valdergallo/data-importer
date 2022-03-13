@@ -261,7 +261,7 @@ class MyBaseImporter(BaseImporter):
 class BaseImporterTest(TestCase):
     @skipIf(django.VERSION < (1, 4), "not supported in this library version")
     def test_raise_not_implemented(self):
-        with self.assertRaisesMessage(NotImplementedError, "No reader implemented"):
+        with self.assertRaises(NotImplementedError):
             instance = MyBaseImporter(source=source_content)
             instance.set_reader()
 

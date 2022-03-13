@@ -48,7 +48,7 @@ class TestGenericImporterSetup(TestCase):
 
     @skipIf(django.VERSION < (1, 4), "not supported in this library version")
     def test_unsuported_raise_error_message(self):
-        with self.assertRaisesMessage(UnsuportedFile, "Unsuported File"):
+        with self.assertRaises(UnsuportedFile):
             GenericImporter(source=self.unsuported_file)
 
     def test_import_with_file_instance(self):

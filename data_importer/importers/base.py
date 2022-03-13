@@ -151,7 +151,8 @@ class BaseImporter(object):
         """
         Set fields from descriptor file
         """
-        descriptor = ReadDescriptor(self.Meta.descriptor, self.Meta.descriptor_model)
+        descriptor = ReadDescriptor(self.Meta.descriptor,
+                                    self.Meta.descriptor_model)
         self.fields = descriptor.get_fields()
         self.exclude_fields()
 
@@ -172,8 +173,8 @@ class BaseImporter(object):
 
     def set_reader(self):
         """
-        Method responsable to convert file content into a list with same values that
-        have fields
+        Method responsable to convert file content into a list with same
+        values that have fields
 
             fields: ['myfield1', 'myfield2']
 
@@ -212,7 +213,8 @@ class BaseImporter(object):
 
     def process_row(self, row, values):
         """
-        Read clean functions from importer and return tupla with row number, field and value
+        Read clean functions from importer and return tupla with row number,
+        field and value
         """
         values_encoded = [self.to_unicode(i) for i in values]
         try:
@@ -269,8 +271,8 @@ class BaseImporter(object):
             if error.messages:
                 messages = ",".join(error.messages)
 
-        invalid_caracters_to_remove = ["'", '"', "“", "”", "'", '"']
-        for i in invalid_caracters_to_remove:
+        invalid_characters = ["'", '"', "“", "”", "'", '"']
+        for i in invalid_characters:
             messages = re.sub(i, "", messages)
             error_type = re.sub(i, "", error_type)
 
@@ -292,12 +294,16 @@ class BaseImporter(object):
         try:
             self.pre_clean()
         except Exception as e:
-            self._error.append(self.get_error_message(e, error_type="__pre_clean__"))
+            self._error.append(
+                self.get_error_message(e, error_type="__pre_clean__")
+            )
 
         try:
             self.clean()
         except Exception as e:
-            self._error.append(self.get_error_message(e, error_type="__clean_all__"))
+            self._error.append(
+                self.get_error_message(e, error_type="__clean_all__")
+            )
 
         # create clean content
         for data in self._read_file():
@@ -307,7 +313,9 @@ class BaseImporter(object):
         try:
             self.post_clean()
         except Exception as e:
-            self._error.append(self.get_error_message(e, error_type="__post_clean__"))
+            self._error.append(
+                self.get_error_message(e, error_type="__post_clean__")
+            )
 
         return self._cleaned_data
 
