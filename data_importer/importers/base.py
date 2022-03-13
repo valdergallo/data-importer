@@ -269,10 +269,10 @@ class BaseImporter(object):
             if error.messages:
                 messages = ",".join(error.messages)
 
-        messages = re.sub("'", "", messages)
-        messages = re.sub('"', "", messages)
-        error_type = re.sub("'", "", error_type)
-        error_type = re.sub('"', "", error_type)
+        invalid_caracters_to_remove = ["'", '"', "“", "”", "'", '"']
+        for i in invalid_caracters_to_remove:
+            messages = re.sub(i, "", messages)
+            error_type = re.sub(i, "", error_type)
 
         if row:
             return row, error_type, messages
