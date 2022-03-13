@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from . import default_settings
+
 DATA_IMPORTER_EXCEL_DECODER = default_settings.DATA_IMPORTER_EXCEL_DECODER
 DATA_IMPORTER_DECODER = default_settings.DATA_IMPORTER_DECODER
 
@@ -10,6 +11,7 @@ def objclass2dict(objclass):
 
     This method convert one objclass to one lazy dict without AttributeError
     """
+
     class Dict(dict):
         def __init__(self, data=None):
             if data is None:
@@ -34,9 +36,9 @@ def convert_alphabet_to_number(letters):
     letters = str(letters).lower()
     if letters.isdigit():
         return int(letters)
-    result = ''
+    result = ""
     for letter in letters:
-        number = (ord(letter) - 96)
+        number = ord(letter) - 96
         result += str(number)
     # -1 to get zero in list items
     return int(result) - 1

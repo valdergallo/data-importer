@@ -9,13 +9,12 @@ from data_importer.importers.base import BaseImporter
 
 
 BASEDIR = os.path.dirname(__file__)
-JSON_FILE = os.path.abspath(os.path.join(BASEDIR, 'data/test_json_descriptor.json'))
+JSON_FILE = os.path.abspath(os.path.join(BASEDIR, "data/test_json_descriptor.json"))
 
 
 class ReadDescriptorTestCase(TestCase):
-
     def setUp(self):
-        self.descriptor = ReadDescriptor(file_name=JSON_FILE, model_name='Contact')
+        self.descriptor = ReadDescriptor(file_name=JSON_FILE, model_name="Contact")
 
     def test_readed_file(self):
         self.assertTrue(self.descriptor.source)
@@ -24,17 +23,21 @@ class ReadDescriptorTestCase(TestCase):
         self.assertEqual(self.descriptor.get_fields(), ["name", "year", "last"])
 
     def test_invalid_model(self):
-        descriptor = ReadDescriptor(file_name=JSON_FILE, model_name='TestInvalidModel')
+        descriptor = ReadDescriptor(file_name=JSON_FILE, model_name="TestInvalidModel")
         self.assertRaises(InvalidModel, lambda: descriptor.get_model())
 
     def test_invalid_file(self):
-        self.assertRaises(InvalidDescriptor, lambda: ReadDescriptor(file_name='invalid_file.er',
-                          model_name='TestInvalidModel'))
+        self.assertRaises(
+            InvalidDescriptor,
+            lambda: ReadDescriptor(
+                file_name="invalid_file.er", model_name="TestInvalidModel"
+            ),
+        )
 
 
 class MyBaseImport(BaseImporter):
     class Meta:
-        delimiter = ';'
+        delimiter = ";"
         ignore_first_line = True
         descriptor = JSON_FILE
         descriptor_model = "Contact"
@@ -44,9 +47,8 @@ class MyBaseImport(BaseImporter):
 
 
 class TestDescriptionUsingBaseImporter(TestCase):
-
     def setUp(self):
         self.importer = MyBaseImport(source=None)
 
     def test_get_fields(self):
-        self.assertEqual(self.importer.fields, ['name', 'year', 'last'])
+        self.assertEqual(self.importer.fields, ["name", "year", "last"])

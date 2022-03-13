@@ -74,7 +74,7 @@ class TestModelXLSImporter(TestCase):
                 ignore_first_line = True
                 model = InvoiceXLS
 
-        self.xls_file = os.path.join(LOCAL_DIR, 'data/test.xls')
+        self.xls_file = os.path.join(LOCAL_DIR, "data/test.xls")
         self.importer = TestMeta(source=self.xls_file)
 
         class TestMetaDict(XLSImporter):
@@ -94,13 +94,19 @@ class TestModelXLSImporter(TestCase):
 
     def test_cleaned_data_content(self):
         content = {
-            'doc_number': 10000000,
-            'business_place': 'SP',
-            'doc_data': datetime.datetime(1982, 11, 1, 0, 0)
+            "doc_number": 10000000,
+            "business_place": "SP",
+            "doc_data": datetime.datetime(1982, 11, 1, 0, 0),
         }
 
-        self.assertEqual(self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data)
-        self.assertEqual(self.importer_dict.cleaned_data[0], (1, content), self.importer_dict.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data
+        )
+        self.assertEqual(
+            self.importer_dict.cleaned_data[0],
+            (1, content),
+            self.importer_dict.cleaned_data,
+        )
 
     def test_save_data(self):
         for row, data in self.importer.cleaned_data:
@@ -130,7 +136,7 @@ class TestPTBRXLSImporter(TestCase):
                 ignore_first_line = True
                 model = MercadoXLS
 
-        self.xls_file = os.path.join(LOCAL_DIR, 'data/ptbr_test.xls')
+        self.xls_file = os.path.join(LOCAL_DIR, "data/ptbr_test.xls")
         self.importer = TestMeta(source=self.xls_file)
 
     def test_values_is_valid(self):
@@ -141,33 +147,37 @@ class TestPTBRXLSImporter(TestCase):
 
     def test_cleaned_data_content(self):
         content = {
-            'item': 'Caça',
-            'qtde': 1,
+            "item": "Caça",
+            "qtde": 1,
         }
 
-        self.assertEqual(self.importer.cleaned_data[0], (1, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data
+        )
 
         content = {
-            'item': 'Amanhã',
-            'qtde': 2,
+            "item": "Amanhã",
+            "qtde": 2,
         }
 
-        self.assertEqual(self.importer.cleaned_data[1], (2, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[1], (2, content), self.importer.cleaned_data
+        )
 
         content = {
-            'item': 'Qüanto',
-            'qtde': 3,
+            "item": "Qüanto",
+            "qtde": 3,
         }
 
-        self.assertEqual(self.importer.cleaned_data[2], (3, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[2], (3, content), self.importer.cleaned_data
+        )
 
         content = {
-            'item': 'Será',
-            'qtde': 4,
+            "item": "Será",
+            "qtde": 4,
         }
 
-        self.assertEqual(self.importer.cleaned_data[3], (4, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[3], (4, content), self.importer.cleaned_data
+        )

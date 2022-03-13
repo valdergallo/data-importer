@@ -12,7 +12,7 @@ class Person(models.Model):
 
 
 class PersonFile(models.Model):
-    filefield = models.FileField(upload_to='test')
+    filefield = models.FileField(upload_to="test")
 
     def __unicode__(self):
         return self.filefield

@@ -15,45 +15,48 @@ source_content = StringIO("header1,header2\ntest1,1\ntest2,2\ntest3,3\ntest4,4")
 
 
 class TestBaseImportMeta(TestCase):
-
     def setUp(self):
         class MyCSVImporter(CSVImporter):
             fields = [
-                'test_field',
-                'test2_field',
-                'test3_field',
+                "test_field",
+                "test2_field",
+                "test3_field",
             ]
 
             class Meta:
-                exclude = ['test2_field', 'test3_field']
+                exclude = ["test2_field", "test3_field"]
 
         self.importer = MyCSVImporter(source=None)
 
     def test_meta_values(self):
-        self.assertEqual(self.importer.Meta.get('exclude'), ['test2_field', 'test3_field'])
+        self.assertEqual(
+            self.importer.Meta.get("exclude"), ["test2_field", "test3_field"]
+        )
 
     def test_get_author(self):
-        self.assertEqual(data_importer.__author__, 'Valder Gallo <valdergallo@gmail.com>')
+        self.assertEqual(
+            data_importer.__author__, "Valder Gallo <valdergallo@gmail.com>"
+        )
 
     def test_get_doc(self):
-        self.assertEqual(data_importer.__doc__, 'Data Importer')
+        self.assertEqual(data_importer.__doc__, "Data Importer")
 
     def test_get_meta_higher_doc(self):
-        self.assertEqual(BaseImporter.Meta.__doc__, 'Importer configurations')
+        self.assertEqual(BaseImporter.Meta.__doc__, "Importer configurations")
 
     def test_get_meta_lower_doc(self):
-        self.assertEqual(BaseImporter.meta.__doc__, 'Is same to use .Meta')
+        self.assertEqual(BaseImporter.meta.__doc__, "Is same to use .Meta")
 
     def test_raise_error_in_process_row(self):
-        row = ['test1', 'test2', 'test3']
-        values = ['test1', 'test2', 'test3', 'test3', 'test3', 'test3']
+        row = ["test1", "test2", "test3"]
+        values = ["test1", "test2", "test3", "test3", "test3", "test3"]
         base = BaseImporter()
         base.fields = []
-        self.assertRaises(TypeError, base.process_row(row, values), 'Invalid Line: 2')
+        self.assertRaises(TypeError, base.process_row(row, values), "Invalid Line: 2")
 
     def test_ignore_empty_lines(self):
         base = BaseImporter()
-        row = ['test1', 'test2', 'test3']
+        row = ["test1", "test2", "test3"]
         values = [False, False, False]
         base.fields = row
         base.Meta.ignore_empty_lines = True
@@ -71,13 +74,18 @@ class TestBaseImportMeta(TestCase):
         self.assertFalse(base._readed)
 
     def test_meta_class_values(self):
-        self.assertEqual(self.importer.Meta.exclude, ['test2_field', 'test3_field'])
+        self.assertEqual(self.importer.Meta.exclude, ["test2_field", "test3_field"])
 
     def test_meta_silent_attributeerror_values(self):
         self.assertFalse(self.importer.Meta.test)
 
     def test_fields(self):
-        self.assertEqual(list(self.importer.fields), ['test_field', ])
+        self.assertEqual(
+            list(self.importer.fields),
+            [
+                "test_field",
+            ],
+        )
 
     def test_objclass2dict(self):
         class Meta:
@@ -86,30 +94,32 @@ class TestBaseImportMeta(TestCase):
             test_3 = 3
 
         return_dict = objclass2dict(Meta)
-        self.assertEqual(return_dict, {'test_1': 1, 'test_2': 2, 'test_3': 3})
+        self.assertEqual(return_dict, {"test_1": 1, "test_2": 2, "test_3": 3})
 
 
 class ImportersTests(TestCase):
     def test_xls_importers(self):
         import data_importer
+
         self.assertTrue(data_importer.importers.XLSImporter)
 
     def test_xlsx_importers(self):
         import data_importer
+
         self.assertTrue(data_importer.importers.XLSXImporter)
 
     def test_base_importers(self):
         import data_importer
+
         self.assertTrue(data_importer.importers.XMLImporter)
 
 
 class TestClassObjToLazyDict(TestCase):
-
     def setUp(self):
         from data_importer.importers.base import objclass2dict
 
         class MyTestClass:
-            test_field = 'test'
+            test_field = "test"
 
         self.testclass = objclass2dict(MyTestClass)
 
@@ -121,22 +131,21 @@ class TestClassObjToLazyDict(TestCase):
 
 
 class TestReadContent(TestCase):
-
     def setUp(self):
         class MyCSVImporter(CSVImporter):
-                fields = [
-                    'test_field',
-                    'test2_field',
-                    'test3_field',
-                ]
+            fields = [
+                "test_field",
+                "test2_field",
+                "test3_field",
+            ]
 
-                class Meta:
-                    exclude = ['test3_field']
-                    delimiter = ','
-                    raise_errors = True
+            class Meta:
+                exclude = ["test3_field"]
+                delimiter = ","
+                raise_errors = True
 
-                def clean_test_field(self, value):
-                    return str(value).upper()
+            def clean_test_field(self, value):
+                return str(value).upper()
 
         self.source_content = source_content
         self.source_content.seek(0)
@@ -146,15 +155,17 @@ class TestReadContent(TestCase):
         self.assertTrue(self.importer.is_valid(), self.importer.errors)
 
     def test_meta_lower(self):
-        self.assertEqual(self.importer.meta.delimiter, ',')
+        self.assertEqual(self.importer.meta.delimiter, ",")
 
     def test_is_valid(self):
         self.assertTrue(self.importer.is_valid())
 
     def test_read_content_first_line(self):
-        self.assertEqual(self.importer.cleaned_data[0],
-                          (1, {'test2_field': 'header2', 'test_field': 'HEADER1'}),
-                          self.importer.cleaned_data[0])
+        self.assertEqual(
+            self.importer.cleaned_data[0],
+            (1, {"test2_field": "header2", "test_field": "HEADER1"}),
+            self.importer.cleaned_data[0],
+        )
 
     def test_errors(self):
         self.assertFalse(self.importer.errors)
@@ -162,93 +173,100 @@ class TestReadContent(TestCase):
 
     def test_start_fields(self):
         self.importer.start_fields()
-        self.assertEqual(self.importer.fields, ['test_field', 'test2_field'])
+        self.assertEqual(self.importer.fields, ["test_field", "test2_field"])
 
     def test_raise_error_on_clean(self):
         class MyCSVImporterClean(CSVImporter):
-            fields = ['test', ]
+            fields = [
+                "test",
+            ]
 
             def clean_test(self, value):
                 value.coisa = 1
 
-        importer_error = MyCSVImporterClean(source=['test1', ])
+        importer_error = MyCSVImporterClean(
+            source=[
+                "test1",
+            ]
+        )
 
         self.assertFalse(importer_error.is_valid())
         # test get row
         self.assertEqual(importer_error.errors[0][0], 1)
         # test get error type
-        self.assertEqual(importer_error.errors[0][1], 'ValidationError')
+        self.assertEqual(importer_error.errors[0][1], "ValidationError")
         # test get error message
-        self.assertIn('object has no attribute coisa', importer_error.errors[0][2])
-
+        self.assertIn("object has no attribute coisa", importer_error.errors[0][2])
 
     def test_read_content_skip_first_line(self):
         class MyCSVImporter(CSVImporter):
-                fields = [
-                    'test_field',
-                    'test_number_field',
-                    'test3_field',
-                ]
+            fields = [
+                "test_field",
+                "test_number_field",
+                "test3_field",
+            ]
 
-                class Meta:
-                    exclude = ['test3_field']
-                    delimiter = ','
-                    raise_errors = True
-                    ignore_first_line = True
+            class Meta:
+                exclude = ["test3_field"]
+                delimiter = ","
+                raise_errors = True
+                ignore_first_line = True
 
-                def clean_test_field(self, value):
-                    return str(value).upper()
+            def clean_test_field(self, value):
+                return str(value).upper()
 
         self.source_content.seek(0)
         importer = MyCSVImporter(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        self.assertEqual(importer.cleaned_data[0],
-                          (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
-                          importer.cleaned_data[0])
+        self.assertEqual(
+            importer.cleaned_data[0],
+            (1, {"test_number_field": "1", "test_field": "TEST1"}),
+            importer.cleaned_data[0],
+        )
 
     def test_exclude_with_tupla(self):
         class MyCSVImporter(CSVImporter):
-                fields = [
-                    'test_field',
-                    'test_number_field',
-                    'test3_field',
-                ]
+            fields = [
+                "test_field",
+                "test_number_field",
+                "test3_field",
+            ]
 
-                class Meta:
-                    exclude = ('test3_field',)
-                    delimiter = ','
-                    raise_errors = True
-                    ignore_first_line = True
+            class Meta:
+                exclude = ("test3_field",)
+                delimiter = ","
+                raise_errors = True
+                ignore_first_line = True
 
-                def clean_test_field(self, value):
-                    return str(value).upper()
+            def clean_test_field(self, value):
+                return str(value).upper()
 
         self.source_content.seek(0)
         importer = MyCSVImporter(source=self.source_content)
         self.assertTrue(importer.is_valid(), importer.errors)
-        self.assertEqual(importer.cleaned_data[0],
-                          (1, {'test_number_field': '1', 'test_field': 'TEST1'}),
-                          importer.cleaned_data[0])
+        self.assertEqual(
+            importer.cleaned_data[0],
+            (1, {"test_number_field": "1", "test_field": "TEST1"}),
+            importer.cleaned_data[0],
+        )
 
 
 class MyBaseImporter(BaseImporter):
-    fields = ('name', 'value')
+    fields = ("name", "value")
 
     class Meta:
-        delimiter = ','
+        delimiter = ","
 
 
 class BaseImporterTest(TestCase):
-
     @skipIf(django.VERSION < (1, 4), "not supported in this library version")
     def test_raise_not_implemented(self):
-        with self.assertRaisesMessage(NotImplementedError, "No reader implemented"):
+        with self.assertRaises(NotImplementedError):
             instance = MyBaseImporter(source=source_content)
             instance.set_reader()
 
 
 class TestConvertLetterToNumber(TestCase):
-
     def test_convert_text_lower_to_number(self):
         r = convert_alphabet_to_number("a")
         self.assertEqual(r, 0)
@@ -263,15 +281,14 @@ class TestConvertLetterToNumber(TestCase):
 
 
 class TestReduceList(TestCase):
-
     def test_reduce_list(self):
-        list_values = [1,2,3,4,5,6]
-        list_key = [1,3,6]
+        list_values = [1, 2, 3, 4, 5, 6]
+        list_key = [1, 3, 6]
         reduced = reduce_list(list_key, list_values)
         self.assertEqual(reduced, [2, 4])
 
     def test_reduce_list_two(self):
-        list_values = [1,2,3,4,5,6]
-        list_key = [0,2,3]
+        list_values = [1, 2, 3, 4, 5, 6]
+        list_key = [0, 2, 3]
         reduced = reduce_list(list_key, list_values)
         self.assertEqual(reduced, [1, 3, 4])

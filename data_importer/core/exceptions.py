@@ -1,6 +1,7 @@
 # encoding: utf-8
 from __future__ import unicode_literals
 
+
 class StopImporter(Exception):
     """
     Stop interator and raise error message

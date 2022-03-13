@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 import datetime
 import xlrd
 from django.db.models.fields.files import FieldFile
-#from xlrd/biffh.py
+
+# from xlrd/biffh.py
 # (
 #     XL_CELL_EMPTY,
 #     XL_CELL_TEXT,
@@ -16,7 +17,6 @@ from django.db.models.fields.files import FieldFile
 
 
 class XLSReader(object):
-
     def __init__(self, instance, sheet_name=None, sheet_index=0, on_demand=True):
 
         if isinstance(instance.source, FieldFile):
@@ -38,7 +38,9 @@ class XLSReader(object):
         """
         # Thx to Augusto C Men to point fast solution for XLS/XLSX dates
         if item.ctype == 3:  # XL_CELL_DATE:
-            return datetime.datetime(*xlrd.xldate_as_tuple(item.value, workbook.datemode))
+            return datetime.datetime(
+                *xlrd.xldate_as_tuple(item.value, workbook.datemode)
+            )
 
         if item.ctype == 2:  # XL_CELL_NUMBER:
             if item.value % 1 == 0:  # integers
@@ -50,5 +52,8 @@ class XLSReader(object):
 
     def read(self):
         for i in range(0, self.worksheet.nrows):
-            values = [self.convert_value(cell, self.workbook) for cell in self.worksheet.row(i)]
+            values = [
+                self.convert_value(cell, self.workbook)
+                for cell in self.worksheet.row(i)
+            ]
             yield values

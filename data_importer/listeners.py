@@ -9,7 +9,7 @@ def delete_filefield(sender, instance, **kwargs):
     """
     Automatically deleted files when records removed.
     """
-    has_delete_config = hasattr(settings, 'DATA_IMPORTER_HISTORY')
+    has_delete_config = hasattr(settings, "DATA_IMPORTER_HISTORY")
 
     if has_delete_config and settings.DATA_IMPORTER_HISTORY == False:
         if os.path.exists(instance.filename.path):

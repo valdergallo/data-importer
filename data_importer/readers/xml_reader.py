@@ -4,7 +4,6 @@ import xml.etree.ElementTree as et
 
 
 class XMLReader(object):
-
     def __init__(self, instance):
         self.instance = instance
 

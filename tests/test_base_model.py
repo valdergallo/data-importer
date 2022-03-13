@@ -24,35 +24,37 @@ class TestBaseWithModel(TestCase):
         class TestMeta(CSVImporter):
             class Meta:
                 model = Person
-                delimiter = ','
+                delimiter = ","
                 raise_errors = True
                 ignore_first_line = True
 
-        self.importer = TestMeta(source=person_content.split('\n'))
+        self.importer = TestMeta(source=person_content.split("\n"))
 
     def test_get_fields_from_model(self):
-        self.assertEqual(self.importer.fields, ['first_name', 'last_name', 'age'])
+        self.assertEqual(self.importer.fields, ["first_name", "last_name", "age"])
 
     def test_values_is_valid(self):
         self.assertTrue(self.importer.is_valid())
 
     def test_cleaned_data_content(self):
-        content = {'first_name': 'test_first_name_1',
-                   'last_name': 'test_last_name_1',
-                   'age': 'age1'}
+        content = {
+            "first_name": "test_first_name_1",
+            "last_name": "test_last_name_1",
+            "age": "age1",
+        }
         self.assertEqual(self.importer.cleaned_data[0], (1, content))
 
     def test_source_importer_file(self):
-        base = CSVImporter(source=io.open('test.txt', 'w'))
+        base = CSVImporter(source=io.open("test.txt", "w"))
         self.assertEqual(type(base._source), io.TextIOWrapper, type(base._source))
 
     def test_source_importer_list(self):
-        base = CSVImporter(source=['test1', 'test2'])
+        base = CSVImporter(source=["test1", "test2"])
         self.assertEqual(type(base._source), list, type(base._source))
 
     def test_source_importer_django_file(self):
         person = PersonFile()
-        person.filefield = DjangoFile(io.open('test.txt', 'w'))
+        person.filefield = DjangoFile(io.open("test.txt", "w"))
 
         base = CSVImporter(source=person.filefield)
         self.assertEqual(type(base._source), io.BufferedReader, type(base._source))
@@ -65,21 +67,20 @@ class TestBaseWithModel(TestCase):
 
     def tearDown(self):
         try:
-            os.remove('test.txt')
+            os.remove("test.txt")
         except Exception:
             pass
 
 
 class TestPTBRCSVImporter(TestCase):
-
     def setUp(self):
         class TestMeta(CSVImporter):
             class Meta:
                 ignore_first_line = True
-                delimiter = ';'
+                delimiter = ";"
                 model = Mercado
 
-        self.csv_file = os.path.join(LOCAL_DIR, 'data/ptbr_test_win.csv')
+        self.csv_file = os.path.join(LOCAL_DIR, "data/ptbr_test_win.csv")
         self.importer = TestMeta(source=self.csv_file)
 
     def test_values_is_valid(self):
@@ -90,48 +91,51 @@ class TestPTBRCSVImporter(TestCase):
 
     def test_cleaned_data_content(self):
         content = {
-            'item': 'Caça',
-            'qtde': '1',
-            }
+            "item": "Caça",
+            "qtde": "1",
+        }
 
-        self.assertEqual(self.importer.cleaned_data[0], (1, content),
-                          self.importer.cleaned_data[0])
-
-        content = {
-            'item': 'Amanhã',
-            'qtde': '2',
-            }
-
-        self.assertEqual(self.importer.cleaned_data[1], (2, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[0], (1, content), self.importer.cleaned_data[0]
+        )
 
         content = {
-            'item': 'Qüanto',
-            'qtde': '3',
-            }
+            "item": "Amanhã",
+            "qtde": "2",
+        }
 
-        self.assertEqual(self.importer.cleaned_data[2], (3, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[1], (2, content), self.importer.cleaned_data
+        )
 
         content = {
-            'item': 'Será',
-            'qtde': '4',
-            }
+            "item": "Qüanto",
+            "qtde": "3",
+        }
 
-        self.assertEqual(self.importer.cleaned_data[3], (4, content),
-                          self.importer.cleaned_data)
+        self.assertEqual(
+            self.importer.cleaned_data[2], (3, content), self.importer.cleaned_data
+        )
+
+        content = {
+            "item": "Será",
+            "qtde": "4",
+        }
+
+        self.assertEqual(
+            self.importer.cleaned_data[3], (4, content), self.importer.cleaned_data
+        )
 
 
 class TestModelValidator(TestCase):
-
     def setUp(self):
         class TestMeta(CSVImporter):
             class Meta:
                 ignore_first_line = True
-                delimiter = ';'
+                delimiter = ";"
                 model = Invoice
 
-        self.csv_file = os.path.join(LOCAL_DIR, 'data/invoice.csv')
+        self.csv_file = os.path.join(LOCAL_DIR, "data/invoice.csv")
         self.importer = TestMeta(source=self.csv_file)
 
     def test_values_is_valid(self):
@@ -140,6 +144,5 @@ class TestModelValidator(TestCase):
     def test_errors_values(self):
         self.importer.is_valid()
         # DJANGO_VERSION = StrictVersion(django.get_version())
-        error = [
-            (1, 'ValidationError', 'Field (price) 23,98 value must be a float.')]
+        error = [(1, "ValidationError", "Field (price) 23,98 value must be a float.")]
         self.assertEqual(self.importer.errors, error, self.importer.cleaned_data)
