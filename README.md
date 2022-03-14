@@ -1,7 +1,6 @@
 Django Data Importer
 ====================
 
-[![Build Status](https://travis-ci.org/valdergallo/data-importer.png?branch=master)](https://travis-ci.org/valdergallo/data-importer)
 [![Latest Version](http://img.shields.io/pypi/v/data-importer.svg)](https://pypi.python.org/pypi/data-importer)
 [![Coverage Status](https://coveralls.io/repos/valdergallo/data-importer/badge.png)](https://coveralls.io/r/valdergallo/data-importer)
 [![BSD License](http://img.shields.io/badge/license-BSD-yellow.svg)](http://opensource.org/licenses/BSD-3-Clause)
